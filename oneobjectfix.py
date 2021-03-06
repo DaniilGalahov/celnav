@@ -20,6 +20,10 @@ observation2 = nav.Observation("Observation2.cfg")
 p2=observation2.p
 Z2=observation2.Z
 
+if not observation1.Be==observation2.Be and not observation1.Le==observation2.Le:
+    print("Observations fixing different estimated points. Check .cfg files.")
+    quit()
+
 deltaTime=timeprocessor.SecondsToHours(observation2.time-observation1.time)
 d=v*deltaTime #distance in nmi
 
@@ -27,8 +31,8 @@ p1=p1+(d*cos(HDG-Z1))
 
 x,y=es.LinEq22(sin(Z1),cos(Z1),p1,sin(Z2),cos(Z2),p2)
 
-B=Be+(y/60.0)
-L=Le+(x/60.0/cos(B))
+B=observation1.Be+(y/60.0)
+L=observation1.Le+(x/60.0/cos(B))
 
 print(angle.ToLatitude(B))
 print(angle.ToLongtitude(L))

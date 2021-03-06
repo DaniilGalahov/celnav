@@ -48,7 +48,8 @@ x,y = es.LinEq22(cos(tetha1), sin(tetha1), p1, cos(tetha2), sin(tetha2), p2)
 #print(x)
 #print(y)
 
-print(str(angle.ToLongtitude(x)))
 print(str(angle.ToLatitude(y)))
+print(str(angle.ToLongtitude(x)))
+
 
 

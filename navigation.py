@@ -22,7 +22,7 @@ class Observation:
         celestialObject = almanac.GetCelestialObject(self.config["Celestial object"])
         
         self.Be=Be=angle.ToDecimal(self.config["Be"]) #self.Be required in other class methods
-        Le=angle.ToDecimal(self.config["Le"])
+        self.Le=Le=angle.ToDecimal(self.config["Le"]) #same with Be
 
         h=self.config["Altitude"]
         
