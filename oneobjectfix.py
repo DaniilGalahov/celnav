@@ -1,4 +1,4 @@
-#celestial fix by 2 intercepts (based on https://drive.google.com/file/d/0B6wCLzdYQE_gUF8zWDU0RG9uNm8/view)
+#fix by 2 observations of a same object on a distance (based on https://drive.google.com/file/d/0B6wCLzdYQE_gUF8zWDU0RG9uNm8/view)
 import json
 import angle
 import navigation as nav
@@ -6,7 +6,7 @@ import timeprocessor
 from trigonometry import sin, cos, tg, arcsin, arctg
 import equationsolver as es
 
-configFile=open("Celestial fix.cfg")
+configFile=open("One object fix.cfg")
 config = json.loads(configFile.read())
 
 v=float(config["Ground speed"]) #ground speed, kts
