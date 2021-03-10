@@ -1,95 +1,167 @@
-#almanac data source for using in other navigation scripts
-import json
-import timeprocessor
+#Alternative almanac based on astropy
+from astropy.time import Time
+from astropy.coordinates import Angle
+from astropy.coordinates import solar_system_ephemeris, EarthLocation, SkyCoord, Distance
+from astropy.coordinates import get_body
+from astropy import units as u
 import angle
+from trigonometry import sin, cos, tg, arcsin, arctg
 
-configFile=open("Almanac.cfg")
-config = json.loads(configFile.read())
+navigationPlanets=["Venus",
+                   "Mars",
+                   "Jupiter",
+                   "Saturn"]
+navigationStars=["Acamar",
+                 "Achernar",
+                 "Acrux",
+                 "Adhara",
+                 "Albireo",
+                 "Aldebaran",
+                 "Alioth",
+                 "Alkaid",
+                 "Al Na-ir",
+                 "Alnilam",
+                 "Alphard",
+                 "Alphecca",
+                 "Alpheratz",
+                 "Altair",
+                 "Ankaa",
+                 "Antares",
+                 "Arcturus",
+                 "Atria",
+                 "Avior",
+                 "Bellatrix",
+                 "Betelgeuse",
+                 "Canopus",
+                 "Capella",
+                 "Castor",
+                 "Deneb",
+                 "Denebola",
+                 "Diphda",
+                 "Dubhe",
+                 "Elnath",
+                 "Eltanin",
+                 "Enif",
+                 "Fomalhaut",
+                 "Gacrux",
+                 "Gienah",
+                 "Hadar",
+                 "Hamal",
+                 "Kochab",
+                 "Markab",
+                 "Menkar",
+                 "Menkent",
+                 "Miaplacidus",
+                 "Mirfak",
+                 "Nunki",
+                 "Peacock",
+                 "Polaris",
+                 "Pollux",
+                 "Procyon",
+                 "Rasalhague",
+                 "Regulus",
+                 "Rigel",
+                 "Sabik",
+                 "Schedar",
+                 "Shaula",
+                 "Sirius",
+                 "Spica",
+                 "Suhail",
+                 "Vega",
+                 "Zuben-ubi"]
 
-def CalculateRelativeTime(absoluteTime):
-    absoluteTime=timeprocessor.ToSeconds(absoluteTime)
-    if not period.Includes(absoluteTime):
-        print("Incorrect time")
-        quit()
-    else:
-        return (absoluteTime-period.begin)/(period.end-period.begin)
+celestialObjectDiameters = { "Sun":1392700.0,
+                             "Moon":3474.2,
+                             "Venus":12104.0,
+                             "Mars":6779.0,
+                             "Jupiter":139820.0,
+                             "Saturn":116460.0}
+                             
 
-def CalculateExactValueFor(relativeTime, value1, value2):
-    return value1 + ((value2-value1)*relativeTime)
+ephemeris='builtin' #can be 'jpl' or 'de432s', but even in this case we have difference with Omar Reis about +14.5' in GHA and about -7' in Dec
 
-class Period:
-    def __init__(self,period):
-        self.begin=timeprocessor.ToSeconds(period["Begin"])
-        self.end=timeprocessor.ToSeconds(period["End"])
-
-    def Includes(self,time):
-        time=timeprocessor.ToSeconds(time)
-        if time>=self.begin and time<=self.end:
-            return True
-        else:
-            return False
-
-class Aries:
-    def __init__ (self,aries):
-        self.atBegin=angle.ToDecimal(aries["AtBegin"])
-        self.atEnd=angle.ToDecimal(aries["AtEnd"])
-
-    def At(self, time):
-        return CalculateExactValueFor(CalculateRelativeTime(time), self.atBegin, self.atEnd)
+def GHAOfAriesAt(time): #time must be GMT
+    time = Time(time)
+    siderealTime = time.sidereal_time('apparent', 'greenwich')
+    return Angle(siderealTime).deg
 
 class CelestialObject:
-    def __init__(self, name):
+    def __init__(self, name): #name of celestial object must start from capital letter
         self.name=name
+        
+        self.type=None        
+        if self.name=="Sun":
+            self.type="Sun"
+        elif self.name=="Moon":
+            self.type="Moon"
+        elif self.name in navigationPlanets:
+            self.type="Planet"
+        elif self.name in navigationStars:
+            self.type="Star"
+        
+    def GHAAt(self, time):
+        time=Time(time)
+        if not self.type=="Star":            
+            location=EarthLocation.of_site('greenwich')
+            with solar_system_ephemeris.set(ephemeris):
+                body=get_body(self.name, time, location)
+            GHA=GHAOfAriesAt(time)-body.ra.value       
+            return GHA
+        else:
+            return 0
 
-    @property
-    def type(self):
-        return celestialObjects[self.name]["Type"]
+    def DecAt(self, time):
+        time=Time(time)
+        if not self.type=="Star":            
+            location=EarthLocation.of_site('greenwich')
+            with solar_system_ephemeris.set(ephemeris):
+                body=get_body(self.name, time, location)
+            return body.dec.value
+        else:
+            bodyCoordinates=SkyCoord.from_name(self.name,frame='icrs')
+            return bodyCoordinates.dec.value
 
-    def GHAAt(self, time):        
-        return CalculateExactValueFor(CalculateRelativeTime(time), angle.ToDecimal(self.AtBegin("GHA")), angle.ToDecimal(self.AtEnd("GHA")))
+    def SHAAt(self, time):
+        time=Time(time)
+        if self.type=="Star":
+            bodyCoordinates=SkyCoord.from_name(self.name,frame='icrs')
+            SHA=360.0-bodyCoordinates.ra.value
+            return SHA
+        else:
+            return 0
 
-    def DecAt(self, time):        
-        return CalculateExactValueFor(CalculateRelativeTime(time), angle.ToDecimal(self.AtBegin("Dec")), angle.ToDecimal(self.AtEnd("Dec")))
+    def SDAt(self, time):
+        if not self.type=="Star":
+            time=Time(time)
+            location=EarthLocation.of_site('greenwich')
+            with solar_system_ephemeris.set(ephemeris):
+                body=get_body(self.name, time, location)
+            D=Distance(body.distance, unit=u.km).value
+            d=celestialObjectDiameters[self.name]
+            return arctg(d/(2*D))                        
+        else:
+            return 0
 
-    @property
-    def Dec(self):
-        return angle.ToDecimal(celestialObjects[self.name]["Dec"])
-
-    @property
-    def SD(self):
-        return angle.ToDecimal(celestialObjects[self.name]["SD"])
-
-    @property
-    def HP(self):
-        return angle.ToDecimal(celestialObjects[self.name]["HP"])
-
-    def HPAt(self, time):        
-        return CalculateExactValueFor(CalculateRelativeTime(time), angle.ToDecimal(self.AtBegin("HP")), angle.ToDecimal(self.AtEnd("HP")))
-
-    @property
-    def SHA(self):
-        return angle.ToDecimal(celestialObjects[self.name]["SHA"])
-
-    def AtBegin(self, parameter):
-        return celestialObjects[self.name]["AtBegin"][parameter]
-
-    def AtEnd(self, parameter):
-        return celestialObjects[self.name]["AtEnd"][parameter]
-
-
-date=config["Date"]
-period=Period(config["Period"])
-aries=Aries(config["Aries"])
-celestialObjects=config["Celestial objects"]
-
-def IsCorrectFor(date, time):
-    if date==date and period.Includes(time):
-        return True
-    else:
-        return False
+    def HPAt(self, time):
+        if not self.type=="Star":
+            time=Time(time)
+            location=EarthLocation.of_site('greenwich')
+            with solar_system_ephemeris.set(ephemeris):
+                body=get_body(self.name, time, location)
+            L=6371.0 #radius of Earth, km
+            D=Distance(body.distance, unit=u.km).value
+            return arctg(L/D)
+        else:
+            return 0
 
 def GetCelestialObject(name):
-    return CelestialObject(name)   
+    return CelestialObject(name)
 
-
-
+#time="2021-03-10 00:00"
+#print(angle.ToString(GHAOfAriesAt(time)))
+#c=CelestialObject("Mars")
+#print(angle.ToString(c.GHAAt(time)))
+#print(angle.ToLatitude(c.DecAt(time)))
+#print(angle.ToString(c.SHAAt(time)))
+#print(angle.ToString(c.SDAt(time)))
+#print(angle.ToString(c.HPAt(time)))

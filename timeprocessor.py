@@ -22,6 +22,11 @@ def ToString(seconds):
     
     return hh+":"+mm
 
+def ToAstropyTimeString(date, time):
+    ddmmyyyy=re.split('[^\d]+', date)
+    hhmm=re.split('[^\d]+', time)
+    return ddmmyyyy[2]+"-"+ddmmyyyy[1]+"-"+ddmmyyyy[0]+" "+hhmm[0]+":"+hhmm[1]
+
 
 def HoursToSeconds(hours):
     return hours*60*60

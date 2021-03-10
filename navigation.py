@@ -6,6 +6,8 @@ import angle
 import math
 from trigonometry import sin, cos, tg, arcsin, arctg
 
+from astropy.time import Time
+
 class Observation:
     def __init__(self, configFileName):
         configFile=open(configFileName)
@@ -13,12 +15,7 @@ class Observation:
         self.CalculateIntercept()
 
     def CalculateIntercept(self):
-        self.time = time=timeprocessor.ToSeconds(self.config["Time"]) #must be GMT
-
-        if not almanac.IsCorrectFor(self.config["Date"],time):
-            print("Almanac data incorrect for required date/time.")
-            quit()
-
+        self.astropyTimeString=time=timeprocessor.ToAstropyTimeString(self.config["Date"], self.config["Time"])
         celestialObject = almanac.GetCelestialObject(self.config["Celestial object"])
         
         self.Be=Be=angle.ToDecimal(self.config["Be"]) #self.Be required in other class methods
@@ -36,19 +33,10 @@ class Observation:
         #here must be calculated refraction correction, but in MSFS it's not simulated correctly
         #here must be oblateness correction
 
-        if celestialObject.type=="Sun": #parallax correction
-            HP=celestialObject.HP
-        elif celestialObject.type=="Moon":
-            HP=celestialObject.HPAt(time)
-        else:
-            HP=0
-
+        HP=celestialObject.HPAt(time)
         P=HP*cos(H)
 
-        if celestialObject.type=="Sun" or celestialObject.type=="Moon": #semidiameter correction
-            SD=celestialObject.SD
-        else:
-            SD=0
+        SD=celestialObject.SDAt(time)
 
         Ho=H+P+SD
 
@@ -56,9 +44,9 @@ class Observation:
             GHA=celestialObject.GHAAt(time)
             Dec=celestialObject.DecAt(time)
         else:
-            GHAAries=almanac.aries.At(time)
-            SHA=celestialObject.SHA
-            Dec=celestialObject.Dec
+            GHAAries=almanac.GHAOfAriesAt(time)
+            SHA=celestialObject.SHAAt(time)
+            Dec=celestialObject.DecAt(time)
             GHA=GHAAries+SHA
 
         LHA=GHA+Le
@@ -71,3 +59,7 @@ class Observation:
     @property
     def distance(self):
         return self.p*60.0*cos(self.Be)
+
+    @property
+    def time(self):
+        return Time(self.astropyTimeString).to_value("unix")

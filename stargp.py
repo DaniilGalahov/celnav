@@ -8,21 +8,16 @@ import angle
 configFile=open("StarGP.cfg")
 config = json.loads(configFile.read())
 
-time=timeprocessor.ToSeconds(config["Time"]) #must be GMT
-
-if not almanac.IsCorrectFor(config["Date"],time):
-    print("Almanac data incorrect for required date/time.")
-    quit()
-
+time=timeprocessor.ToAstropyTimeString(config["Date"], config["Time"])
 celestialObject = almanac.GetCelestialObject(config["Celestial object"])
 
 if not celestialObject.type=="Star":
-    Dec=celestialObject.DecAt(time)
     GHA=celestialObject.GHAAt(time)
+    Dec=celestialObject.DecAt(time)
 else:
-    Dec=celestialObject.Dec
-    GHAAries=almanac.aries.At(time)
-    SHA=celestialObject.SHA    
+    GHAAries=almanac.GHAOfAriesAt(time)
+    SHA=celestialObject.SHAAt(time)
+    Dec=celestialObject.DecAt(time)
     GHA=GHAAries+SHA
 
 L=Dec

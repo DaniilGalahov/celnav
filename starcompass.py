@@ -8,23 +8,19 @@ import angle
 configFile=open("Star compass.cfg")
 config = json.loads(configFile.read())
 
-time=timeprocessor.ToSeconds(config["Time"]) #because we need time not only in checking almanac validity, but also in calculations later
-
-if not almanac.IsCorrectFor(config["Date"],time):
-    print("Almanac data incorrect for required date/time.")
-    quit()
-
+time=timeprocessor.ToAstropyTimeString(config["Date"], config["Time"])
 celestialObject = almanac.GetCelestialObject(config["Celestial object"])
 L=angle.ToDecimal(config["Longtitude"])
 hemisphere=config["Hemisphere"]
 
-if celestialObject.type!="Star":
+if not celestialObject.type=="Star":
     GHA=celestialObject.GHAAt(time)
     LHA=GHA+L
 else:    
-    GHAAries=almanac.aries.At(time)
-    SHA=celestialObject.SHA
+    GHAAries=almanac.GHAOfAriesAt(time)
+    SHA=celestialObject.SHAAt(time)
     LHA=GHAAries+SHA+L
+    
 
 c=180
 if(hemisphere!="N"):
