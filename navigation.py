@@ -23,14 +23,16 @@ class Observation:
 
         h=self.config["Altitude"]
         
-        Hs=angle.ToDecimal(self.config["Hs"]) #for MSFS must be measured by upper bound of sun/moon
+        Hs=angle.ToDecimal(self.config["Hs"]) #for MSFS must be measured by upper limb of sun/moon
 
         #here must be instrument correction
 
         Dip=0.0293*math.sqrt(h) #height correction
         H=Hs-Dip
 
-        #here must be calculated refraction correction, but in MSFS it's not simulated correctly
+        #here must be calculated refraction correction, but in MSFS it's not simulated correctly.
+        #Also, it's not too obviously to understand, where we must measure T and P for refraction correction!
+        
         #here must be oblateness correction
 
         HP=celestialObject.HPAt(time)
@@ -38,7 +40,7 @@ class Observation:
 
         SD=celestialObject.SDAt(time)
 
-        Ho=H+P+SD
+        Ho=H+P+SD #"+SD" must be in case of measuring by lower limb of sun/moon. In case of measuring by upper limb must be "-SD"
 
         if not celestialObject.type=="Star":
             GHA=celestialObject.GHAAt(time)
