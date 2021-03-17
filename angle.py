@@ -61,11 +61,7 @@ def ToLatitude(value):
 
 
 def ToLongtitude(value):
-    if value>180.0:
-        value=value%360
-        delta=value-180.0
-        value=180.0-delta
-        value*=-1.0
+    value=ToSigned180(value)
 
     direction="E"
     if value<0.0:
@@ -75,3 +71,14 @@ def ToLongtitude(value):
     value=math.degrees(math.acos(cosine))
 
     return ToString(math.fabs(value))+" "+direction
+
+
+def ToSigned180(value):
+    value = value%360
+    
+    if value>180.0:
+        delta=value-180.0
+        value=180.0-delta
+        value*=-1.0
+
+    return value
