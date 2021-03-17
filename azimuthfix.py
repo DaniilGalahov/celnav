@@ -16,7 +16,6 @@ bearing2=angle.ToDecimal(config["Object2"]["Bearing"]) #azimuth from N to object
 x2=angle.ToDecimal(config["Object2"]["Longtitude"]) #Longtitude of object 2
 y2=angle.ToDecimal(config["Object2"]["Latitude"]) #Latitude of object 2
 
-
 def AlphaFrom(bearing):
     return 90.0-bearing
 
@@ -58,7 +57,6 @@ def ReduceUncertanity(x, y, x1, y1, x2, y2):
             shortestDistance = option[2]
 
     return [x,y]
-    
 
 alpha1=AlphaFrom(bearing1)
 alpha2=AlphaFrom(bearing2)
@@ -78,6 +76,3 @@ x,y = ReduceUncertanity(x,y,x1,y1,x2,y2)
 
 print(str(angle.ToLatitude(y)))
 print(str(angle.ToLongtitude(x)))
-
-
-
