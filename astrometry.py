@@ -1,4 +1,4 @@
-#navigation algorithms
+#astrometry algorithms
 import json
 import timeprocessor
 import almanac

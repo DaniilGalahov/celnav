@@ -1,14 +1,14 @@
 #fix by two celestial objects
-import navigation as nav
+import astrometry as astro
 from trigonometry import sin, cos, tg, arcsin, arctg
 import equationsolver as es
 import angle
 
-observation1 = nav.Observation("Observation1.cfg")
+observation1 = astro.Observation("Observation1.cfg")
 p1=observation1.p
 Z1=observation1.Z
 
-observation2 = nav.Observation("Observation2.cfg")
+observation2 = astro.Observation("Observation2.cfg")
 p2=observation2.p
 Z2=observation2.Z
 

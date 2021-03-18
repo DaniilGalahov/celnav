@@ -1,7 +1,7 @@
 #fix by 2 observations of a same object on a distance (based on https://drive.google.com/file/d/0B6wCLzdYQE_gUF8zWDU0RG9uNm8/view)
 import json
 import angle
-import navigation as nav
+import astrometry as astro
 import timeprocessor
 from trigonometry import sin, cos, tg, arcsin, arctg
 import equationsolver as es
@@ -12,11 +12,11 @@ config = json.loads(configFile.read())
 v=float(config["Ground speed"]) #ground speed, kts
 HDG=angle.ToDecimal(config["Heading"]) #true heading
 
-observation1 = nav.Observation("Observation1.cfg")
+observation1 = astro.Observation("Observation1.cfg")
 p1=observation1.p
 Z1=observation1.Z
 
-observation2 = nav.Observation("Observation2.cfg")
+observation2 = astro.Observation("Observation2.cfg")
 p2=observation2.p
 Z2=observation2.Z
 
