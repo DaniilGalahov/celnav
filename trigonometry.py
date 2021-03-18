@@ -14,3 +14,6 @@ def arcsin(x):
     
 def arctg(x):
     return math.degrees(math.atan(x))
+
+def atan2(y,x):
+    return math.degrees(math.atan2(y,x))
