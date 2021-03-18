@@ -4,6 +4,7 @@ import json
 import angle
 from trigonometry import sin, cos, tg, arcsin, arctg, atan2
 from math import sqrt, pow, radians, degrees, pi
+import timeprocessor
 
 class Point:
     def __init__(self, B, L):
@@ -49,7 +50,7 @@ B = atan2( cos(alpha0)*sin(delta), sqrt( pow(cos(delta),2) + (pow(sin(alpha0),2)
 L = atan2( sin(alpha0)*sin(delta), cos(delta) ) + L0
 alpha = atan2( tg(alpha0), cos(delta) ) #heading at dead reconking
 
-print("Dead reconking:")
+print("DR:")
 print(angle.ToLatitude(B))
 print(angle.ToLongtitude(L))
 
@@ -68,7 +69,13 @@ M=[V[0]+W[0], V[1]+W[1]] #movement vector
 windC=magHDG-atan2(M[1], M[0]) #wind drift correction
 HDG=magHDG+windC #heading after magnetic correction and wind drift correction
 
-print("Calculated HDG:")
-print(angle.ToString(round(HDG,0)))
+print("")
+print("HDG: " + angle.ToString(round(HDG,0)))
+
+dtd = s12-d
+print("DTD, nmi: " + str(round(dtd,0)))
+
+eta = timeprocessor.ToString(round(timeprocessor.HoursToMinutes(dtd/v),0))
+print("ETA: " + eta)
 
 

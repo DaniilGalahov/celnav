@@ -1,6 +1,7 @@
 #time functions for navigational applications
 import re
 import angle
+import datetime
 
 def ToSeconds(value):
     if isinstance(value, str):
@@ -11,16 +12,8 @@ def ToSeconds(value):
 
 
 def ToString(seconds):
-    hh=int(seconds/(60*60))
-    mm=int((seconds-(hh*60*60))/60)
+	return str(datetime.timedelta(seconds=seconds))
 
-    hh=str(hh)
-    mm=str(mm)
-
-    if len(mm)<2:
-        mm="0"+mm
-    
-    return hh+":"+mm
 
 def ToAstropyTimeString(date, time):
     ddmmyyyy=re.split('[^\d]+', date)
