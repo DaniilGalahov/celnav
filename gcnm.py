@@ -75,7 +75,7 @@ print("HDG: " + angle.ToString(round(HDG,0)))
 dtd = s12-d
 print("DTD, nmi: " + str(round(dtd,0)))
 
-eta = timeprocessor.ToString(round(timeprocessor.HoursToMinutes(dtd/v),0))
+eta = timeprocessor.ToString(round(timeprocessor.HoursToSeconds(dtd/v),0))
 print("ETA: " + eta)
 
 
