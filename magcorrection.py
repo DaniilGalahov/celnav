@@ -10,7 +10,7 @@ HDG = angle.ToDecimal(config["Magnetic HDG"])
 ZfHDG = angle.ToDecimal(config["Azimuth from HDG"])
 StNA = angle.ToDecimal(config["Angle from star to north"])
 
-correction=HDG+ZfHDG-StNA
+correction=round(HDG+ZfHDG-StNA,1)
 
 print("Correction for magnetic compass: "+str(correction))
 print("Magnetic deviation: "+str(-correction))
