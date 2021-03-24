@@ -5,14 +5,15 @@ import math
 from trigonometry import sin, cos, tg, arcsin, arctg
 import equationsolver as es
 
-configFile=open("Azimut fix.cfg")
+configFile=open("Azimuth fix.cfg")
 config = json.loads(configFile.read())
+configFile.close()
 
-bearing1=angle.ToDecimal(config["Object1"]["Bearing"]) #azimuth from N to object 1
+bearing1=angle.ToDecimal(float(config["Object1"]["Bearing"])) #azimuth from N to object 1
 x1=angle.ToDecimal(config["Object1"]["Longtitude"]) #Longtitude of object 1
 y1=angle.ToDecimal(config["Object1"]["Latitude"]) #Latitude of object 1
 
-bearing2=angle.ToDecimal(config["Object2"]["Bearing"]) #azimuth from N to object 2
+bearing2=angle.ToDecimal(float(config["Object2"]["Bearing"])) #azimuth from N to object 2
 x2=angle.ToDecimal(config["Object2"]["Longtitude"]) #Longtitude of object 2
 y2=angle.ToDecimal(config["Object2"]["Latitude"]) #Latitude of object 2
 
