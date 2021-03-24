@@ -121,9 +121,9 @@ mccQuestions=[
     {
         "type":"input",
         "name":"Magnetic HDG",
-        "message":"Current magnetic HDG (0-360 decimal deg, CC):",
+        "message":"Current magnetic HDG (0-360 deg, CC):",
         "default":str(round(angle.ToDecimal(mccConfig["Magnetic HDG"]),1)),
-        "filter":lambda value:angle.ToJSONCompatible(angle.ToString(angle.ToDecimal(float(value))))
+        "filter":lambda value:angle.ToJSONCompatible(angle.ToString(angle.ToDecimal(value)))
     }
 ]
 

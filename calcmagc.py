@@ -65,9 +65,9 @@ celestialObjectQuestions=[
     {
         "type":"input",
         "name":"Azimuth from HDG",
-        "message":"Azimuth from HDG to celestial object (0-360 decimal deg, CC):",
+        "message":"Azimuth from HDG to celestial object (0-360 deg, CC):",
         "default":str(0.0),
-        "filter": lambda value: angle.ToJSONCompatible(angle.ToString(angle.ToDecimal(float(value))))
+        "filter": lambda value: angle.ToJSONCompatible(angle.ToString(angle.ToDecimal(value)))
     }
 ]
 
@@ -85,7 +85,7 @@ mccQuestions=[
         "name":"Magnetic HDG",
         "message":"Current magnetic HDG (0-360 decimal deg, CC):",
         "default":str(round(angle.ToDecimal(mccConfig["Magnetic HDG"]),1)),
-        "filter":lambda value:angle.ToJSONCompatible(angle.ToString(angle.ToDecimal(float(value))))
+        "filter":lambda value:angle.ToJSONCompatible(angle.ToString(angle.ToDecimal(value)))
     }
 ]
 

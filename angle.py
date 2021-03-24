@@ -4,11 +4,41 @@ import math
 
 def ToDecimal(value):
     if isinstance(value, str):
-        dmsd = re.split('[^\d\w.]+', value) #only for strings like "157°25.6' S"
-        
-        value = float(dmsd[0]) + (float(dmsd[1])/60.0);
+        #[NSEW] regex for direction
+        #[-\d]+\* regex for getting degrees only
+        #[\d.]+' regex for getting decimal minutes only
+        #[-\d.]+ regex for signed digits and decimal point only
+
+        value = value.replace("°","*")
+        value = value.replace(",",".")
+
+        directionPattern=re.compile("[NSEW]")
+        directionStrings = directionPattern.findall(value)
+
+        degreesPattern=re.compile("[-\d]+\*")
+        degreesStrings=degreesPattern.findall(value)
+
+        minutesPattern=re.compile("[\d.]+'")
+        minutesStrings=minutesPattern.findall(value)
+
+        decimalPattern=re.compile("[-\d.]+")
+        decimalStrings=decimalPattern.findall(value)
+
+        if len(degreesStrings)>0 and len(minutesStrings)>0:
+            degrees=float(decimalPattern.findall(degreesStrings[0])[0])
+            sign=1.0
+            if degrees<0:
+                sign=-1.0            
+            minutes=sign*float(decimalPattern.findall(minutesStrings[0])[0])            
+            value = degrees+(minutes/60.0)
+        elif len(decimalStrings)>0:
+            value = float(decimalStrings[0])
+
+        direction=""
+        if len(directionStrings)>0:
+            direction=directionStrings[0]
     
-        if dmsd[2] == 'W' or dmsd[2] == 'S':
+        if direction == 'W' or direction == 'S':
             value *= -1
         
     return value
