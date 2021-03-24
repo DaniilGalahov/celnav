@@ -49,6 +49,10 @@ def ToString(value):
     return strD+"°"+strMd+"'"
 
 
+def ToJSONCompatible(string):
+    return string.replace("°","*")    
+
+
 def ToLatitude(value):
     sine=math.sin(math.radians(value))
     value=math.degrees(math.asin(sine))

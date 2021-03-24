@@ -5,12 +5,13 @@ import angle
 
 configFile=open("Magnetic compass correction.cfg")
 config = json.loads(configFile.read())
+configFile.close()
 
 HDG = angle.ToDecimal(config["Magnetic HDG"])
 ZfHDG = angle.ToDecimal(config["Azimuth from HDG"])
 StNA = angle.ToDecimal(config["Angle from star to north"])
 
-correction=round(HDG+ZfHDG-StNA,1)
+correction=round(angle.ToSigned180(HDG+ZfHDG-StNA),1)
 
 print("Correction for magnetic compass: "+str(correction))
-print("Magnetic deviation: "+str(-correction))
+print("(Magnetic deviation: "+str(-correction)+")")

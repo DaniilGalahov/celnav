@@ -7,6 +7,7 @@ import angle
 
 configFile=open("Star compass.cfg")
 config = json.loads(configFile.read())
+configFile.close()
 
 time=timeprocessor.ToAstropyTimeString(config["Date"], config["Time"])
 celestialObject = almanac.GetCelestialObject(config["Celestial object"])

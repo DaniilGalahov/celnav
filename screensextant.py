@@ -6,25 +6,26 @@ from trigonometry import sin, cos, tg, arcsin, arctg
 
 configFile=open("Screen sextant.cfg")
 config = json.loads(configFile.read())
+configFile.close()
 
-focalLengthAtZoom05=config["Focal length"]["0.5"] #mm
-focalLengthAtZoom10=config["Focal length"]["1.0"] #mm
+focalLengthAtZoom05=float(config["Focal length"]["0.5"]) #mm
+focalLengthAtZoom10=float(config["Focal length"]["1.0"]) #mm
 
-monitorWidth=config["Monitor size"]["Width"] #mm
-monitorHeight=config["Monitor size"]["Height"] #mm
+monitorWidth=float(config["Monitor size"]["Width"]) #mm
+monitorHeight=float(config["Monitor size"]["Height"]) #mm
 
 monitorCenterX=monitorWidth/2
 monitorCenterY=monitorHeight/2
 
-monitorWidthInPixels=config["Monitor resolution"]["Width"]
-monitorHeightInPixels=config["Monitor resolution"]["Height"]
+monitorWidthInPixels=int(config["Monitor resolution"]["Width"])
+monitorHeightInPixels=int(config["Monitor resolution"]["Height"])
 
-x=config["x"] #Coordinates measuring from bottom left corner
-y=config["y"]
+x=float(config["x"]) #Coordinates measuring from bottom left corner
+y=float(config["y"])
 usePixels=config["Measured in pixels"]
 
-viewDirection=config["Direction of view"] #CC from HDG
-zoomLevel=config["Zoom level"]
+viewDirection=float(config["Direction of view"]) #CC from HDG
+zoomLevel=float(config["Zoom level"])
 
 if(usePixels):
     x=(x/monitorWidthInPixels)*monitorWidth
