@@ -12,6 +12,7 @@ class Observation:
     def __init__(self, configFileName):
         configFile=open(configFileName)
         self.config = json.loads(configFile.read())
+        configFile.close()
         self.CalculateIntercept()
 
     def CalculateIntercept(self):
@@ -21,9 +22,9 @@ class Observation:
         self.Be=Be=angle.ToDecimal(self.config["Be"]) #self.Be required in other class methods
         self.Le=Le=angle.ToDecimal(self.config["Le"]) #same with Be
 
-        h=self.config["Altitude"]
-        T=self.config["Temperature"]
-        P=self.config["Pressure"]
+        h=float(self.config["Altitude"])
+        T=float(self.config["Temperature"])
+        P=float(self.config["Pressure"])
         
         Hs=angle.ToDecimal(self.config["Hs"])
 

@@ -9,7 +9,7 @@ import equationsolver as es
 configFile=open("One object fix.cfg")
 config = json.loads(configFile.read())
 
-v=float(config["Ground speed"]) #ground speed, kts
+v=float(config["Ground speed, kts"]) #ground speed, kts
 HDG=angle.ToDecimal(config["Heading"]) #true heading
 
 observation1 = astro.Observation("Observation1.cfg")

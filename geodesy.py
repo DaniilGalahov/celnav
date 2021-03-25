@@ -11,13 +11,13 @@ class Point:
         self.L=angle.ToDecimal(L)
 
 class Orthodromy:
-    def __init__(self, *args, **kwargs): 
-        self.planetRadius=kwargs.get("planetRadius", 3440.0) #planet radius for Earth
+    def __init__(self, *args, **kvargs): 
+        self.planetRadius=kvargs.get("planetRadius", 3440.0) #planet radius for Earth
         
-        self.startPoint=kwargs.get("startPoint", None)
-        self.destinationPoint=kwargs.get("destinationPoint",None)
-        self.startHDG=kwargs.get("startHDG",None)
-        self.length=kwargs.get("length",None)
+        self.startPoint=kvargs.get("startPoint", None)
+        self.destinationPoint=kvargs.get("destinationPoint",None)
+        self.startHDG=kvargs.get("startHDG",None)
+        self.length=kvargs.get("length",None)
         
         if (not self.startPoint is None) and (not self.destinationPoint is None) and (self.startHDG is None) and (self.length is None):
             self.startHDG, self.destinationHDG, self.angularLength, self.length = Orthodromy.CalculateFrom2Pts(self.startPoint, self.destinationPoint, self.planetRadius)

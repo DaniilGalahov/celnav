@@ -86,7 +86,7 @@ screenSextantQuestions = [
     {
         "type":"confirm",
         "name":"Measured in pixels",
-        "message":"Coordinates measured in pixels? (Default \"Yes\", if \"No\" than in mm)",
+        "message":"Coordinates measured in pixels? (If \"No\" than in mm)",
         "default":str(screenSextantConfig["Measured in pixels"])
     },
     {
