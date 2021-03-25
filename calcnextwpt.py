@@ -9,67 +9,67 @@ print("NB! Replace degrees sign ('°') with '*' for compatibility with python js
 print("")
 
 def CalculateHeadingToNextWaypoint():
-    routeConfigFile=open("Route.cfg")
-    routeConfig = json.loads(routeConfigFile.read())
-    routeConfigFile.close()
+    configFile=open("Route.cfg")
+    config = json.loads(configFile.read())
+    configFile.close()
 
-    nextWaypointQuestions=[
+    questions=[
             {
                 "type":"confirm",
                 "name":"Update travelled distance",
-                "message":"Update travelled distance with "+str(routeConfig["Distance to next waypoint, nmi"])+" nmi? (DO NOT update in you are on first WPT or recalculating HDG!)",
+                "message":"Update travelled distance with "+str(config["Distance to next waypoint, nmi"])+" nmi? (DO NOT update in you are on first WPT or recalculating HDG!)",
                 "default":True
             },
             {
                 "type":"input",
                 "name":"Distance to next waypoint, nmi",
                 "message":"Distance to next waypoint (nmi):",
-                "default":str(routeConfig["Distance to next waypoint, nmi"])
+                "default":str(config["Distance to next waypoint, nmi"])
             },
             {
                 "type":"input",
                 "name":"Desired speed, kts",
                 "message":"Desired speed (kts):",
-                "default":str(routeConfig["Desired speed, kts"])
+                "default":str(config["Desired speed, kts"])
             },
             {
                 "type":"input",
                 "name":"Magnetic compass correction",
                 "message":"Magnetic compass correction:",
-                "default":str(routeConfig["Magnetic compass correction"])
+                "default":str(config["Magnetic compass correction"])
             },
             {
                 "type":"input",
                 "name":"Wind direction",
                 "message":"Wind direction:",
-                "default":str(routeConfig["Wind"]["Direction"])
+                "default":str(config["Wind"]["Direction"])
             },
             {
                 "type":"input",
                 "name":"Wind speed",
                 "message":"Wind speed (kts):",
-                "default":str(routeConfig["Wind"]["Speed, kts"])
+                "default":str(config["Wind"]["Speed, kts"])
             }
         ]
-    nextWaypointAnswers=prompt(nextWaypointQuestions)
+    answers=prompt(questions)
 
-    if nextWaypointAnswers["Update travelled distance"]:
-        routeConfig["Distance travelled, nmi"]=str(float(routeConfig["Distance travelled, nmi"])+float(routeConfig["Distance to next waypoint, nmi"]))
+    if answers["Update travelled distance"]:
+        config["Distance travelled, nmi"]=str(float(config["Distance travelled, nmi"])+float(config["Distance to next waypoint, nmi"]))
 
-    routeConfig["Distance to next waypoint, nmi"]=nextWaypointAnswers["Distance to next waypoint, nmi"]
-    routeConfig["Desired speed, kts"]=nextWaypointAnswers["Desired speed, kts"]
-    routeConfig["Magnetic compass correction"]=nextWaypointAnswers["Magnetic compass correction"]
-    routeConfig["Wind"]["Direction"]=nextWaypointAnswers["Wind direction"]
-    routeConfig["Wind"]["Speed, kts"]=nextWaypointAnswers["Wind speed"]
+    config["Distance to next waypoint, nmi"]=answers["Distance to next waypoint, nmi"]
+    config["Desired speed, kts"]=answers["Desired speed, kts"]
+    config["Magnetic compass correction"]=answers["Magnetic compass correction"]
+    config["Wind"]["Direction"]=answers["Wind direction"]
+    config["Wind"]["Speed, kts"]=answers["Wind speed"]
 
-    routeConfigFile=open("Route.cfg","w")
-    routeConfigFile.write(json.dumps(routeConfig, indent=2))
-    routeConfigFile.close()
+    configFile=open("Route.cfg","w")
+    configFile.write(json.dumps(config, indent=2))
+    configFile.close()
 
     import gcnm
 
 def GetAnswersAbout(position):
-    positionQuestions = [
+    questions = [
         {
             "type":"input",
             "name":"Latitude",
@@ -84,30 +84,31 @@ def GetAnswersAbout(position):
         }
     ]
 
-    return prompt(positionQuestions)
+    return prompt(questions)
 
 def SetRoute():
-    routeConfigFile=open("Route.cfg")
-    routeConfig = json.loads(routeConfigFile.read())
-    routeConfigFile.close()
+    configFile=open("Route.cfg")
+    config = json.loads(configFile.read())
+    configFile.close()
 
     print("Set start position:")
-    startPositionAnswers=GetAnswersAbout(routeConfig["Start"])
-    routeConfig["Start"]["Latitude"]=startPositionAnswers["Latitude"]
-    routeConfig["Start"]["Longtitude"]=startPositionAnswers["Longtitude"]
+    startPositionAnswers=GetAnswersAbout(config["Start"])
+    config["Start"]["Latitude"]=startPositionAnswers["Latitude"]
+    config["Start"]["Longtitude"]=startPositionAnswers["Longtitude"]
 
     print("\nSet destination position:")
-    destinationPositionAnswers=GetAnswersAbout(routeConfig["Destination"])
-    routeConfig["Destination"]["Latitude"]=destinationPositionAnswers["Latitude"]
-    routeConfig["Destination"]["Longtitude"]=destinationPositionAnswers["Longtitude"]
+    destinationPositionAnswers=GetAnswersAbout(config["Destination"])
+    config["Destination"]["Latitude"]=destinationPositionAnswers["Latitude"]
+    config["Destination"]["Longtitude"]=destinationPositionAnswers["Longtitude"]
 
-    routeConfig["Distance travelled, nmi"]=0.0
+    config["Distance travelled, nmi"]=0.0
 
-    routeConfigFile=open("Route.cfg","w")
-    routeConfigFile.write(json.dumps(routeConfig, indent=2))
-    routeConfigFile.close()
+    configFile=open("Route.cfg","w")
+    configFile.write(json.dumps(config, indent=2))
+    configFile.close()
 
     print("\nRoute successfully configured.")
+
 
 modeQuestion = [
         {
