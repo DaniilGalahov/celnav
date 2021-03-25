@@ -4,7 +4,7 @@ from PyInquirer import prompt, print_json
 import json
 import angle
 
-print("Calculating angles celestial object in MSFS 2004.")
+print("Calculating angles of celestial object in MSFS 2004.")
 print("")
 print("NB! Replace degrees sign ('°') with '*' for compatibility with python json.")
 print("")
