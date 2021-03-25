@@ -5,6 +5,8 @@ import json
 
 print("Calculate waypoints on orthodromy from travelled distance, desired speed and environment parameters.")
 print("")
+print("NB! Replace degrees sign ('°') with '*' for compatibility with python json.")
+print("")
 
 def CalculateHeadingToNextWaypoint():
     routeConfigFile=open("Route.cfg")
@@ -15,7 +17,7 @@ def CalculateHeadingToNextWaypoint():
             {
                 "type":"confirm",
                 "name":"Update travelled distance",
-                "message":"Update travelled distance? (DO NOT update in you are on first WPT or recalculating HDG!)",
+                "message":"Update travelled distance with "+str(routeConfig["Distance to next waypoint, nmi"])+" nmi? (DO NOT update in you are on first WPT or recalculating HDG!)",
                 "default":True
             },
             {
@@ -84,17 +86,17 @@ def GetAnswersAbout(position):
 
     return prompt(positionQuestions)
 
-def SetupRoute():
+def SetRoute():
     routeConfigFile=open("Route.cfg")
     routeConfig = json.loads(routeConfigFile.read())
     routeConfigFile.close()
 
-    print("Setup start position:")
+    print("Set start position:")
     startPositionAnswers=GetAnswersAbout(routeConfig["Start"])
     routeConfig["Start"]["Latitude"]=startPositionAnswers["Latitude"]
     routeConfig["Start"]["Longtitude"]=startPositionAnswers["Longtitude"]
 
-    print("\nSetup destination position:")
+    print("\nSet destination position:")
     destinationPositionAnswers=GetAnswersAbout(routeConfig["Destination"])
     routeConfig["Destination"]["Latitude"]=destinationPositionAnswers["Latitude"]
     routeConfig["Destination"]["Longtitude"]=destinationPositionAnswers["Longtitude"]
@@ -114,7 +116,7 @@ modeQuestion = [
             "message":"Select mode:",
             "choices": [
                 "Calculate HDG to next WPT",
-                "Setup route",
+                "Set route",
                 "Quit"
                 ]            
         }
@@ -124,5 +126,5 @@ modeAnswer=prompt(modeQuestion)
 
 if modeAnswer["Mode"]=="Calculate HDG to next WPT":
     CalculateHeadingToNextWaypoint()
-elif modeAnswer["Mode"]=="Setup route":
-    SetupRoute()
+elif modeAnswer["Mode"]=="Set route":
+    SetRoute()
