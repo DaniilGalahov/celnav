@@ -1,8 +1,10 @@
 #calculate angle from star/sun to north
+#Based on description in HANDBOOK OF MAGNETICCOMPASS ADJUSTMENT
 import json
 import almanac
 import timeprocessor
 import angle
+from trigonometry import sin, cos, tg, atan2
 
 
 configFile=open("Star compass.cfg")
@@ -11,8 +13,8 @@ configFile.close()
 
 time=timeprocessor.ToAstropyTimeString(config["Date"], config["Time"])
 celestialObject = almanac.GetCelestialObject(config["Celestial object"])
+B=angle.ToDecimal(config["Latitude"])
 L=angle.ToDecimal(config["Longtitude"])
-hemisphere=config["Hemisphere"]
 
 if not celestialObject.type=="Star":
     GHA=celestialObject.GHAAt(time)
@@ -21,12 +23,9 @@ else:
     GHAAries=almanac.GHAOfAriesAt(time)
     SHA=celestialObject.SHAAt(time)
     LHA=GHAAries+SHA+L
-    
 
-c=180
-if(hemisphere!="N"):
-    c=0
+Dec=celestialObject.DecAt(time)
 
-StNA=LHA+c
+ZfN=360.0 - atan2( sin(LHA), (cos(B)*tg(Dec))-(sin(B)*cos(LHA)))
 
-print("Angle from star to north, CC: "+angle.ToString(StNA)) #angle always counter-clockwise
+print("North azimuth of star: "+angle.ToString(ZfN))

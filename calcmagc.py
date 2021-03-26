@@ -36,16 +36,15 @@ starCompassQuestions = [
     },
     {
         "type":"input",
-        "name":"Longtitude",
-        "message":"Observer longtitude:",
-        "default":str(starCompassConfig["Longtitude"])
+        "name":"Latitude",
+        "message":"Est. observer latitude:",
+        "default":str(starCompassConfig["Latitude"])
     },
     {
-        "type":"list",
-        "name":"Hemisphere",
-        "message":"Current hemisphere:",
-        "choices":["N","S"],
-        "default":str(starCompassConfig["Hemisphere"])
+        "type":"input",
+        "name":"Longtitude",
+        "message":"Est. observer longtitude:",
+        "default":str(starCompassConfig["Longtitude"])
     }
 ]
 
@@ -54,8 +53,8 @@ starCompassAnswers = prompt(starCompassQuestions)
 starCompassConfig["Date"]=starCompassAnswers["Date"]
 starCompassConfig["Time"]=starCompassAnswers["Time"]
 starCompassConfig["Celestial object"]=starCompassAnswers["Celestial object"]
+starCompassConfig["Latitude"]=starCompassAnswers["Latitude"]
 starCompassConfig["Longtitude"]=starCompassAnswers["Longtitude"]
-starCompassConfig["Hemisphere"]=starCompassAnswers["Hemisphere"]
 
 starCompassConfigFile=open("Star compass.cfg","w")
 starCompassConfigFile.write(json.dumps(starCompassConfig, indent=2))
@@ -65,7 +64,7 @@ celestialObjectQuestions=[
     {
         "type":"input",
         "name":"Azimuth from HDG",
-        "message":"Azimuth from HDG to celestial object (0-360 deg, CC):",
+        "message":"Azimuth from HDG to celestial object (0-360 deg, CW):",
         "default":str(0.0),
         "filter": lambda value: angle.ToJSONCompatible(angle.ToString(angle.ToDecimal(value)))
     }
@@ -83,7 +82,7 @@ mccQuestions=[
     {
         "type":"input",
         "name":"Magnetic HDG",
-        "message":"Current magnetic HDG (0-360 decimal deg, CC):",
+        "message":"Current magnetic HDG (0-360 decimal deg, CW):",
         "default":str(round(angle.ToDecimal(mccConfig["Magnetic HDG"]),1)),
         "filter":lambda value:angle.ToJSONCompatible(angle.ToString(angle.ToDecimal(value)))
     }
@@ -93,7 +92,7 @@ mccAnswers = prompt(mccQuestions)
 
 mccConfig["Magnetic HDG"]=mccAnswers["Magnetic HDG"]
 mccConfig["Azimuth from HDG"]=celestialObjectAnswers["Azimuth from HDG"]
-mccConfig["Angle from star to north"]=angle.ToJSONCompatible(angle.ToString(starcompass.StNA))
+mccConfig["Azimuth from north"]=angle.ToJSONCompatible(angle.ToString(starcompass.ZfN))
 
 mccConfigFile=open("Magnetic compass correction.cfg", "w")
 mccConfigFile.write(json.dumps(mccConfig, indent=2))

@@ -24,7 +24,7 @@ x=float(config["x"]) #Coordinates measuring from bottom left corner
 y=float(config["y"])
 usePixels=config["Measured in pixels"]
 
-viewDirection=float(config["Direction of view"]) #CC from HDG
+viewDirection=float(config["Direction of view"]) #CW from HDG
 zoomLevel=float(config["Zoom level"])
 
 if(usePixels):
@@ -38,8 +38,8 @@ focalLength=focalLengthAtZoom05
 if(zoomLevel==1.0):
     focalLength=focalLengthAtZoom05
 
-Z=viewDirection+arctg(xOffset/focalLength)
+ZfHDG=viewDirection+arctg(xOffset/focalLength)
 H=arctg(yOffset/focalLength)
 
-print("Azimuth from HDG: "+angle.ToString(Z))
+print("Azimuth from HDG: "+angle.ToString(ZfHDG))
 print("Height: "+angle.ToString(H))

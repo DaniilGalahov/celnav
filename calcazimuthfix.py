@@ -32,7 +32,7 @@ def GetAnswersAbout(knownObject):
         {
             "type":"input",
             "name":"Bearing",
-            "message":"Bearing (0-360 deg, CC):",
+            "message":"Bearing (0-360 deg, CW):",
             "default":str(round(angle.ToDecimal(knownObject["Bearing"]),1)),
             "filter":lambda value:str(angle.ToDecimal(value))
         }
