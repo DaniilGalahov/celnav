@@ -24,6 +24,13 @@ else:
     SHA=celestialObject.SHAAt(time)
     LHA=GHAAries+SHA+L
 
+#Commented algorithm (my original variant) also worked well!
+#c=180
+#if(hemisphere!="N"):
+#    c=0
+#
+#ZfN=LHA+c
+
 Dec=celestialObject.DecAt(time)
 
 ZfN=360.0 - atan2( sin(LHA), (cos(B)*tg(Dec))-(sin(B)*cos(LHA)))

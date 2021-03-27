@@ -74,7 +74,7 @@ celestialObjectAnswers = prompt(celestialObjectQuestions)
 
 import starcompass
 
-mccConfigFile=open("Magnetic compass correction.cfg")
+mccConfigFile=open("Mag correction.cfg")
 mccConfig = json.loads(mccConfigFile.read())
 mccConfigFile.close()
 
@@ -94,7 +94,7 @@ mccConfig["Magnetic HDG"]=mccAnswers["Magnetic HDG"]
 mccConfig["Azimuth from HDG"]=celestialObjectAnswers["Azimuth from HDG"]
 mccConfig["Azimuth from north"]=angle.ToJSONCompatible(angle.ToString(starcompass.ZfN))
 
-mccConfigFile=open("Magnetic compass correction.cfg", "w")
+mccConfigFile=open("Mag correction.cfg", "w")
 mccConfigFile.write(json.dumps(mccConfig, indent=2))
 mccConfigFile.close()
 

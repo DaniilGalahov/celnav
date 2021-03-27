@@ -3,7 +3,7 @@
 import json
 import angle
 
-configFile=open("Magnetic compass correction.cfg")
+configFile=open("Mag correction.cfg")
 config = json.loads(configFile.read())
 configFile.close()
 

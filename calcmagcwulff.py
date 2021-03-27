@@ -1,11 +1,11 @@
-#calculate magnetic correction for MSFS, using screensextant
+#calculate magnetic correction for MSFS, using wulff
 
 from __future__ import print_function, unicode_literals
 from PyInquirer import prompt, print_json
 import json
 import angle
 
-print("Calculating magnetic correction for MSFS 2004, from time and celestial object position, using screensextant.")
+print("Calculating magnetic correction for MSFS 2004, from time and celestial object position, using wulff.")
 print("")
 print("NB! Replace degrees sign ('°') with '*' for compatibility with python json.")
 print("")
@@ -59,60 +59,45 @@ starCompassConfigFile=open("Star compass.cfg","w")
 starCompassConfigFile.write(json.dumps(starCompassConfig, indent=2))
 starCompassConfigFile.close()
 
-screenSextantConfigFile=open("Screen sextant.cfg")
-screenSextantConfig = json.loads(screenSextantConfigFile.read())
-screenSextantConfigFile.close()
+wulffConfigFile=open("Wulff.cfg")
+wulffConfig = json.loads(wulffConfigFile.read())
+wulffConfigFile.close()
 
-screenSextantQuestions = [
+wulffQuestions = [
     {
         "type":"input",
         "name":"Direction of view",
         "message":"Current direction of view:",
-        "default":str(screenSextantConfig["Direction of view"])
+        "default":str(wulffConfig["Direction of view"])
     },
     {
         "type":"input",
-        "name":"x",
-        "message":"Horizontal coordinate on screen (x):",
-        "default":str(screenSextantConfig["x"])
+        "name":"Z",
+        "message":"Azimuth of object on Wulff net:",
+        "default":str(wulffConfig["Z"])
     },
     {
         "type":"input",
-        "name":"y",
-        "message":"Vertical coordinate on screen (y):",
-        "default":str(screenSextantConfig["y"])
-    },
-    {
-        "type":"confirm",
-        "name":"Measured in pixels",
-        "message":"Coordinates measured in pixels? (If \"No\" than in mm)",
-        "default":str(screenSextantConfig["Measured in pixels"])
-    },
-    {
-        "type":"list",
-        "name":"Zoom level",
-        "message":"Current zoom level:",
-        "choices":["0.5","0.75"],
-        "default":str(screenSextantConfig["Zoom level"])
+        "name":"H",
+        "message":"Height of object on Wulff net:",
+        "default":str(wulffConfig["H"])
     }
 ]
 
-screenSextantAnswers = prompt(screenSextantQuestions)
+wulffAnswers = prompt(wulffQuestions)
 
-screenSextantConfig["x"]=screenSextantAnswers["x"]
-screenSextantConfig["y"]=screenSextantAnswers["y"]
-screenSextantConfig["Direction of view"]=screenSextantAnswers["Direction of view"]
-screenSextantConfig["Measured in pixels"]=screenSextantAnswers["Measured in pixels"]
-screenSextantConfig["Zoom level"]=screenSextantAnswers["Zoom level"]
+wulffConfig["Direction of view"]=wulffAnswers["Direction of view"]
+wulffConfig["Z"]=wulffAnswers["Z"]
+wulffConfig["H"]=wulffAnswers["H"]
 
-screenSextantConfigFile=open("Screen sextant.cfg","w")
-screenSextantConfigFile.write(json.dumps(screenSextantConfig, indent=2))
-screenSextantConfigFile.close()
+wulffConfigFile=open("Wulff.cfg","w")
+wulffConfigFile.write(json.dumps(wulffConfig, indent=2))
+wulffConfigFile.close()
 
-import screensextant
+import wulff
 import starcompass
 
-mccConfigFile=open("Magnetic compass correction.cfg")
+mccConfigFile=open("Mag correction.cfg")
 mccConfig = json.loads(mccConfigFile.read())
 mccConfigFile.close()
 
@@ -129,10 +114,10 @@ mccQuestions=[
 mccAnswers = prompt(mccQuestions)
 
 mccConfig["Magnetic HDG"]=mccAnswers["Magnetic HDG"]
-mccConfig["Azimuth from HDG"]=angle.ToJSONCompatible(angle.ToString(screensextant.ZfHDG))
+mccConfig["Azimuth from HDG"]=angle.ToJSONCompatible(angle.ToString(wulff.ZfHDG))
 mccConfig["Azimuth from north"]=angle.ToJSONCompatible(angle.ToString(starcompass.ZfN))
 
-mccConfigFile=open("Magnetic compass correction.cfg", "w")
+mccConfigFile=open("Mag correction.cfg", "w")
 mccConfigFile.write(json.dumps(mccConfig, indent=2))
 mccConfigFile.close()
 
