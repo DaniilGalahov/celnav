@@ -49,5 +49,5 @@ print("DtD, nmi: " + str(round(dtd,0)))
 
 print("")
 print("Navigation solution:")
-print("Wpt HDG: " + str(round(HDG,0))+"°")
+print("Wpt HDG: " + str(round(angle.Normalize(HDG),0))+"°")
 print("Wpt ETA: " + timeprocessor.ToString(round(timeprocessor.HoursToSeconds(t),0)))

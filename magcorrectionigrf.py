@@ -14,7 +14,7 @@ year=int(config["Year"])
 
 D,I,H,X,Y,Z,F=pyIGRF.igrf_value(B, L, h, year)
 
-correction=round(angle.ToSigned180(D),1)
+correction=round(angle.ToSigned180(-D),1)
 
 print("Correction for magnetic compass: "+str(correction))
 print("(Magnetic deviation: "+str(-correction)+")")
