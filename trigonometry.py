@@ -8,12 +8,6 @@ def cos(x):
     
 def tg(x):
     return math.tan(math.radians(x))
-
-def sinh(x):
-    return math.sinh(math.radians(x))
-
-def cosh(x):
-    return math.cosh(math.radians(x))
     
 def arcsin(x):
     return math.degrees(math.asin(x))
