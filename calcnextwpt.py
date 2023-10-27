@@ -129,3 +129,5 @@ if modeAnswer["Mode"]=="Calculate HDG to next WPT":
     CalculateHeadingToNextWaypoint()
 elif modeAnswer["Mode"]=="Set route":
     SetRoute()
+
+input("Input any symbol to exit...")

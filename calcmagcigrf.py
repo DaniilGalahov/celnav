@@ -56,3 +56,4 @@ import magcorrectionigrf
 
 print("")
 print("NB! [True HDG] = [magnetic HDG] + [correction for magnetic compass]")
+input("Input any symbol to exit...")

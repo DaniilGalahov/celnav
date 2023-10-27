@@ -60,3 +60,4 @@ configFile.close()
 print("")
 print("Observer position:")
 import azimuthfix
+input("Input any symbol to exit...")

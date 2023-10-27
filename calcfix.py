@@ -289,3 +289,4 @@ elif selectOperationAnswer["Operation"]=="Calculate fix from 3 objects":
     ThreeObjectsFix()
     
 print("\nFinished.")
+input("Input any symbol to exit...")

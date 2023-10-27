@@ -99,3 +99,4 @@ mccConfigFile.write(json.dumps(mccConfig, indent=2))
 mccConfigFile.close()
 
 import magcorrection
+input("Input any symbol to exit...")
