@@ -48,14 +48,16 @@ print("AstroPy Vega Dec:", deltaAP,"Deviation from NA:",deltaNA-deltaAP)
 
 
 import hipparcos
+import simbad
 
-alpha0,delta0,mu_alpha,mu_delta=hipparcos.LoadFor(91262)
+alpha0,delta0,mu_alpha,mu_delta=hipparcos.LoadDataFor(91262)
+#alpha0,delta0,mu_alpha,mu_delta=simbad.LoadDataFor("Vega")
 #print(alpha0,delta0,mu_alpha,mu_delta)
 deltaT=32.184+37.0-0.0
 alpha,delta=PositionFor(alpha0,delta0,mu_alpha,mu_delta,JulianDate(2023,10,27,14,0,0)+(deltaT/86400.0))
 sha=360-alpha
-print("Hipparcos+Vallado Vega SHA:",sha,"Deviation from NA:",shaNA-sha)
-print("Hipparcos+Vallado Vega Dec:",delta,"Deviation from NA:",deltaNA-delta)
+print("Catalog+Vallado Vega SHA:",sha,"Deviation from NA:",shaNA-sha)
+print("Catalog+Vallado Vega Dec:",delta,"Deviation from NA:",deltaNA-delta)
 
 print("==========")
 
@@ -75,6 +77,6 @@ vector_vSun=vector([0,0,0])
 #vector_rSunIJK,vector_vSunIJK=IAU2000CIO(vector_rSun,vector_vSun,2023,10,27,HMSToTime(14,0,0),-0.4399619,32,-0.140682,0.333309,GCRF) # we don't need this
 rSunVallado,alphaSunVallado,deltaSunVallado,rdotSunVallado,alphadotSunVallado,deltadotSunVallado=GeocentricRadec(vector_rSun,vector_vSun)
 GHASunVallado=thetaGMST-alphaSunVallado
-print("Hipparcos+Vallado Sun GHA:",GHASunVallado," Deviation from NA:",GHASunNA-GHASunVallado)
-print("Hipparcos+Vallado Sun Dec:",deltaSunVallado," Deviation from NA:",deltaSunNA-deltaSunVallado)
+print("Vallado Sun GHA:",GHASunVallado," Deviation from NA:",GHASunNA-GHASunVallado)
+print("Vallado Sun Dec:",deltaSunVallado," Deviation from NA:",deltaSunNA-deltaSunVallado)
 

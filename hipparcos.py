@@ -3,7 +3,7 @@ import os
 
 databaseSearchUri="https://hipparcos-tools.cosmos.esa.int/cgi-bin/HIPcatalogueSearch.pl?hipId="
 
-def LoadFor(hpId):
+def LoadDataFor(hpId):
     with requests.Session() as session:
         response=session.get(databaseSearchUri + str(hpId)) #MUST be GET request as with Celestrack.
         if response.status_code != 200:
