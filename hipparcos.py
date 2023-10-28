@@ -17,9 +17,9 @@ def LoadDataFor(hpId):
                 alpha=float(line[6:27].strip())
             if line.startswith("H9  :"):
                 delta=float(line[6:27].strip())
-            if line.startswith("H11 :"):
-                mu_alpha=float(line[6:27].strip())
             if line.startswith("H12 :"):
+                mu_alpha=float(line[6:27].strip())
+            if line.startswith("H13 :"):
                 mu_delta=float(line[6:27].strip())
         return alpha,delta,mu_alpha,mu_delta
     

@@ -1,6 +1,6 @@
 import sys
 sys.path.append("..")
-sys.path.append("D:\Space\Astrodynamic")
+sys.path.append("..\..\Astrodynamic")
 
 from math import degrees, radians, sqrt, log as ln, sin, cos
 from numpy import array as vector
