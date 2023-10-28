@@ -22,6 +22,4 @@ def LoadFor(hpId):
             if line.startswith("H12 :"):
                 mu_delta=float(line[6:27].strip())
         return alpha,delta,mu_alpha,mu_delta
-
-#print(LoadFor(91262))
     
