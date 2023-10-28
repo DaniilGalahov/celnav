@@ -1,5 +1,5 @@
 import requests
-import os
+import re
 
 databaseSearchUri="https://hipparcos-tools.cosmos.esa.int/cgi-bin/HIPcatalogueSearch.pl?hipId="
 
@@ -13,13 +13,20 @@ def LoadDataFor(hpId):
         lines=data.split("\n")
         alpha=delta=mu_alpha=mu_delta=0
         for line in lines:
-            if line.startswith("H8  :"):
-                alpha=float(line[6:27].strip())
-            if line.startswith("H9  :"):
-                delta=float(line[6:27].strip())
-            if line.startswith("H12 :"):
-                mu_alpha=float(line[6:27].strip())
-            if line.startswith("H13 :"):
-                mu_delta=float(line[6:27].strip())
+            match=re.search("H8\s*:\s*(\W*\d*\.*\d*)",line)
+            if match is not None:
+                alpha=float(match.group(1).strip())
+                continue
+            match=re.search("H9\s*:\s*(\W*\d*\.*\d*)",line)
+            if match is not None:
+                delta=float(match.group(1).strip())
+                continue
+            match=re.search("H12\s*:\s*(\W*\d*\.*\d*)",line)
+            if match is not None:
+                mu_alpha=float(match.group(1).strip())
+                continue
+            match=re.search("H13\s*:\s*(\W*\d*\.*\d*)",line)
+            if match is not None:
+                mu_delta=float(match.group(1).strip())
+                continue
         return alpha,delta,mu_alpha,mu_delta
-    

@@ -14,16 +14,14 @@ def LoadDataFor(name):
         lines=data.split("\n")
         alpha=delta=mu_alpha=mu_delta=0
         for line in lines:
-            if line.startswith("Coordinates(ICRS,ep=J2000,eq=2000):"):
-                coordinates=line[(line.find(":")+len(":")):(line.rfind("("))]
-                values=coordinates.split()
-                alpha=float(values[0].strip())
-                delta=float(values[1].strip())
-            if line.startswith("Proper motions:"):
-                properMotions=line[(line.find(":")+len(":")):(line.rfind("["))]
-                values=properMotions.split()
-                mu_alpha=float(values[0].strip())
-                mu_delta=float(values[1].strip())
+            match=re.search("Coordinates\(ICRS,ep=J2000,eq=2000\):\s*(\W*\d*\.*\d*)\s*(\W\d*\.*\d*)",line)
+            if match is not None:
+                alpha=float(match.group(1).strip())
+                delta=float(match.group(2).strip())
+            match=re.search("Proper motions:\s*(\W*\d*\.*\d*)\s*(\W\d*\.*\d*)",line)
+            if match is not None:
+                mu_alpha=float(match.group(1).strip())
+                mu_delta=float(match.group(2).strip())
         return alpha,delta,mu_alpha,mu_delta
 
 def LoadHPIdFor(name):
@@ -36,7 +34,7 @@ def LoadHPIdFor(name):
         lines=data.split("\n")
         hpId=0
         for line in lines:
-            if line.startswith("   HIP"):
-                value=line[(line.find("P")+len("P")):(line.find("P")+len("P")+15)]
-                hpId=int(value.strip())
+            match=re.search("HIP\s*(\d*)",line)
+            if match is not None:
+                hpId=int(match.group(1).strip())
         return hpId
