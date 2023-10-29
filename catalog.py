@@ -86,21 +86,31 @@ def LoadDataFromSourceFor(name):
         print("Loaded coordinate data for "+name+".")
     return alpha,delta,mu_alpha,mu_delta
 
-def CreateLocalCatalogIn(fileName="Data\catalog.dat"):
-    records=[]
+def CreateLocalCatalog(fileName="Data\catalog.dat"):
+    records={}
     for navigationStarName in navigationStarNames:
         alpha,delta,mu_alpha,mu_delta=LoadDataFromSourceFor(navigationStarName)
-        records.append((navigationStarName,alpha,delta,mu_alpha,mu_delta))
+        records[navigationStarName]=(alpha,delta,mu_alpha,mu_delta)
     jsonString=json.dumps(records)
     file=open(fileName,"w")
     file.write(jsonString)
     file.close()
     print("Catalog data saved")
 
-def LoadDataForFrom(name,fileName="Data\catalog.dat"):
-    file=open("Data\catalog.dat","r")
-    #data=
-    #records=
+def LoadDataFor(name,fileName="Data\catalog.dat"):
+    alpha=delta=mu_alpha=mu_delta=0
+    file=open(fileName,"r")
+    data=file.read()
+    file.close()
+    records=json.loads(data)    
+    if name in records:
+        alpha,delta,mu_alpha,mu_delta=records[name]
+    return alpha,delta,mu_alpha,mu_delta
     
-    
+createNewCatalog=input("Create catalog? (y/n)")
+if createNewCatalog=="y":
+    dataSource=int(input("From what source? (0 - Hipparchos, 1 - SIMBAD)"))    
+    CreateLocalCatalog()
+print("Done")
+input("Input any symbol to exit...")
     

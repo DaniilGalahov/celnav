@@ -15,11 +15,16 @@ class test_catalog(unittest.TestCase):
 
     def test_CreateLocalCatalogIn(self):
         catalog.dataSource=0
-        catalog.CreateLocalCatalogIn()
+        catalog.CreateLocalCatalog()
         file=open("Data\catalog.dat","r")
         data=file.read()
         file.close()
-        self.assertTrue(data.startswith('[["Acamar", 44.5654818, -40.30473491, -53.53, 25.71],'))
+        self.assertTrue(data.startswith('{"Acamar": [44.5654818, -40.30473491, -53.53, 25.71],'))
+
+    def test_LoadDataFor(self):
+        catalog.dataSource=0
+        alpha,delta,mu_alpha,mu_delta=catalog.LoadDataFor("Deneb")
+        self.assertAlmostEqual(alpha,310.3579727,6)
 
 if __name__ == '__main__':
     unittest.main()
