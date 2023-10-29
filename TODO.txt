@@ -1,3 +1,5 @@
 1) AstroPy provides not-so-correct GHA and GHAAries. That's especially visible when we are using fixes by Sun or planets. The point is that AstroPy is for "big" astronomy, not for navigation. Thus, it provides "pure" vectors of planets, not "visual" positions. Because of this, we need to count speed of light in calculating visible Sun and planet positions.
 
 2) We need to determine REAL method of calculating coordinates from visual position of celectial body. Because methods provided in Nautical Almanac is actually a methods of usage the Nautical Almanac, not the fix.
+
+3) In Astrodynamics library and here, we must solve a problem of a paths

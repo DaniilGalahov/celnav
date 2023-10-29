@@ -1,7 +1,7 @@
 import os
 absolutePath = os.path.abspath(__file__)
 directoryName = os.path.dirname(absolutePath)
-os.chdir(directoryName)
+os.chdir(directoryName) #forcefully setted PATH to current dir, to prevent saving files in unexpected places
 
 import json
 import simbad
@@ -67,6 +67,7 @@ navigationStarNames=["Acamar",
                      "Zuben-ubi"]
 
 dataSource=0 #0 - Hipparcos, 1 - SIMBAD
+fileName="Data\catalog.dat"
 
 def LoadDataFromSourceFor(name):
     nameInSource=name
@@ -86,7 +87,7 @@ def LoadDataFromSourceFor(name):
         print("Loaded coordinate data for "+name+".")
     return alpha,delta,mu_alpha,mu_delta
 
-def CreateLocalCatalog(fileName="Data\catalog.dat"):
+def CreateLocalCatalog():
     records={}
     for navigationStarName in navigationStarNames:
         alpha,delta,mu_alpha,mu_delta=LoadDataFromSourceFor(navigationStarName)
@@ -97,7 +98,7 @@ def CreateLocalCatalog(fileName="Data\catalog.dat"):
     file.close()
     print("Catalog data saved")
 
-def LoadDataFor(name,fileName="Data\catalog.dat"):
+def LoadDataFor(name):
     alpha=delta=mu_alpha=mu_delta=0
     file=open(fileName,"r")
     data=file.read()
@@ -107,7 +108,7 @@ def LoadDataFor(name,fileName="Data\catalog.dat"):
         alpha,delta,mu_alpha,mu_delta=records[name]
     return alpha,delta,mu_alpha,mu_delta
     
-if os.path.exists("Data\catalog.dat"):
+if os.path.exists(fileName):
     print("Local catalog file exists.")
 else:
     print("Local catalog file NOT exists.")
