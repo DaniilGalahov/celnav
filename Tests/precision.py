@@ -10,13 +10,15 @@ from utility import HMSToTime
 
 import almanac
 
+deltaT=32.184+37.0-0.0 #IERS correction
+
 GHAAriesNA=degrees(DMStoRad(245,40.4,0))
 print("Nautical almanac GHAAries: ",GHAAriesNA)
 
 GHAAriesAP=almanac.GHAOfAriesAt("2023-10-27T14:00:00")
 print("AstroPy GHAAries: ",GHAAriesAP," Deviation from NA: ",GHAAriesNA-GHAAriesAP)
 
-thetaLST,thetaGMST=LSTime(JulianDate(2023,10,27,14,0,0),0,0)
+thetaLST,thetaGMST=LSTime(JulianDate(2023,10,27,14,0,0),0,0) #calculating without IERS correction because it's already counted in polynominal
 print("Vallado GHAAries: ",thetaGMST," Deviation from NA: ",GHAAriesNA-thetaGMST)
 
 print("==========")
@@ -30,9 +32,9 @@ print("==========")
 #print(J1991_25)
 
 def PositionFor(alpha0,delta0,mu_alpha,mu_delta,JD):
-    deltat=(JD-2448349.0625)/365.25 #J1991.25 is April 2.5625, 1991 TT or JD 2448349.0625
-    alpha=alpha0+((mu_alpha/3600/1000)*cos(radians(delta0))*deltat)
-    delta=delta0+((mu_delta/3600/1000)*deltat)
+    deltatyears=(JD-2448349.0625)/365.25 #J1991.25 is April 2.5625, 1991 TT or JD 2448349.0625
+    alpha=alpha0+((mu_alpha/3600/1000)*cos(radians(delta0))*deltatyears)
+    delta=delta0+((mu_delta/3600/1000)*deltatyears)
     return alpha,delta
     
 shaNA=degrees(DMStoRad(80,34.1,0))
@@ -53,9 +55,8 @@ import simbad
 alpha0,delta0,mu_alpha,mu_delta=hipparcos.LoadDataFor(91262)
 #alpha0,delta0,mu_alpha,mu_delta=simbad.LoadDataFor("Vega")
 #print(alpha0,delta0,mu_alpha,mu_delta)
-deltaT=32.184+37.0-0.0
-alpha,delta=PositionFor(alpha0,delta0,mu_alpha,mu_delta,JulianDate(2023,10,27,14,0,0)+(deltaT/86400.0))
-sha=360-alpha
+alpha,delta=PositionFor(alpha0,delta0,mu_alpha,mu_delta,JulianDate(2023,10,27,14,0,0)+((deltaT/86400.0)/2.0))
+sha=360.0-alpha
 print("Catalog+Vallado Vega SHA:",sha,"Deviation from NA:",shaNA-sha)
 print("Catalog+Vallado Vega Dec:",delta,"Deviation from NA:",deltaNA-delta)
 
@@ -72,7 +73,7 @@ deltaSunAP=Sol.DecAt("2023-10-27T14:00:00")
 print("AstroPy Sun HA:", GHASunAP,"Deviation from NA:",GHASunNA-GHASunAP)
 print("AstroPy Sun Dec:", deltaSunAP,"Deviation from NA:",deltaSunNA-deltaSunAP)
 
-vector_rSun=Sun(JulianDate(2023,10,27,14,0,0)+(deltaT/86400.0)) # we may reduce 500 sec (the time of flight of light beam from Sun to Earth) like this: -(500/86400)
+vector_rSun=Sun(JulianDate(2023,10,27,14,0,0)+((deltaT/86400.0)/2.0)) # we may reduce 500 sec (the time of flight of light beam from Sun to Earth) like this: -(500/86400)
 vector_vSun=vector([0,0,0])
 #vector_rSunIJK,vector_vSunIJK=IAU2000CIO(vector_rSun,vector_vSun,2023,10,27,HMSToTime(14,0,0),-0.4399619,32,-0.140682,0.333309,GCRF) # we don't need this
 rSunVallado,alphaSunVallado,deltaSunVallado,rdotSunVallado,alphadotSunVallado,deltadotSunVallado=GeocentricRadec(vector_rSun,vector_vSun)
