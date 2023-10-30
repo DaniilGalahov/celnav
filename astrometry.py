@@ -3,7 +3,7 @@ import json
 import timeprocessor
 import almanac
 import angle
-import math
+from math import sqrt
 from trigonometry import sin, cos, tg, arcsin, arctg
 
 from astropy.time import Time
@@ -30,7 +30,7 @@ class Observation:
 
         #here must be instrument correction
 
-        Dip=0.0293*math.sqrt(h) #height correction
+        Dip=0.0293*sqrt(h) #height correction
         H=Hs-Dip
         
         Ro=0.0167/(tg(H+7.31)/(H+4.4))#refraction correction. Do not measure objects which are near your astronomical horizon!
