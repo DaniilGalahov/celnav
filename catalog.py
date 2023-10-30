@@ -107,16 +107,17 @@ def LoadDataFor(name):
     if name in records:
         alpha,delta,mu_alpha,mu_delta=records[name]
     return alpha,delta,mu_alpha,mu_delta
-    
-if os.path.exists(fileName):
-    print("Local catalog file exists.")
-else:
-    print("Local catalog file NOT exists.")
-answer=input("Create new catalog from external source? (y/n) ")
-if answer=="y":
-    answer=input("From what source? (0 - Hipparchos, 1 - SIMBAD) ")
-    if answer=="0" or answer=="1":
-        dataSource=int(answer)
-        CreateLocalCatalog()
-        print("Local catalog created.")
-input("Input any symbol to exit...")  
+
+if __name__ == '__main__':
+    if os.path.exists(fileName):
+        print("Local catalog file exists.")
+    else:
+        print("Local catalog file NOT exists.")
+    answer=input("Create new catalog from external source? (y/n) ")
+    if answer=="y":
+        answer=input("From what source? (0 - Hipparchos, 1 - SIMBAD) ")
+        if answer=="0" or answer=="1":
+            dataSource=int(answer)
+            CreateLocalCatalog()
+            print("Local catalog created.")
+    input("Input any symbol to exit...")  
