@@ -26,6 +26,27 @@ def ToAstropyTimeString(date, time):
     hhmm=re.split('[^\d]+', time)
     return ddmmyyyy[2]+"-"+ddmmyyyy[1]+"-"+ddmmyyyy[0]+" "+hhmm[0]+":"+hhmm[1]
 
+def ToValladoTime(date, time):
+    ddmmyyyy=re.split('[^\d]+', date)
+    hhmm=re.split('[^\d]+', time)
+    Y=int(ddmmyyyy[2])
+    M=int(ddmmyyyy[1])
+    D=int(ddmmyyyy[0])
+    h=int(hhmm[0])
+    m=int(hhmm[1])
+    s=0
+    return Y,M,D,h,m,s
+
+def ToValladoTime(apyTime):
+    YMDhms=re.split('[^\d^.]+', apyTime)
+    Y=int(YMDhms[0])
+    M=int(YMDhms[1])
+    D=int(YMDhms[2])
+    h=int(YMDhms[3])
+    m=int(YMDhms[4])
+    s=float(YMDhms[5])
+    return Y,M,D,h,m,s
+
 def HoursToSeconds(hours):
     return hours*60*60
 

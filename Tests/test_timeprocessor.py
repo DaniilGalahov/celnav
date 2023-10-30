@@ -23,6 +23,24 @@ class test_timeprocessor(unittest.TestCase):
         apTimeString=timeprocessor.ToAstropyTimeString("27.10.2023","21:54")
         self.assertEqual(apTimeString,"2023-10-27 21:54")
 
+    def test_ToValladoTime(self):
+        Y,M,D,h,m,s=timeprocessor.ToValladoTime("27.10.2023","21:54")
+        self.assertEqual(Y,2023)
+        self.assertEqual(M,10)
+        self.assertEqual(D,27)
+        self.assertEqual(h,21)
+        self.assertEqual(m,54)
+        self.assertAlmostEqual(s,0,6)
+
+    def test_ToValladoTime(self):
+        Y,M,D,h,m,s=timeprocessor.ToValladoTime("2023-10-27 21:54:12.1")
+        self.assertEqual(Y,2023)
+        self.assertEqual(M,10)
+        self.assertEqual(D,27)
+        self.assertEqual(h,21)
+        self.assertEqual(m,54)
+        self.assertAlmostEqual(s,12.1,6)
+
     def test_HoursToSeconds(self):
         seconds=timeprocessor.HoursToSeconds(10)
         self.assertAlmostEqual(seconds,36000,0)
