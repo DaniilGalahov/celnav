@@ -12,6 +12,8 @@ celestialObjectDiameters={"Sun":1392700.0,
                           "Jupiter":139820.0,
                           "Saturn":116460.0}
 
+Rearth=6378.137 #radius of Earth, km (from Vallado book)
+
 class CelestialObject:
     def __init__(self, name): #name of celestial object must start from capital letter
         self.name=name        

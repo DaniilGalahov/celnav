@@ -5,7 +5,7 @@ from astropy.coordinates import solar_system_ephemeris, EarthLocation, SkyCoord,
 from astropy.coordinates import get_body
 from astropy import units as u
 
-from celestialobject import navigationPlanetNames, celestialObjectDiameters, CelestialObject
+from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, CelestialObject
 from catalog import navigationStarNames
 from trigonometry import arctg
 
@@ -66,8 +66,7 @@ class CelestialObjectFromAstroPy(CelestialObject):
             location=EarthLocation.of_site('greenwich')
             with solar_system_ephemeris.set(ephemeris):
                 body=get_body(self.name, time, location)
-            L=6371.0 #radius of Earth, km
             D=Distance(body.distance, unit=u.km).value
-            return arctg(L/D)
+            return arctg(Rearth/D)
         else:
             return 0
