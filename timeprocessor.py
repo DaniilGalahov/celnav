@@ -44,7 +44,9 @@ def ToValladoTime(apyTime):
     D=int(YMDhms[2])
     h=int(YMDhms[3])
     m=int(YMDhms[4])
-    s=float(YMDhms[5])
+    s=0
+    if len(YMDhms)>5:
+        s=float(YMDhms[5])
     return Y,M,D,h,m,s
 
 def HoursToSeconds(hours):

@@ -3,7 +3,7 @@ from celestialobject import CelestialObject
 from coapy import CelestialObjectFromAstroPy
 from coloc import CelestialObjectFromLocalCatalog
 
-source=0 #0 - AstroPy, 1 - local catalog and ephemeris based on hipparchos, simbad and Vallado code
+source=1 #0 - AstroPy, 1 - local catalog and ephemeris based on hipparchos, simbad and Vallado code
 
 if source==0:
     from coapy import GHAOfAriesAt
