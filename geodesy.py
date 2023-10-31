@@ -5,6 +5,14 @@ import angle
 from trigonometry import sin, cos, tg, arcsin, arctg, atan2
 from math import sqrt, pow, radians, degrees, pi
 
+f=1/298.257223563 #Earth flattening factor, from article at https://www.vcalc.com/wiki/vcalc/geocentric-to-geodetic-latitude
+
+def GeocentricToGeodetic(Bgc):
+    return arctg((1/pow(1-f,2))*tg(Bgc)) #formula from https://www.vcalc.com/wiki/vcalc/geocentric-to-geodetic-latitude
+
+def GeodeticToGeocentric(Bgd):
+    return arctg(pow(1-f,2)*tg(Bgd)) #formula from https://www.vcalc.com/wiki/vcalc/geodetic-to-geocentric-latitude; use this for convert calculated coords (achieved values closer to truth)
+
 class Point:
     def __init__(self, B, L):
         self.B=angle.ToDecimal(B)
