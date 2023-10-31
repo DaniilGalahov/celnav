@@ -8,7 +8,8 @@ from Vallado import JulianDate
 from trigonometry import cos,arctg
 
 def GHAOfAriesAt(time): #time must be GMT
-    return ThetaGMSTAt(ToValladoTime(time))
+    Y,M,D,h,m,s=ToValladoTime(time)
+    return ThetaGMSTAt(Y,M,D,h,m,s)
 
 #J1991.25 is April 2.5625, 1991 TT or JD 2448349.0625
 #JY is 365.25 JD (of 86400 sec) exact
