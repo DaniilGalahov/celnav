@@ -1,0 +1,1 @@
+pipreqs "D:\Space\Celestial navigation"
