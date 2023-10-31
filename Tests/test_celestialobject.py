@@ -1,5 +1,5 @@
 import sys
-sys.path.append("..")
+sys.path.append("..\src")
 
 from celestialobject import CelestialObject
 import unittest
