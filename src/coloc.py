@@ -1,11 +1,12 @@
 #Celestial object implementation for working with local catalog
+from external import cos, atan, degrees, radians
+from external import JulianDate
+
 from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, CelestialObject
 from catalog import navigationStarNames
 from timeprocessor import ToValladoTime
 from ephemeris import ThetaGMSTAt,SunAt,MoonAt,PlanetAt
 from catalog import LoadDataFor
-from Vallado import JulianDate
-from trigonometry import cos,arctg
 
 def GHAOfAriesAt(time): #time must be GMT
     Y,M,D,h,m,s=ToValladoTime(time)
@@ -15,11 +16,15 @@ def GHAOfAriesAt(time): #time must be GMT
 #JY is 365.25 JD (of 86400 sec) exact
 #Sidereal year length is 365.256363004 (according to Wikipedia https://en.wikipedia.org/wiki/Sidereal_year)
 def RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s):
+    alpha0=radians(alpha0)
+    delta0=radians(delta0)
+    mu_alpha=radians(mu_alpha)
+    mu_delta=radians(mu_delta)
     JD=JulianDate(Y,M,D,h,m,s)
     deltatyears=(JD-2448349.0625)/365.25 
     alpha=alpha0+((mu_alpha/3600/1000)*cos(delta0)*deltatyears)
     delta=delta0+((mu_delta/3600/1000)*deltatyears)
-    return alpha,delta
+    return degrees(alpha),degrees(delta)
 
 class CelestialObjectFromLocalCatalog(CelestialObject):
     def GHAAt(self, time):
@@ -76,7 +81,7 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
             GHA=ThetaGMSTAt(Y,M,D,h,m,s)-alpha
             d=celestialObjectDiameters[self.name]
             D=r-Rearth
-            return arctg(d/(2*D))                    
+            return degrees(atan(d/(2*D)))                    
         else:
             return 0
 
@@ -91,6 +96,6 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
             if self.type=="Planet":
                 alpha,delta,r=PlanetAt(self.name,Y,M,D,h,m,s)
             D=r-Rearth
-            return arctg(Rearth/D)
+            return degrees(atan(Rearth/D))
         else:
             return 0

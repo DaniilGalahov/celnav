@@ -1,13 +1,8 @@
 #Celestial object implementation for working with astropy
-from astropy.time import Time
-from astropy.coordinates import Angle
-from astropy.coordinates import solar_system_ephemeris, EarthLocation, SkyCoord, Distance
-from astropy.coordinates import get_body
-from astropy import units as u
-
+from external import degrees, atan
+from external import Time, get_body, solar_system_ephemeris, Angle, EarthLocation, SkyCoord, Distance, u
 from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, CelestialObject
 from catalog import navigationStarNames
-from trigonometry import arctg
 
 ephemeris='builtin' #can be 'jpl' or 'de432s', but even in this case we have difference with Omar Reis about +14.5' in GHA and about -7' in Dec
 
@@ -56,7 +51,7 @@ class CelestialObjectFromAstroPy(CelestialObject):
                 body=get_body(self.name, time, location)
             D=Distance(body.distance, unit=u.km).value
             d=celestialObjectDiameters[self.name]
-            return arctg(d/(2*D))                        
+            return degrees(atan(d/(2*D)))                        
         else:
             return 0
 
@@ -67,6 +62,6 @@ class CelestialObjectFromAstroPy(CelestialObject):
             with solar_system_ephemeris.set(ephemeris):
                 body=get_body(self.name, time, location)
             D=Distance(body.distance, unit=u.km).value
-            return arctg(Rearth/D)
+            return degrees(atan(Rearth/D))
         else:
             return 0

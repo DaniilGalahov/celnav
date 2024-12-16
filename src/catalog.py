@@ -1,9 +1,9 @@
-import os
+from external import os, json
+
 absolutePath = os.path.abspath(__file__)
 directoryName = os.path.dirname(absolutePath)
 os.chdir(directoryName) #forcefully setted PATH to current dir, to prevent saving files in unexpected places
 
-import json
 import simbad
 import hipparcos
 

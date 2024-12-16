@@ -1,5 +1,4 @@
-import requests
-import re
+from external import requests, re
 
 databaseSearchUri="https://hipparcos-tools.cosmos.esa.int/cgi-bin/HIPcatalogueSearch.pl?hipId="
 

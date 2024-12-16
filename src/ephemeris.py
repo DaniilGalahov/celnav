@@ -1,12 +1,12 @@
-from numpy import array as vector
-from Vallado import JulianDate,LSTime,Sun,GeocentricRadec,Moon,PlanetRV
+from external import vector, JulianDate, LSTime, Sun, GeocentricRadec, Moon, PlanetRV
 
 navigationPlanets=["Venus",
                    "Mars",
                    "Jupiter",
                    "Saturn"]
 
-deltaT=32.184+37.0-0.0  #IERS correction for 2022-2023
+#deltaT=32.184+37.0-0.0  #IERS correction for 2022-2023
+deltaT=32.184+37.0-0.1   #IERS correction for 2024-2025
 
 def CorrectedJulianDate(Y,M,D,h,m,s):
     return JulianDate(Y,M,D,h,m,s)+((deltaT/86400.0)/2.0) #calculating with IERS correction; this way of calculation produces minimal deviation from NA

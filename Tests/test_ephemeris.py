@@ -5,6 +5,8 @@ import ephemeris
 import angle
 import unittest
 
+ephemeris.deltaT=32.184+37.0-0.0
+
 class test_ephemeris(unittest.TestCase):
     def test_CorrectedJulianDate(self):
         correctedJD=ephemeris.CorrectedJulianDate(2023,10,27,14,0,0)
