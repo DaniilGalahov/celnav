@@ -1,6 +1,6 @@
 #Celestial object implementation for working with astropy
-from external import degrees, atan
-from external import Time, get_body, solar_system_ephemeris, Angle, EarthLocation, SkyCoord, Distance, u
+from external.math import degrees, atan
+from external.astro import Time, get_body, solar_system_ephemeris, Angle, EarthLocation, SkyCoord, Distance, u
 from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, CelestialObject
 from catalog import navigationStarNames
 

@@ -1,6 +1,6 @@
 #Celestial object implementation for working with local catalog
-from external import cos, atan, degrees, radians
-from external import JulianDate
+from external.math import cos, atan, degrees, radians
+from external.astro import JulianDate
 
 from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, CelestialObject
 from catalog import navigationStarNames

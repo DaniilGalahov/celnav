@@ -1,5 +1,6 @@
 #auxilliary functions to deal with angular coordinates
-from external import re, fabs, sin, cos, tan, asin, acos, degrees, radians, isclose
+from external.modules import re
+from external.math import fabs, sin, cos, tan, asin, acos, degrees, radians, isclose
 
 def ToDecimal(value):
     if isinstance(value, str):
