@@ -1,8 +1,4 @@
-from external import os, json
-
-absolutePath = os.path.abspath(__file__)
-directoryName = os.path.dirname(absolutePath)
-os.chdir(directoryName) #forcefully setted PATH to current dir, to prevent saving files in unexpected places
+from external.modules import os, json
 
 import simbad
 import hipparcos
@@ -67,7 +63,13 @@ navigationStarNames=["Acamar",
                      "Zuben-ubi"]
 
 dataSource=0 #0 - Hipparcos, 1 - SIMBAD
-fileName="Data\catalog.dat"
+dataDirectoryName="Data"
+catalogFileName="catalog.dat"
+
+def AbsolutePathFor(subDirectoryName,fileName):
+    absolutePathForRootDirectory = os.path.dirname(os.path.abspath(__file__))
+    absolutePathForFile=os.path.join(absolutePathForRootDirectory,subDirectoryName,fileName)
+    return absolutePathForFile
 
 def LoadDataFromSourceFor(name):
     nameInSource=name
@@ -93,14 +95,14 @@ def CreateLocalCatalog():
         alpha,delta,mu_alpha,mu_delta=LoadDataFromSourceFor(navigationStarName)
         records[navigationStarName]=(alpha,delta,mu_alpha,mu_delta)
     jsonString=json.dumps(records)
-    file=open(fileName,"w")
+    file=open(AbsolutePathFor(dataDirectoryName,catalogFileName),"w")
     file.write(jsonString)
     file.close()
     print("Catalog data saved")
 
 def LoadDataFor(name):
     alpha=delta=mu_alpha=mu_delta=0
-    file=open(fileName,"r")
+    file=open(AbsolutePathFor(dataDirectoryName,catalogFileName),"r")
     data=file.read()
     file.close()
     records=json.loads(data)    
@@ -109,7 +111,7 @@ def LoadDataFor(name):
     return alpha,delta,mu_alpha,mu_delta
 
 if __name__ == '__main__':
-    if os.path.exists(fileName):
+    if os.path.exists(AbsolutePathFor(dataDirectoryName,catalogFileName)):
         print("Local catalog file exists.")
     else:
         print("Local catalog file NOT exists.")
