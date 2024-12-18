@@ -64,7 +64,7 @@ print("==========")
 GHASunNA=degrees(DMStoRad(34,1.8,0))
 deltaSunNA=-degrees(DMStoRad(12,48.8,0))
 print("Nautical almanac Sun GHA:",GHASunNA)
-print("Nautical almanac Syn Dec:",deltaSunNA)
+print("Nautical almanac Sun Dec:",deltaSunNA)
 
 Sol=almanac.GetCelestialObject("Sun")
 GHASunAP=Sol.GHAAt("2023-10-27T14:00:00")

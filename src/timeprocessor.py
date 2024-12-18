@@ -1,5 +1,5 @@
 #time functions for navigational applications
-import re
+from external.modules import re
 import angle
 
 def ToSeconds(string):
