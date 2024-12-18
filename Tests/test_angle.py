@@ -10,15 +10,15 @@ class test_angle(unittest.TestCase):
         self.assertAlmostEqual(angle.ToDecimal("245*40.0' E"),245.666667,6)
         self.assertAlmostEqual(angle.ToDecimal("245*40.0' W"),-245.666667,6)
 
-    def test_ToSigned180(self):
-        self.assertAlmostEqual(angle.ToSigned180(50),50,6)
-        self.assertAlmostEqual(angle.ToSigned180(270),-90,6)
-        self.assertAlmostEqual(angle.ToSigned180(-50),-50,6)
-
     def test_Normalize(self):
         self.assertAlmostEqual(angle.Normalize(250),250.0,6)
         self.assertAlmostEqual(angle.Normalize(370),10.0,6)
         self.assertAlmostEqual(angle.Normalize(-20),340.0,6)
+
+    def test_ToSigned180(self):
+        self.assertAlmostEqual(angle.ToSigned180(50),50,6)
+        self.assertAlmostEqual(angle.ToSigned180(270),-90,6)
+        self.assertAlmostEqual(angle.ToSigned180(-50),-50,6)
 
     def test_ToString(self):
         self.assertEqual(angle.ToString(250.5),"250°30.0'")

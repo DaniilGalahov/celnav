@@ -34,14 +34,6 @@ def ToDecimal(value):
             value *= -1        
     return value
 
-def ToSigned180(value):
-    value = value%360    
-    if value>180.0:
-        delta=value-180.0
-        value=180.0-delta
-        value*=-1.0
-    return value
-
 def Normalize(value):
     negative=False
     if value<0.0:
@@ -51,6 +43,14 @@ def Normalize(value):
         value=value%360
     if negative:
         value=360.0-value
+    return value
+
+def ToSigned180(value):
+    value = value%360    
+    if value>180.0:
+        delta=value-180.0
+        value=180.0-delta
+        value*=-1.0
     return value
 
 def ToString(value):
