@@ -27,17 +27,17 @@ class CelestialObject:
         elif self.name in navigationStarNames:
             self.type="Star"
 
-    def GHAAt(self, time):
+    def GHAAt(self,Y,M,D,h,m,s):
         pass
 
-    def DecAt(self, time):
+    def DecAt(self,Y,M,D,h,m,s):
         pass
 
-    def SHAAt(self, time):
+    def SHAAt(self,Y,M,D,h,m,s):
         pass
 
-    def SDAt(self, time):
+    def SDAt(self,Y,M,D,h,m,s):
         pass
 
-    def HPAt(self, time):
+    def HPAt(self,Y,M,D,h,m,s):
         pass

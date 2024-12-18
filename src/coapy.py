@@ -3,6 +3,7 @@ from external.math import degrees, atan
 from external.astro import Time, get_body, solar_system_ephemeris, Angle, EarthLocation, SkyCoord, Distance, u
 from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, CelestialObject
 from catalog import navigationStarNames
+from timeprocessor import YMDhmsToAPyTime
 
 ephemeris='builtin' #can be 'jpl' or 'de432s', but even in this case we have difference with Omar Reis about +14.5' in GHA and about -7' in Dec
 
@@ -12,19 +13,19 @@ def GHAOfAriesAt(time): #time must be GMT
     return Angle(siderealTime).deg
 
 class CelestialObjectFromAstroPy(CelestialObject):
-    def GHAAt(self, time):
-        time=Time(time)
+    def GHAAt(self,Y,M,D,h,m,s):
+        time=Time(YMDhmsToAPyTime(Y,M,D,h,m,s))
         if not self.type=="Star":            
             location=EarthLocation.of_site('greenwich')
             with solar_system_ephemeris.set(ephemeris):
                 body=get_body(self.name, time, location)
-            GHA=GHAOfAriesAt(time)-body.ra.value       
+            GHA=GHAOfAriesAt(time)-body.ra.value 
             return GHA
         else:
             return 0
 
-    def DecAt(self, time):
-        time=Time(time)
+    def DecAt(self,Y,M,D,h,m,s):
+        time=Time(YMDhmsToAPyTime(Y,M,D,h,m,s))
         if not self.type=="Star":            
             location=EarthLocation.of_site('greenwich')
             with solar_system_ephemeris.set(ephemeris):
@@ -34,8 +35,8 @@ class CelestialObjectFromAstroPy(CelestialObject):
             bodyCoordinates=SkyCoord.from_name(self.name,frame='icrs')
             return bodyCoordinates.dec.value
 
-    def SHAAt(self, time):
-        time=Time(time)
+    def SHAAt(self,Y,M,D,h,m,s):
+        time=Time(YMDhmsToAPyTime(Y,M,D,h,m,s))
         if self.type=="Star":
             bodyCoordinates=SkyCoord.from_name(self.name,frame='icrs')
             SHA=360.0-bodyCoordinates.ra.value
@@ -43,9 +44,9 @@ class CelestialObjectFromAstroPy(CelestialObject):
         else:
             return 0
 
-    def SDAt(self, time):
+    def SDAt(self,Y,M,D,h,m,s):
         if not self.type=="Star":
-            time=Time(time)
+            time=Time(YMDhmsToAPyTime(Y,M,D,h,m,s))
             location=EarthLocation.of_site('greenwich')
             with solar_system_ephemeris.set(ephemeris):
                 body=get_body(self.name, time, location)
@@ -55,9 +56,9 @@ class CelestialObjectFromAstroPy(CelestialObject):
         else:
             return 0
 
-    def HPAt(self, time):
+    def HPAt(self,Y,M,D,h,m,s):
         if not self.type=="Star":
-            time=Time(time)
+            time=Time(YMDhmsToAPyTime(Y,M,D,h,m,s))
             location=EarthLocation.of_site('greenwich')
             with solar_system_ephemeris.set(ephemeris):
                 body=get_body(self.name, time, location)

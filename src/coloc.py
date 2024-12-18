@@ -4,12 +4,10 @@ from external.astro import JulianDate
 
 from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, CelestialObject
 from catalog import navigationStarNames
-from timeprocessor import ToValladoTime
 from ephemeris import ThetaGMSTAt,SunAt,MoonAt,PlanetAt
 from catalog import LoadDataFor
 
-def GHAOfAriesAt(time): #time must be GMT
-    Y,M,D,h,m,s=ToValladoTime(time)
+def GHAOfAriesAt(Y,M,D,h,m,s): #time must be GMT
     return ThetaGMSTAt(Y,M,D,h,m,s)
 
 #J1991.25 is April 2.5625, 1991 TT or JD 2448349.0625
@@ -27,10 +25,9 @@ def RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s):
     return degrees(alpha),degrees(delta)
 
 class CelestialObjectFromLocalCatalog(CelestialObject):
-    def GHAAt(self, time):
+    def GHAAt(self,Y,M,D,h,m,s):
         if not self.type=="Star":
             alpha=delta=r=0
-            Y,M,D,h,m,s=ToValladoTime(time)
             if self.type=="Sun":
                 alpha,delta,r=SunAt(Y,M,D,h,m,s)
             if self.type=="Moon":
@@ -42,8 +39,7 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
         else:
             return 0
 
-    def DecAt(self, time):
-        Y,M,D,h,m,s=ToValladoTime(time)
+    def DecAt(self,Y,M,D,h,m,s):
         if not self.type=="Star":
             alpha=delta=r=0
             if self.type=="Sun":
@@ -58,9 +54,8 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
             alpha,delta=RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s)
             return delta
 
-    def SHAAt(self, time):
+    def SHAAt(self,Y,M,D,h,m,s):
         if self.type=="Star":
-            Y,M,D,h,m,s=ToValladoTime(time)
             alpha0,delta0,mu_alpha,mu_delta=LoadDataFor(self.name)
             alpha,delta=RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s)
             SHA=360.0-alpha
@@ -68,10 +63,9 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
         else:
             return 0
 
-    def SDAt(self, time):
+    def SDAt(self,Y,M,D,h,m,s):
         if not self.type=="Star":
             alpha=delta=r=0
-            Y,M,D,h,m,s=ToValladoTime(time)
             if self.type=="Sun":
                 alpha,delta,r=SunAt(Y,M,D,h,m,s)
             if self.type=="Moon":
@@ -85,10 +79,9 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
         else:
             return 0
 
-    def HPAt(self, time):
+    def HPAt(self,Y,M,D,h,m,s):
         if not self.type=="Star":
             alpha=delta=r=0
-            Y,M,D,h,m,s=ToValladoTime(time)
             if self.type=="Sun":
                 alpha,delta,r=SunAt(Y,M,D,h,m,s)
             if self.type=="Moon":
