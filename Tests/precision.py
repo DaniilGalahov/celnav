@@ -14,7 +14,7 @@ deltaT=32.184+37.0-0.0 #IERS correction
 GHAAriesNA=degrees(DMStoRad(245,40.4,0))
 print("Nautical almanac GHAAries: ",GHAAriesNA)
 
-GHAAriesAP=almanac.GHAOfAriesAt("2023-10-27T14:00:00")
+GHAAriesAP=almanac.GHAOfAriesAt(2023,10,27,14,0,0)
 print("AstroPy GHAAries: ",GHAAriesAP," Deviation from NA: ",GHAAriesNA-GHAAriesAP)
 
 thetaLST,thetaGMST=LSTime(JulianDate(2023,10,27,14,0,0),0,0) #calculating without IERS correction because it's already counted in polynominal
@@ -44,8 +44,8 @@ print("Nautical almanac Vega SHA:",shaNA)
 print("Nautical almanac Vega Dec:",deltaNA)
 
 Vega=almanac.GetCelestialObject("Vega")
-shaAP=Vega.SHAAt("2023-10-27T14:00:00")
-deltaAP=Vega.DecAt("2023-10-27T14:00:00")
+shaAP=Vega.SHAAt(2023,10,27,14,0,0)
+deltaAP=Vega.DecAt(2023,10,27,14,0,0)
 print("AstroPy Vega SHA:", shaAP,"Deviation from NA:",shaNA-shaAP)
 print("AstroPy Vega Dec:", deltaAP,"Deviation from NA:",deltaNA-deltaAP)
 
@@ -67,8 +67,8 @@ print("Nautical almanac Sun GHA:",GHASunNA)
 print("Nautical almanac Sun Dec:",deltaSunNA)
 
 Sol=almanac.GetCelestialObject("Sun")
-GHASunAP=Sol.GHAAt("2023-10-27T14:00:00")
-deltaSunAP=Sol.DecAt("2023-10-27T14:00:00")
+GHASunAP=Sol.GHAAt(2023,10,27,14,0,0)
+deltaSunAP=Sol.DecAt(2023,10,27,14,0,0)
 print("AstroPy Sun HA:", GHASunAP,"Deviation from NA:",GHASunNA-GHASunAP)
 print("AstroPy Sun Dec:", deltaSunAP,"Deviation from NA:",deltaSunNA-deltaSunAP)
 
