@@ -7,8 +7,8 @@ from timeprocessor import YMDhmsToAPyTime
 
 ephemeris='builtin' #can be 'jpl' or 'de432s', but even in this case we have difference with Omar Reis about +14.5' in GHA and about -7' in Dec
 
-def GHAOfAriesAt(time): #time must be GMT
-    time = Time(time)
+def GHAOfAriesAt(Y,M,D,h,m,s): #time must be GMT
+    time = Time(YMDhmsToAPyTime(Y,M,D,h,m,s))
     siderealTime = time.sidereal_time('apparent', 'greenwich')
     return Angle(siderealTime).deg
 
@@ -19,7 +19,7 @@ class CelestialObjectFromAstroPy(CelestialObject):
             location=EarthLocation.of_site('greenwich')
             with solar_system_ephemeris.set(ephemeris):
                 body=get_body(self.name, time, location)
-            GHA=GHAOfAriesAt(time)-body.ra.value 
+            GHA=GHAOfAriesAt(Y,M,D,h,m,s)-body.ra.value 
             return GHA
         else:
             return 0
