@@ -4,4 +4,4 @@ from astropy.coordinates import get_body, solar_system_ephemeris, Angle, EarthLo
 from astropy import units as u
 
 #astrodynamics by Vallado
-from Vallado import JulianDate, LSTime, Sun, GeocentricRadec, Moon, PlanetRV
+from Vallado import JulianDate, LSTime, Sun, GeocentricRadec, Moon, PlanetRV, JDtoGregorianDate

@@ -49,5 +49,14 @@ class test_timeprocessor(unittest.TestCase):
         timeZone=timeprocessor.TimeZone("30*10.0'E")
         self.assertAlmostEqual(timeZone,2,0)
 
+    def test_LTtoGMT(self):
+        Y,M,D,h,m,s=timeprocessor.LTtoGMT(2024,12,21,21,16,45,"30*10.0'E")
+        self.assertEqual(Y,2024)
+        self.assertEqual(M,12)
+        self.assertEqual(D,21)
+        self.assertEqual(h,19)
+        self.assertEqual(m,16)
+        self.assertAlmostEqual(s,5,3)
+        
 if __name__ == '__main__':
     unittest.main()

@@ -1,5 +1,6 @@
 #time functions for navigational applications
 from external.modules import re
+from external.astro import JulianDate, JDtoGregorianDate
 import angle
 
 def APyTimeToYMDhms(aPyTime):
@@ -52,4 +53,11 @@ def ExactTimeZone(L):
     return longtitude/(360/24)
 
 def TimeZone(L):
-    return int(ExactTimeZone(L))
+    return round(ExactTimeZone(L))
+
+def LTtoGMT(Y,M,D,h,m,s,lambda_):
+    JDGMT=JulianDate(Y,M,D,h,m,s)
+    exactTimeZone=ExactTimeZone(lambda_)
+    JDOffset=(exactTimeZone*3600)/86400.0
+    JDUTC=JDGMT-JDOffset
+    return JDtoGregorianDate(JDUTC)
