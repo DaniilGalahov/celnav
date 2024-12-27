@@ -14,6 +14,8 @@ class test_angle(unittest.TestCase):
         self.assertAlmostEqual(angle.Normalize(250),250.0,6)
         self.assertAlmostEqual(angle.Normalize(370),10.0,6)
         self.assertAlmostEqual(angle.Normalize(-20),340.0,6)
+        self.assertAlmostEqual(angle.Normalize(-179.75),180.25,6)
+        self.assertAlmostEqual(angle.Normalize(-180.25),179.75,6)
 
     def test_ToSigned180(self):
         self.assertAlmostEqual(angle.ToSigned180(50),50,6)

@@ -6,9 +6,10 @@ from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rea
 from catalog import navigationStarNames
 from ephemeris import ThetaGMSTAt,SunAt,MoonAt,PlanetAt
 from catalog import LoadDataFor
+from angle import Normalize
 
 def GHAOfAriesAt(Y,M,D,h,m,s): #time must be GMT
-    return ThetaGMSTAt(Y,M,D,h,m,s)
+    return Normalize(ThetaGMSTAt(Y,M,D,h,m,s))  #must be normalized to match values from Nautical Almanac
 
 #J1991.25 is April 2.5625, 1991 TT or JD 2448349.0625
 #JY is 365.25 JD (of 86400 sec) exact
@@ -34,7 +35,7 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
                 alpha,delta,r=MoonAt(Y,M,D,h,m,s)
             if self.type=="Planet":
                 alpha,delta,r=PlanetAt(self.name,Y,M,D,h,m,s)
-            GHA=ThetaGMSTAt(Y,M,D,h,m,s)-alpha
+            GHA=Normalize(ThetaGMSTAt(Y,M,D,h,m,s)-alpha)  #must be normalized to match values from Nautical Almanac
             return GHA
         else:
             return 0
