@@ -3,8 +3,8 @@ sys.path.append("..\src")
 
 from math import sin, cos, acos, tan, atan, degrees, radians
 from astrometry import CalculateIntercept
-from fix import OneObjectTwoFix
-from timeprocessor import TimeZone, GMTtoUTC
+from fix import TwoObjectFix
+from timeprocessor import TimeZone, LTtoGMT
 
 f=1/298.257223563 #Earth flattening factor, from article at https://www.vcalc.com/wiki/vcalc/geocentric-to-geodetic-latitude
 
@@ -30,22 +30,21 @@ print("DR LAT:",phigce,"DR LON:",lambdae)
 timeZone=TimeZone(lambdae)
 print("Time zone, UTC:",timeZone)
 
+aoe=(5*3)+1.5
+T=29
+
 Y1=2024
 M1=12
 D1=21
 h1=15
 m1=26
 s1=00
-Y1,M1,D1,h1,m1,s1=GMTtoUTC(Y1,M1,D1,h1,m1,s1,lambdae)
+Y1,M1,D1,h1,m1,s1=LTtoGMT(Y1,M1,D1,h1,m1,s1,lambdae)
 
 a1=153
 b1=144
 c1=154
 Hs1=90.0-degrees(acos((pow(b1,2)+pow(c1,2)-pow(a1,2))/(2*a1*c1)))
-#print(Hs)
-
-aoe=(5*3)+1.5
-T=29
 
 Y2=2024
 M2=12
@@ -53,24 +52,24 @@ D2=21
 h2=16
 m2=5
 s2=00
-Y2,M2,D2,h2,m2,s2=GMTtoUTC(Y2,M2,D2,h2,m2,s2,lambdae)
+Y2,M2,D2,h2,m2,s2=LTtoGMT(Y2,M2,D2,h2,m2,s2,lambdae)
 
 a2=165
 b2=136
 c2=154
 Hs2=90.0-degrees(acos((pow(b2,2)+pow(c2,2)-pow(a2,2))/(2*a2*c2)))
-#print(Hs)
 
-dt=39*60
+p1,z1=CalculateIntercept(phigce,lambdae,Y1,M1,D1,h1,m1,s1,"Sun",Hs1,aoe,T)
+p2,z2=CalculateIntercept(phigce,lambdae,Y2,M2,D2,h2,m2,s2,"Sun",Hs2,aoe,T)
+phigc,lambda_=TwoObjectFix(phigce,lambdae,p1,z1,p2,z2)
+#phigc=GeodeticToGeocentric(phigc)
+print("LAT:",phigc,"LON:",lambda_)
 
-phigc=0
-lambda_=0
-iterN=0
-
+'''
 while True:
     p1,z1=CalculateIntercept(phigce,lambdae,Y1,M1,D1,h1,m1,s1,"Sun",Hs1,aoe,T)
     p2,z2=CalculateIntercept(phigce,lambdae,Y2,M2,D2,h2,m2,s2,"Sun",Hs2,aoe,T)
-    phigc,lambda_=OneObjectTwoFix(phigce,lambdae,p1,z1,p2,z2,0)
+    phigc,lambda_=TwoObjectFix(phigce,lambdae,p1,z1,p2,z2)
     phigc=GeodeticToGeocentric(phigc)
     if (abs(phigce-phigc)<1e-6 and abs(lambdae-lambda_)<1e-6) or iterN>50:
         break
@@ -78,4 +77,4 @@ while True:
         phigce=phigc
         lambdae=lambda_
         iterN=iterN+1
-        print("Iter №:",iterN,"LAT:",phigc,"LON:",lambda_)
+'''
