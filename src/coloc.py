@@ -1,10 +1,10 @@
 #Celestial object implementation for working with local catalog
-from external.math import cos, atan, degrees, radians
+from external.math import sin, cos, atan, degrees, radians, vector, magnitude
 from external.astro import JulianDate
 
 from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, CelestialObject
 from catalog import navigationStarNames
-from ephemeris import ThetaGMSTAt,SunAt,MoonAt,PlanetAt,UTCtoUT1,UT1toTAI,TAItoTDB
+from ephemeris import UTCtoUT1,UT1toTAI,TAItoTDB,ThetaGMSTAt,VectorToSunAt,VectorToMoonAt,VectorToPlanetAt,SunRADecAt,MoonRADecAt,PlanetRADecAt
 from catalog import LoadDataFor
 from angle import Normalize
 
@@ -26,15 +26,36 @@ def RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s):
     return degrees(alpha),degrees(delta)
 
 class CelestialObjectFromLocalCatalog(CelestialObject):
+    def VectorAt(self,Y,M,D,h,m,s):
+        if not self.type=="Star":
+            vector_r=vector([0,0,0])
+            if self.type=="Sun":
+                vector_r=VectorToSunAt(Y,M,D,h,m,s)
+            if self.type=="Moon":
+                vector_r=VectorToMoonAt(Y,M,D,h,m,s)
+            if self.type=="Planet":
+                vector_r=VectorToPlanetAt(self.name,Y,M,D,h,m,s)
+            return vector_r               
+        else:
+            alpha0,delta0,mu_alpha,mu_delta=LoadDataFor(self.name)
+            alpha,delta=RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s)
+            alpha=radians(alpha)
+            delta=radians(delta)
+            r=1.0; #50.0*1.495978707*1e+11 #50 AU, outer reaches of Kuiper belt. I.e., far.
+            i=r*cos(delta)*cos(alpha)
+            j=r*cos(delta)*sin(alpha)
+            k=r*sin(delta)
+            return vector([i,j,k])
+    
     def GHAAt(self,Y,M,D,h,m,s):
         if not self.type=="Star":
-            alpha=delta=r=0
+            alpha=delta=0
             if self.type=="Sun":
-                alpha,delta,r=SunAt(Y,M,D,h,m,s)
+                alpha,delta=SunRADecAt(Y,M,D,h,m,s)
             if self.type=="Moon":
-                alpha,delta,r=MoonAt(Y,M,D,h,m,s)
+                alpha,delta=MoonRADecAt(Y,M,D,h,m,s)
             if self.type=="Planet":
-                alpha,delta,r=PlanetAt(self.name,Y,M,D,h,m,s)
+                alpha,delta=PlanetRADecAt(self.name,Y,M,D,h,m,s)
             GHA=Normalize(ThetaGMSTAt(Y,M,D,h,m,s)-alpha)  #must be normalized to match values from Nautical Almanac
             return GHA
         else:
@@ -42,13 +63,13 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
 
     def DecAt(self,Y,M,D,h,m,s):
         if not self.type=="Star":
-            alpha=delta=r=0
+            alpha=delta=0
             if self.type=="Sun":
-                alpha,delta,r=SunAt(Y,M,D,h,m,s)
+                alpha,delta=SunRADecAt(Y,M,D,h,m,s)
             if self.type=="Moon":
-                alpha,delta,r=MoonAt(Y,M,D,h,m,s)
+                alpha,delta=MoonRADecAt(Y,M,D,h,m,s)
             if self.type=="Planet":
-                alpha,delta,r=PlanetAt(self.name,Y,M,D,h,m,s)
+                alpha,delta=PlanetRADecAt(self.name,Y,M,D,h,m,s)
             return delta
         else:
             alpha0,delta0,mu_alpha,mu_delta=LoadDataFor(self.name)
@@ -66,13 +87,13 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
 
     def SDAt(self,Y,M,D,h,m,s):
         if not self.type=="Star":
-            alpha=delta=r=0
+            r=0
             if self.type=="Sun":
-                alpha,delta,r=SunAt(Y,M,D,h,m,s)
+                r=magnitude(VectorToSunAt(Y,M,D,h,m,s))
             if self.type=="Moon":
-                alpha,delta,r=MoonAt(Y,M,D,h,m,s)
+                r=magnitude(VectorToMoonAt(Y,M,D,h,m,s))
             if self.type=="Planet":
-                alpha,delta,r=PlanetAt(self.name,Y,M,D,h,m,s)
+                r=magnitude(VectorToPlanetAt(self.name,Y,M,D,h,m,s))
             d=celestialObjectDiameters[self.name]
             D=r-Rearth
             return degrees(atan(d/(2*D)))                    
@@ -81,13 +102,13 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
 
     def HPAt(self,Y,M,D,h,m,s):
         if not self.type=="Star":
-            alpha=delta=r=0
+            r=0
             if self.type=="Sun":
-                alpha,delta,r=SunAt(Y,M,D,h,m,s)
+                r=magnitude(VectorToSunAt(Y,M,D,h,m,s))
             if self.type=="Moon":
-                alpha,delta,r=MoonAt(Y,M,D,h,m,s)
+                r=magnitude(VectorToMoonAt(Y,M,D,h,m,s))
             if self.type=="Planet":
-                alpha,delta,r=PlanetAt(self.name,Y,M,D,h,m,s)
+                r=magnitude(VectorToPlanetAt(self.name,Y,M,D,h,m,s))
             D=r-Rearth
             return degrees(atan(Rearth/D))
         else:

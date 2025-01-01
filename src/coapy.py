@@ -1,5 +1,5 @@
 #Celestial object implementation for working with astropy
-from external.math import degrees, atan
+from external.math import degrees, atan, vector, magnitude
 from external.astro import Time, get_body, solar_system_ephemeris, Angle, EarthLocation, SkyCoord, Distance, u
 from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, CelestialObject
 from catalog import navigationStarNames
@@ -14,6 +14,19 @@ def GHAOfAriesAt(Y,M,D,h,m,s): #time must be GMT
     return Normalize(Angle(siderealTime).deg) #must be normalized to match values from Nautical Almanac
 
 class CelestialObjectFromAstroPy(CelestialObject):
+    def VectorAt(self,Y,M,D,h,m,s):
+        time=Time(YMDhmsToAPyTime(Y,M,D,h,m,s))
+        if not self.type=="Star":            
+            with solar_system_ephemeris.set(ephemeris):
+                body=get_body(self.name, time)
+                body.representation_type='cartesian'
+            return vector([body.x.to(u.km).value,body.y.to(u.km).value,body.z.to(u.km).value])
+        else:
+            bodyCoordinates=SkyCoord.from_name(self.name,frame='icrs')
+            bodyCoordinates.representation_type='cartesian'
+            vector_r=vector([bodyCoordinates.x.value,bodyCoordinates.y.value,bodyCoordinates.z.value])
+            return vector_r/magnitude(vector_r)
+
     def GHAAt(self,Y,M,D,h,m,s):
         time=Time(YMDhmsToAPyTime(Y,M,D,h,m,s))
         if not self.type=="Star":            
@@ -31,7 +44,7 @@ class CelestialObjectFromAstroPy(CelestialObject):
             location=EarthLocation.of_site('greenwich')
             with solar_system_ephemeris.set(ephemeris):
                 body=get_body(self.name, time, location)
-            return body.dec.value+self.SDAt(Y,M,D,h,m,s)+self.HPAt(Y,M,D,h,m,s)
+            return body.dec.value+self.SDAt(Y,M,D,h,m,s)+self.HPAt(Y,M,D,h,m,s)  #astropy getting in count SD and HP of celestial body, so here we adding this to get right value
         else:
             bodyCoordinates=SkyCoord.from_name(self.name,frame='icrs')
             return bodyCoordinates.dec.value

@@ -27,6 +27,9 @@ class CelestialObject:
         elif self.name in navigationStarNames:
             self.type="Star"
 
+    def VectorAt(self,Y,M,D,h,m,s):
+        pass
+
     def GHAAt(self,Y,M,D,h,m,s):
         pass
 
