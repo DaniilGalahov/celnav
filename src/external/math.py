@@ -3,6 +3,7 @@ from math import sqrt, fabs, ceil, sin, cos, tan, asin, acos, atan, atan2, degre
 
 #numpy
 from numpy import array as vector
+from numpy.linalg import norm as magnitude
 
 def sign(x):
     if x<0:
