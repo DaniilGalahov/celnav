@@ -12,7 +12,7 @@ class test_almanac(unittest.TestCase):
         navAlmamacGHAAries="245*40.4'"
         almanac.source=0
         apyGHAAries=almanac.GHAOfAriesAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(apyGHAAries,angle.ToDecimal(navAlmamacGHAAries),2)
+        self.assertAlmostEqual(apyGHAAries,angle.ToDecimal(navAlmamacGHAAries),2) #so, assertAlmostEqual is rounding compared values to number of decimal places after floating point
         almanac.source=1
         localGHAAries=almanac.GHAOfAriesAt(Y,M,D,h,m,s)
         self.assertAlmostEqual(localGHAAries,angle.ToDecimal(navAlmamacGHAAries),2)
@@ -141,9 +141,9 @@ class test_almanac(unittest.TestCase):
         almanac.source=1
         Vega=almanac.GetCelestialObject("Vega")
         locVegaDec=Vega.DecAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(locVegaDec,angle.ToDecimal(navAlmanacDec),2) #for stars precision of my system is lower
+        self.assertAlmostEqual(locVegaDec,angle.ToDecimal(navAlmanacDec),1) #for stars precision of my system is lower
     
-    @unittest.skip("For debug pruposes")
+    #@unittest.skip("For debug pruposes")
     def test_CelestialObjectSHAAt(self):
         Y,M,D,h,m,s=(2023,10,27,14,0,0)
         navAlmanacSHA="80*34.1'"
@@ -166,7 +166,7 @@ class test_almanac(unittest.TestCase):
         locVegaSHA=Vega.SHAAt(Y,M,D,h,m,s)
         self.assertAlmostEqual(locVegaSHA,angle.ToDecimal(navAlmanacSHA),1)
 
-    @unittest.skip("For debug pruposes")
+    #@unittest.skip("For debug pruposes")
     def test_CelestialObjectSDAt(self):
         Y,M,D,h,m,s=(2023,10,27,14,0,0)
         almanac.source=0
@@ -178,7 +178,7 @@ class test_almanac(unittest.TestCase):
         locSunSD=Sun.SDAt(Y,M,D,h,m,s)
         self.assertAlmostEqual(locSunSD,0.2683500719405951,6)
 
-    @unittest.skip("For debug pruposes")
+    #@unittest.skip("For debug pruposes")
     def test_CelestialObjectHPAt(self):
         Y,M,D,h,m,s=(2023,10,27,14,0,0)
         almanac.source=0

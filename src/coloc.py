@@ -4,7 +4,7 @@ from external.astro import JulianDate
 
 from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, CelestialObject
 from catalog import navigationStarNames
-from ephemeris import ThetaGMSTAt,SunAt,MoonAt,PlanetAt
+from ephemeris import ThetaGMSTAt,SunAt,MoonAt,PlanetAt,UTCtoUT1,UT1toTAI,TAItoTDB
 from catalog import LoadDataFor
 from angle import Normalize
 
@@ -73,7 +73,6 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
                 alpha,delta,r=MoonAt(Y,M,D,h,m,s)
             if self.type=="Planet":
                 alpha,delta,r=PlanetAt(self.name,Y,M,D,h,m,s)
-            GHA=ThetaGMSTAt(Y,M,D,h,m,s)-alpha
             d=celestialObjectDiameters[self.name]
             D=r-Rearth
             return degrees(atan(d/(2*D)))                    

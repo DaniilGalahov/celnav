@@ -128,9 +128,7 @@ setup(
         "angle",
         "astrometry",
         "timeprocessor",
-        "trigonometry",
         "equationsolver",
-        "geodesy"
         ],
 
     # Specify which Python versions you support. In contrast to the

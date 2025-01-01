@@ -55,7 +55,7 @@ def ExactTimeZone(L):
 def TimeZone(L):
     return round(ExactTimeZone(L))
 
-def LTtoGMT(Y,M,D,h,m,s,lambda_):
+def LTtoGMT(Y,M,D,h,m,s,lambda_): #TODO: check is this really need?
     JDGMT=JulianDate(Y,M,D,h,m,s)
     exactTimeZone=ExactTimeZone(lambda_)
     JDOffset=(exactTimeZone*3600)/86400.0
