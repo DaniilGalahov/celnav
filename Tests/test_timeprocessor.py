@@ -56,7 +56,7 @@ class test_timeprocessor(unittest.TestCase):
         self.assertEqual(D,21)
         self.assertEqual(h,19)
         self.assertEqual(m,16)
-        self.assertAlmostEqual(s,5,3)
+        self.assertAlmostEqual(s,45,3)
         
 if __name__ == '__main__':
     unittest.main()

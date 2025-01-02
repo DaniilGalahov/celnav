@@ -77,7 +77,7 @@ def ToLatitude(value):
         direction="S"    
     return ToString(fabs(value))+" "+direction
 
-def ToLongtitude(value):
+def ToLongitude(value):
     value=ToSigned180(value)
     direction="E"
     if value<0.0:

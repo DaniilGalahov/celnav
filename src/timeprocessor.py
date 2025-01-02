@@ -49,15 +49,15 @@ def ToString(seconds):
     return string
 
 def ExactTimeZone(L):
-    longtitude=angle.ToDecimal(L)
-    return longtitude/(360/24)
+    longitude=angle.ToDecimal(L)
+    return longitude/(360/24)
 
 def TimeZone(L):
     return round(ExactTimeZone(L))
 
-def LTtoGMT(Y,M,D,h,m,s,lambda_): #TODO: check is this really need?
+def LTtoGMT(Y,M,D,h,m,s,lambda_):
     JDGMT=JulianDate(Y,M,D,h,m,s)
-    exactTimeZone=ExactTimeZone(lambda_)
-    JDOffset=(exactTimeZone*3600)/86400.0
+    timeZone=TimeZone(lambda_)
+    JDOffset=(timeZone*3600)/86400.0
     JDUTC=JDGMT-JDOffset
     return JDtoGregorianDate(JDUTC)

@@ -35,11 +35,11 @@ class test_angle(unittest.TestCase):
         self.assertEqual(angle.ToLatitude(100.5),"79°30.0' N")
         self.assertEqual(angle.ToLatitude(-100.5),"79°30.0' S")
 
-    def test_ToLongtitude(self):
-        self.assertEqual(angle.ToLongtitude(50.5),"50°30.0' E")
-        self.assertEqual(angle.ToLongtitude(-10.5),"10°30.0' W")
-        self.assertEqual(angle.ToLongtitude(270.5),"89°30.0' W")
-        self.assertEqual(angle.ToLongtitude(-270.5),"89°30.0' E")
+    def test_ToLongitude(self):
+        self.assertEqual(angle.ToLongitude(50.5),"50°30.0' E")
+        self.assertEqual(angle.ToLongitude(-10.5),"10°30.0' W")
+        self.assertEqual(angle.ToLongitude(270.5),"89°30.0' W")
+        self.assertEqual(angle.ToLongitude(-270.5),"89°30.0' E")
 
 if __name__ == '__main__':
     unittest.main()
