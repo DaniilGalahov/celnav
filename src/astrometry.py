@@ -1,16 +1,18 @@
 import external.math as math
-from external.math import sin, cos, tan, asin, acos, atan, radians, degrees, sqrt, ceil, sign
+from external.math import sin, cos, tan, asin, acos, atan, radians, degrees, sqrt, ceil, sign, vector, dot, cross
+from external.astro import JulianDate, LSTime, Site, ROT2, ROT3, angleBetween, signedAngleBetween
+from ephemeris import TAItoTDB, UT1toTAI, UTCtoUT1
 import almanac
 import angle
 
 '''
-Below implemented multiple versions of Captain Thomas H. Sumner method to construct a Line-of-Position from a single Altitude measurement
+"FindLoP" is an implemented version of Captain Thomas H. Sumner method to construct a Line-of-Position from a single Altitude measurement
 
 Originally, idea of algorithm was taken from http://www.tecepe.com.br/nav/inav_met.htm (implementation by Omar Reis). His algorithm worked
 stable, but it was a version of Bowditch algoritm with calculation of Zn in a way independent on Hc, and without corrections mentioned in
 Nautical Almanac. Both algorithms Reis and Bowditch/NA suffered from bad precision using both my almanac or astropy.
 
-Later I implemented my own version of algorithm, providing better precision with my almanac and astropy.
+"FindToCoEE" is my own version of algorithm, providing better precision with my almanac and astropy.
 '''
 
 def ApplyElevationCorrectionTo(Hs,hoe=0,T=10,P=1010.0,HP=0,SD=0,limb=0,IC=0):
@@ -24,7 +26,7 @@ def ApplyElevationCorrectionTo(Hs,hoe=0,T=10,P=1010.0,HP=0,SD=0,limb=0,IC=0):
     Ho=Ha-R+PA-(limb*SD) #in case of measuring by lower limb of sun/moon it must be just "+SD". negative limb means lower limb, positive means upper limb;
     return Ho
 
-def FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe=0,T=10,P=1010.0,limb=0,IC=0): #based on method described in Nautical Almanac and Bowditch
+def FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe=0,T=10,P=1010.0,limb=0,IC=0): #based on method described in Nautical Almanac and Bowditch; obsolette, left for compatibility
     celestialObject = almanac.GetCelestialObject(celestialObjectName)
     HP=celestialObject.HPAt(Y,M,D,h,m,s) #horizontal parallax of celestial object
     SD=celestialObject.SDAt(Y,M,D,h,m,s) #semi-diameter of celestial object
@@ -77,3 +79,22 @@ def FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe=0,T=10,P=1010.
         else:
             Zn=180.0+Z
     return angle.Normalize(a),angle.Normalize(Zn)
+
+def FindToCoEE(phiAP,lambdaAP,Y,M,D,h,m,s,celestialObjectName,el,hoe=0,T=10,P=1010.0,HP=0,SD=0,limb=0,IC=0):
+    def IJK2SEZ(vector_rIJK,phi,thetaLST):
+        return dot(ROT2(radians(90.0-phi))@ROT3(radians(thetaLST)),vector_rIJK)
+    celestialObject = almanac.GetCelestialObject(celestialObjectName)
+    vector_rCO=celestialObject.VectorAt(Y,M,D,h,m,s)
+    HP=celestialObject.HPAt(Y,M,D,h,m,s)
+    SD=celestialObject.SDAt(Y,M,D,h,m,s)
+    thetaLST,thetaGMST=LSTime(JulianDate(Y,M,D,h,m,s)+(UTCtoUT1/86400.0),0,lambdaAP)
+    vector_rAP,vector_vAP=Site(phiAP,0,thetaLST)
+    vector_rCOfromAP=vector_rCO+vector_rAP
+    vector_rCOfromAP_SEZ=IJK2SEZ(vector_rCOfromAP,phiAP,thetaLST)
+    vector_Z_SEZ=vector([0,0,1])
+    el=ApplyElevationCorrectionTo(el,hoe,T,P,HP,SD,limb,IC)
+    elAP=90.0-angleBetween(vector_Z_SEZ,vector_rCOfromAP_SEZ)
+    deltael=el-elAP
+    vector_N_SEZ=vector([-1,0,0])
+    beta=signedAngleBetween(vector_N_SEZ,vector_rCOfromAP_SEZ,vector_Z_SEZ)
+    return deltael,beta

@@ -2,7 +2,7 @@
 from math import sqrt, fabs, ceil, sin, cos, tan, asin, acos, atan, atan2, degrees, radians, isclose
 
 #numpy
-from numpy import array as vector
+from numpy import array as vector, cross, dot
 from numpy.linalg import norm as magnitude
 
 def sign(x):
