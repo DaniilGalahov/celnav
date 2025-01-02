@@ -3,17 +3,16 @@ sys.path.append("..\src")
 
 import almanac
 from math import sin, cos, acos, tan, atan, degrees, radians
-from astrometry import CalculateIntercept
+from astrometry import FindToCoEE
 from fix import TwoObjectFix, ThreeObjectFix
-from timeprocessor import TimeZone, LTtoGMT
 import angle
 
 almanac.source=1
 
-phigce=round(33.3562)
-lambdae=round(-116.865)
+phiAP=round(33.3562)
+lambdaAP=round(-116.865)
 
-print("DR LAT:",phigce,"DR LON:",lambdae)
+print("DR",phiAP,lambdaAP)
 
 Y1=2024
 M1=12
@@ -39,13 +38,10 @@ m3=0
 s3=0
 Hs3=61.948086
 
-p1,z1=CalculateIntercept(phigce,lambdae,Y1,M1,D1,h1,m1,s1,"Mars",Hs1)
-print(p1,z1)
-p2,z2=CalculateIntercept(phigce,lambdae,Y2,M2,D2,h2,m2,s2,"Mars",Hs2)
-print(p2,z2)
-p3,z3=CalculateIntercept(phigce,lambdae,Y3,M3,D3,h3,m3,s3,"Mars",Hs3)
-print(p3,z3)
-phigc,lambda_=TwoObjectFix(phigce,lambdae,p1,z1,p2,z2)
+deltael1,beta1=FindToCoEE(phiAP,lambdaAP,Y1,M1,D1,h1,m1,s1,"Mars",Hs1)
+deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,"Mars",Hs2)
+deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,"Mars",Hs3)
+phigc,lambda_=TwoObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2)
 print("2 obj fix: ",phigc,lambda_)
-phigc,lambda_=ThreeObjectFix(phigce,lambdae,p1,z1,p2,z2,p3,z3)
+phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
 print("3 obj fix: ",phigc,lambda_)
