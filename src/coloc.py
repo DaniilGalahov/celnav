@@ -41,7 +41,7 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
             alpha,delta=RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s)
             alpha=radians(alpha)
             delta=radians(delta)
-            r=1.0; #50.0*1.495978707*1e+11 #50 AU, outer reaches of Kuiper belt. I.e., far.
+            r=1.0;
             i=r*cos(delta)*cos(alpha)
             j=r*cos(delta)*sin(alpha)
             k=r*sin(delta)
