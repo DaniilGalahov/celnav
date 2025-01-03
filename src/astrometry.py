@@ -1,9 +1,11 @@
 from external.math import *
 from external.astro import *
-from ephemeris import TAItoTDB, UT1toTAI, UTCtoUT1
-from frame import IJK2SEZ
+
 import almanac
 import angle
+from corrections import ApplyElevationCorrectionTo
+from ephemeris import TAItoTDB, UT1toTAI, UTCtoUT1
+from frame import IJK2SEZ
 
 '''
 "FindLoP" is an implemented version of Captain Thomas H. Sumner method to construct a Line-of-Position from a single Altitude measurement
@@ -14,17 +16,6 @@ Nautical Almanac. Both algorithms Reis and Bowditch/NA suffered from bad precisi
 
 "FindToCoEE" is my own version of algorithm, providing better precision with my almanac and astropy.
 '''
-
-def ApplyElevationCorrectionTo(Hs,hoe=0,T=10,P=1010.0,HP=0,SD=0,limb=0,IC=0):
-    Dip=-0.0293*sqrt(hoe) #dip (observer altitude) correction, not same as in Bowditch , but it provides data in decimal degrees for meters
-    Sum=IC+Dip
-    Ha=Hs+Sum
-    R0=0.016667/tan(radians(Ha+(7.31/(Ha+4.4)))) #Bennet formula - from https://thenauticalalmanac.com/Formulas.html#Determine_Refraction_
-    f=(P/1013.25)*(283/(273.15+T)) #temperature correction formula, from https://en.wikipedia.org/wiki/Atmospheric_refraction (modified to match valves in Bowditch)
-    R=f*R0    
-    PA=HP*cos(radians(Ha))    
-    Ho=Ha-R+PA-(limb*SD) #in case of measuring by lower limb of sun/moon it must be just "+SD". negative limb means lower limb, positive means upper limb;
-    return Ho
 
 def FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe=0,T=10,P=1010.0,limb=0,IC=0): #based on method described in Nautical Almanac and Bowditch; obsolette, left for compatibility
     celestialObject = almanac.GetCelestialObject(celestialObjectName)
@@ -96,3 +87,14 @@ def FindToCoEE(phiAP,lambdaAP,Y,M,D,h,m,s,celestialObjectName,el,hoe=0,T=10,P=10
     vector_N_SEZ=vector([-1,0,0])
     beta=signedAngleBetween(vector_N_SEZ,vector_rCOfromAP_SEZ,vector_Z_SEZ)
     return deltael,beta
+
+def ElevationFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s):
+    celestialObject = almanac.GetCelestialObject(celestialObjectName)
+    vector_rCO=celestialObject.VectorAt(Y,M,D,h,m,s)
+    thetaLST,thetaGMST=LSTime(JulianDate(Y,M,D,h,m,s)+(UTCtoUT1/86400.0),0,lambda_)
+    vector_rSite,vector_vSite=Site(phi,0,thetaLST)
+    vector_rCOfromSite=vector_rCO+vector_rSite
+    vector_rCOfromSite_SEZ=IJK2SEZ(vector_rCOfromSite,phi,thetaLST)
+    vector_Z_SEZ=vector([0,0,1])
+    el=90.0-angleBetween(vector_Z_SEZ,vector_rCOfromSite_SEZ)
+    return el
