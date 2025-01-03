@@ -1,5 +1,5 @@
-from external.math import vector
-from external.astro import JulianDate, LSTime, Sun, GeocentricRadec, Moon, PlanetRV, IAU2000CIO, IAU76FK5, HMSToTime
+from external.math import *
+from external.astro import *
 
 navigationPlanets=["Venus",
                    "Mars",

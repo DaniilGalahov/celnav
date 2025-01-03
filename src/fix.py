@@ -1,4 +1,5 @@
-from external.math import sin, cos, degrees, radians
+from external.math import *
+
 import equationsolver as solve
 
 def FixLoPIntersection(phigce,lambdae,p1,z1,p2,z2): #obsolette, left for compatibility

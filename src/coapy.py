@@ -1,6 +1,6 @@
 #Celestial object implementation for working with astropy
-from external.math import degrees, atan, vector, magnitude
-from external.astro import Time, get_body, solar_system_ephemeris, Angle, EarthLocation, SkyCoord, Distance, u
+from external.math import *
+from external.astro import *
 from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, CelestialObject
 from catalog import navigationStarNames
 from timeprocessor import YMDhmsToAPyTime

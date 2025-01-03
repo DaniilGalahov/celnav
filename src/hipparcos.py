@@ -1,4 +1,4 @@
-from external.modules import requests, re
+from external.modules import *
 
 databaseSearchUri="https://hipparcos-tools.cosmos.esa.int/cgi-bin/HIPcatalogueSearch.pl?hipId="
 

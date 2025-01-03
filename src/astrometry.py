@@ -1,7 +1,7 @@
-import external.math as math
-from external.math import sin, cos, tan, asin, acos, atan, radians, degrees, sqrt, ceil, sign, vector, dot, cross
-from external.astro import JulianDate, LSTime, Site, ROT2, ROT3, angleBetween, signedAngleBetween
+from external.math import *
+from external.astro import *
 from ephemeris import TAItoTDB, UT1toTAI, UTCtoUT1
+from frame import IJK2SEZ
 import almanac
 import angle
 
@@ -81,8 +81,6 @@ def FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe=0,T=10,P=1010.
     return angle.Normalize(a),angle.Normalize(Zn)
 
 def FindToCoEE(phiAP,lambdaAP,Y,M,D,h,m,s,celestialObjectName,el,hoe=0,T=10,P=1010.0,HP=0,SD=0,limb=0,IC=0):
-    def IJK2SEZ(vector_rIJK,phi,thetaLST):
-        return dot(ROT2(radians(90.0-phi))@ROT3(radians(thetaLST)),vector_rIJK)
     celestialObject = almanac.GetCelestialObject(celestialObjectName)
     vector_rCO=celestialObject.VectorAt(Y,M,D,h,m,s)
     HP=celestialObject.HPAt(Y,M,D,h,m,s)

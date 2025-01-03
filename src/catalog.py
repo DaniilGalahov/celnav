@@ -1,4 +1,4 @@
-from external.modules import os, json
+from external.modules import *
 
 import simbad
 import hipparcos

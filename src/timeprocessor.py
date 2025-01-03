@@ -1,6 +1,7 @@
 #time functions for navigational applications
-from external.modules import re
-from external.astro import JulianDate, JDtoGregorianDate
+from external.modules import *
+from external.astro import *
+
 import angle
 
 def APyTimeToYMDhms(aPyTime):
