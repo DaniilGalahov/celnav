@@ -8,15 +8,10 @@ def FixLoPIntersection(phigce,lambdae,p1,z1,p2,z2): #obsolette, left for compati
     lambda_=lambdae+(x/60.0/cos(radians(phigc)))
     return phigc,lambda_
 
-def LambdaCorrection(x):
-    y=(-0.00000000338486755329*pow(x,3))+(-0.00000006557786127051*pow(x,2))+(0.00009836819808222858*pow(x,1))+(0.00085718742396453271)
-    return y 
-
 def FixToCoEEIntersection(phiAP,lambdaAP,p1,gamma1,p2,gamma2):
     y,x=solve.LinEq22(cos(radians(gamma1)),sin(radians(gamma1)),p1,cos(radians(gamma2)),sin(radians(gamma2)),p2)
     phigc=phiAP+y
-    lambda_=lambdaAP-(x/cos(radians(phigc)))
-    lambda_-=LambdaCorrection(lambda_)
+    lambda_=lambdaAP-(x/cos(radians(phigc)))    
     return phigc,lambda_
 
 def TwoObjectFix(phiAP,lambdaAP,p1,gamma1,p2,gamma2):
