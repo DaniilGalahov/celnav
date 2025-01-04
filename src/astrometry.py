@@ -3,7 +3,6 @@ from external.astro import *
 
 import almanac
 import angle
-from corrections import ApplyElevationCorrectionTo
 from ephemeris import TAItoTDB, UT1toTAI, UTCtoUT1
 from frame import IJK2SEZ
 
@@ -16,6 +15,17 @@ Nautical Almanac. Both algorithms Reis and Bowditch/NA suffered from bad precisi
 
 "FindToCoEE" is my own version of algorithm, providing better precision with my almanac and astropy.
 '''
+
+def ApplyElevationCorrectionTo(Hs,hoe=0,T=10,P=1010.0,HP=0,SD=0,limb=0,IC=0): #obsolette, left for compatibility
+    Dip=-0.0293*sqrt(hoe) #dip (observer altitude) correction, not same as in Bowditch , but it provides data in decimal degrees for meters
+    Sum=IC+Dip
+    Ha=Hs+Sum
+    R0=0.016667/tan(radians(Ha+(7.31/(Ha+4.4)))) #Bennet formula - from https://thenauticalalmanac.com/Formulas.html#Determine_Refraction_
+    f=(P/1013.25)*(283/(273.15+T)) #temperature correction formula, from https://en.wikipedia.org/wiki/Atmospheric_refraction (modified to match valves in Bowditch)
+    R=f*R0
+    PA=HP*cos(radians(Ha))
+    Ho=Ha-R+PA-(limb*SD) #in case of measuring by lower limb of sun/moon it must be just "+SD". negative limb means lower limb, positive means upper limb;
+    return Ho
 
 def FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe=0,T=10,P=1010.0,limb=0,IC=0): #based on method described in Nautical Almanac and Bowditch; obsolette, left for compatibility
     celestialObject = almanac.GetCelestialObject(celestialObjectName)
@@ -71,17 +81,28 @@ def FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe=0,T=10,P=1010.
             Zn=180.0+Z
     return angle.Normalize(a),angle.Normalize(Zn)
 
-def FindToCoEE(phiAP,lambdaAP,Y,M,D,h,m,s,celestialObjectName,el,hoe=0,T=10,P=1010.0,HP=0,SD=0,limb=0,IC=0):
+def ElevationCorrection(celestialObjectName,Y,M,D,h,m,s,Hs,IC=0,hoe=0,T=10,P=1010.0,limb=0):
+    Dip=-0.0293*sqrt(hoe) #dip (observer altitude) correction, not same as in Bowditch , but it provides data in decimal degrees for meters
+    Sum=IC+Dip
+    Ha=Hs+Sum
+    R0=0.016667/tan(radians(Ha+(7.31/(Ha+4.4)))) #Bennet formula - from https://thenauticalalmanac.com/Formulas.html#Determine_Refraction_
+    f=(P/1013.25)*(283/(273.15+T)) #temperature correction formula, from https://en.wikipedia.org/wiki/Atmospheric_refraction (modified to match valves in Bowditch)
+    R=f*R0
+    celestialObject = almanac.GetCelestialObject(celestialObjectName)
+    HP=celestialObject.HPAt(Y,M,D,h,m,s)
+    PA=HP*cos(radians(Ha))
+    SD=celestialObject.SDAt(Y,M,D,h,m,s)
+    Ho=Ha-R+PA-(limb*SD) #in case of measuring by lower limb of sun/moon it must be just "+SD". negative limb means lower limb, positive means upper limb;
+    return Ho-Hs
+
+def FindToCoEE(phiAP,lambdaAP,Y,M,D,h,m,s,celestialObjectName,el): #consuming ONLY ALREADY CORRECTED elevation
     celestialObject = almanac.GetCelestialObject(celestialObjectName)
     vector_rCO=celestialObject.VectorAt(Y,M,D,h,m,s)
-    HP=celestialObject.HPAt(Y,M,D,h,m,s)
-    SD=celestialObject.SDAt(Y,M,D,h,m,s)
     thetaLST,thetaGMST=LSTime(JulianDate(Y,M,D,h,m,s)+(UTCtoUT1/86400.0),0,lambdaAP)
     vector_rAP,vector_vAP=Site(phiAP,0,thetaLST)
     vector_rCOfromAP=vector_rCO+vector_rAP
     vector_rCOfromAP_SEZ=IJK2SEZ(vector_rCOfromAP,phiAP,thetaLST)
     vector_Z_SEZ=vector([0,0,1])
-    el=ApplyElevationCorrectionTo(el,hoe,T,P,HP,SD,limb,IC)
     elAP=90.0-angleBetween(vector_Z_SEZ,vector_rCOfromAP_SEZ)
     deltael=el-elAP
     vector_N_SEZ=vector([-1,0,0])
