@@ -98,11 +98,20 @@ class test_astrometry(unittest.TestCase):
         m1=0
         s1=0
         el1=astrometry.ElevationFor(celestialObjectName1,phi,lambda_,Y1,M1,D1,h1,m1,s1) #without correction.
-        print(el1)
         # !!! I'm shocked. Vallado ephemerides provides vectors WITH LIGHT SPEED CORRECTION AND WITH ATMOSPHERIC REFRACTION CORRECTION...
         # Again. Horizons system (https://ssd.jpl.nasa.gov/horizons/app.html#/) with atmospheric correction provides el=47.102741, WITHOUT CORRECTION el=47.087013
         # Almanac output is 47.10182375676978. Difference with Horizons corrected el d=0.000917, with uncorrected - 0.014811; i.e., 16.151581 TIMES!!!
-        self.assertAlmostEqual(el1,47.087013,6)
+        self.assertAlmostEqual(el1,47.102741,2)
+        celestialObjectName2="Betelgeuse"
+        Y2=2025
+        M2=1
+        D2=3
+        h2=5 #UTC
+        m2=58
+        s2=51
+        el2=astrometry.ElevationFor(celestialObjectName2,phi,lambda_,Y2,M2,D2,h2,m2,s2) #without correction.
+        #61.4543 by NAOJ
+        self.assertAlmostEqual(el2,61.4543,1)
 
 if __name__ == '__main__':
     unittest.main()

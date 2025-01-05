@@ -27,9 +27,9 @@ class test_almanac(unittest.TestCase):
         self.assertAlmostEqual(vector_r[2],-97187375.47887833,0)
         Vega=almanac.GetCelestialObject("Vega")
         vector_r=Vega.VectorAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(vector_r[0],0.12510374635269922,3)
-        self.assertAlmostEqual(vector_r[1],-0.7693908454554903,3)
-        self.assertAlmostEqual(vector_r[2],0.6264078380558512,3)
+        self.assertAlmostEqual(vector_r[0],1403562344373.0208,3)
+        self.assertAlmostEqual(vector_r[1],-8632692421336.986,3)
+        self.assertAlmostEqual(vector_r[2],7027905144326.607,3)
         almanac.source=1
         Sun=almanac.GetCelestialObject("Sun")
         vector_r=Sun.VectorAt(Y,M,D,h,m,s)
@@ -48,9 +48,9 @@ class test_almanac(unittest.TestCase):
         self.assertAlmostEqual(vector_r[2],-97855303.05379859,6)
         Vega=almanac.GetCelestialObject("Vega")
         vector_r=Vega.VectorAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(vector_r[0],0.12510374635269922,6)
-        self.assertAlmostEqual(vector_r[1],-0.7693908454554903,6)
-        self.assertAlmostEqual(vector_r[2],0.6264078380558512,6)
+        self.assertAlmostEqual(vector_r[0],1403644055310.8406,6)
+        self.assertAlmostEqual(vector_r[1],-8632442416239.557,6)
+        self.assertAlmostEqual(vector_r[2],7028195907194.249,6)
 
     #@unittest.skip("For debug pruposes")
     def test_GHAAriesAt(self):

@@ -19,8 +19,9 @@ def RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s):
     delta0=radians(delta0)
     mu_alpha=radians(mu_alpha)
     mu_delta=radians(mu_delta)
-    JD=JulianDate(Y,M,D,h,m,s)
-    deltatyears=(JD-2448349.0625)/365.25 
+    deltaT=UTCtoUT1+UT1toTAI+TAItoTDB
+    JD=JulianDate(Y,M,D,h,m,s)-(deltaT/86400.0)
+    deltatyears=(JD-2448349.0625)/365.25
     alpha=alpha0+((mu_alpha/3600/1000)*cos(delta0)*deltatyears)
     delta=delta0+((mu_delta/3600/1000)*deltatyears)
     return degrees(alpha),degrees(delta)
@@ -41,7 +42,7 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
             alpha,delta=RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s)
             alpha=radians(alpha)
             delta=radians(delta)
-            r=1.0;
+            r=75*1.495978707e+11 #75 AU, position outside the Kuiper belt. I.e., FAR
             i=r*cos(delta)*cos(alpha)
             j=r*cos(delta)*sin(alpha)
             k=r*sin(delta)

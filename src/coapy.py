@@ -25,7 +25,8 @@ class CelestialObjectFromAstroPy(CelestialObject):
             bodyCoordinates=SkyCoord.from_name(self.name,frame='icrs')
             bodyCoordinates.representation_type='cartesian'
             vector_r=vector([bodyCoordinates.x.value,bodyCoordinates.y.value,bodyCoordinates.z.value])
-            return vector_r/magnitude(vector_r)
+            r=75*1.495978707e+11 #75 AU, position outside the Kuiper belt. I.e., FAR
+            return (vector_r/magnitude(vector_r))*r
 
     def GHAAt(self,Y,M,D,h,m,s):
         time=Time(YMDhmsToAPyTime(Y,M,D,h,m,s))

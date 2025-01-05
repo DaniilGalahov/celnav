@@ -101,12 +101,13 @@ def FindToCoEE(phiAP,lambdaAP,Y,M,D,h,m,s,celestialObjectName,el): #consuming ON
     thetaLST,thetaGMST=LSTime(JulianDate(Y,M,D,h,m,s)+(UTCtoUT1/86400.0),0,lambdaAP)
     vector_rAP,vector_vAP=Site(phiAP,0,thetaLST)
     vector_rCOfromAP=vector_rCO+vector_rAP
-    vector_rCOfromAP_SEZ=IJK2SEZ(vector_rCOfromAP,phiAP,thetaLST)
+    vector_dCOfromAP=vector_rCOfromAP/magnitude(vector_rCOfromAP)
+    vector_dCOfromAP_SEZ=IJK2SEZ(vector_dCOfromAP,phiAP,thetaLST)
     vector_Z_SEZ=vector([0,0,1])
-    elAP=90.0-angleBetween(vector_Z_SEZ,vector_rCOfromAP_SEZ)
+    elAP=90.0-angleBetween(vector_Z_SEZ,vector_dCOfromAP_SEZ)
     deltael=el-elAP
     vector_N_SEZ=vector([-1,0,0])
-    beta=signedAngleBetween(vector_N_SEZ,vector_rCOfromAP_SEZ,vector_Z_SEZ)
+    beta=signedAngleBetween(vector_N_SEZ,vector_dCOfromAP_SEZ,vector_Z_SEZ)
     return deltael,beta
 
 def ElevationFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s):
@@ -115,7 +116,8 @@ def ElevationFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s):
     thetaLST,thetaGMST=LSTime(JulianDate(Y,M,D,h,m,s)+(UTCtoUT1/86400.0),0,lambda_)
     vector_rSite,vector_vSite=Site(phi,0,thetaLST)
     vector_rCOfromSite=vector_rCO+vector_rSite
-    vector_rCOfromSite_SEZ=IJK2SEZ(vector_rCOfromSite,phi,thetaLST)
+    vector_dCOfromSite=vector_rCOfromSite/magnitude(vector_rCOfromSite)
+    vector_dCOfromSite_SEZ=IJK2SEZ(vector_dCOfromSite,phi,thetaLST)
     vector_Z_SEZ=vector([0,0,1])
-    el=90.0-angleBetween(vector_Z_SEZ,vector_rCOfromSite_SEZ)
+    el=90.0-angleBetween(vector_Z_SEZ,vector_dCOfromSite_SEZ)
     return el
