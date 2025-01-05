@@ -13,6 +13,8 @@ celestialObjectDiameters={"Sun":1392700.0,
                           "Saturn":116460.0}
 
 Rearth=6378.137 #radius of Earth, km (from Vallado book)
+SMADione=527108.0 #radius of Saturn rings (from Wikipedia: https://en.wikipedia.org/wiki/Saturn)
+SMAPhobos=9377.0 #SMA of Phobos (from Wikipedia: https://en.wikipedia.org/wiki/Moons_of_Mars)
 
 class CelestialObject:
     def __init__(self, name): #name of celestial object must start from capital letter

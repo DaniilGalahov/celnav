@@ -2,7 +2,7 @@
 from external.math import *
 from external.astro import *
 
-from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, CelestialObject
+from celestialobject import navigationPlanetNames, celestialObjectDiameters, Rearth, SMADione, SMAPhobos, CelestialObject
 from catalog import navigationStarNames
 from ephemeris import UTCtoUT1,UT1toTAI,TAItoTDB,ThetaGMSTAt,VectorToSunAt,VectorToMoonAt,VectorToPlanetAt,SunRADecAt,MoonRADecAt,PlanetRADecAt
 from catalog import LoadDataFor
@@ -33,11 +33,19 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
             if self.type=="Sun":
                 vector_r=VectorToSunAt(Y,M,D,h,m,s)
             if self.type=="Moon":
-                vector_r0=VectorToMoonAt(Y,M,D,h,m,s)
+                vector_r=VectorToMoonAt(Y,M,D,h,m,s)
                 SD=self.SDAt(Y,M,D,h,m,s)
-                vector_r=dot(ROT2(radians(2*SD))@ROT3(radians(-2*SD)),vector_r0)
+                vector_r=dot(ROT2(radians(2*SD))@ROT3(radians(-2*SD)),vector_r)
             if self.type=="Planet":
                 vector_r=VectorToPlanetAt(self.name,Y,M,D,h,m,s)
+                if self.name=="Mars":
+                    c=SMAPhobos/(0.5*celestialObjectDiameters[self.name])
+                    SD=self.SDAt(Y,M,D,h,m,s)
+                    vector_r=dot(ROT2(radians(2*c*SD))@ROT3(radians(-2*c*SD)),vector_r)
+                if self.name=="Saturn":
+                    c=SMADione/(0.5*celestialObjectDiameters[self.name])
+                    SD=self.SDAt(Y,M,D,h,m,s)
+                    vector_r=dot(ROT2(radians(2*c*SD))@ROT3(radians(-2*c*SD)),vector_r)
             return vector_r               
         else:
             alpha0,delta0,mu_alpha,mu_delta=LoadDataFor(self.name)
