@@ -9,7 +9,11 @@ from utility import HMSToTime
 
 import almanac
 
-deltaT=32.184+37.0-0.0 #IERS correction
+TAItoTDB=32.184 #from precision time to barycentric time (required for calculation of ephemerides)
+UT1toTAI=37.0 #from UT1 to precision atomic time
+UTCtoUT1=-0.0 #IERS correction for 2023-2024, from civilian time to UT1
+
+deltaT=UTCtoUT1+UT1toTAI+TAItoTDB #IERS correction
 
 GHAAriesNA=degrees(DMStoRad(245,40.4,0))
 print("Nautical almanac GHAAries: ",GHAAriesNA)
@@ -17,7 +21,7 @@ print("Nautical almanac GHAAries: ",GHAAriesNA)
 GHAAriesAP=almanac.GHAOfAriesAt(2023,10,27,14,0,0)
 print("AstroPy GHAAries: ",GHAAriesAP," Deviation from NA: ",GHAAriesNA-GHAAriesAP)
 
-thetaLST,thetaGMST=LSTime(JulianDate(2023,10,27,14,0,0),0,0) #calculating without IERS correction because it's already counted in polynominal
+thetaLST,thetaGMST=LSTime(JulianDate(2023,10,27,14,0,0)+(UTCtoUT1/86400.0),0,0) #calculating without IERS correction because it's already counted in polynominal
 print("Vallado GHAAries: ",thetaGMST," Deviation from NA: ",GHAAriesNA-thetaGMST)
 
 print("==========")
