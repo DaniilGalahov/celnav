@@ -23,8 +23,11 @@ def ApplyElevationCorrectionTo(Hs,hoe=0,T=10,P=1010.0,HP=0,SD=0,limb=0,IC=0): #o
     R0=0.016667/tan(radians(Ha+(7.31/(Ha+4.4)))) #Bennet formula - from https://thenauticalalmanac.com/Formulas.html#Determine_Refraction_
     f=(P/1013.25)*(283/(273.15+T)) #temperature correction formula, from https://en.wikipedia.org/wiki/Atmospheric_refraction (modified to match valves in Bowditch)
     R=f*R0
-    PA=HP*cos(radians(Ha))
-    Ho=Ha-R+PA-(limb*SD) #in case of measuring by lower limb of sun/moon it must be just "+SD". negative limb means lower limb, positive means upper limb;
+    PA=HP*sin(radians(Ha))
+    LC=0
+    if limb!=0:
+        LC=-sign(limb)*SD
+    Ho=Ha-R+PA+LC #negative limb means lower limb, positive means upper limb;
     return Ho
 
 def FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe=0,T=10,P=1010.0,limb=0,IC=0): #based on method described in Nautical Almanac and Bowditch; obsolette, left for compatibility
@@ -92,7 +95,10 @@ def ElevationCorrection(celestialObjectName,Y,M,D,h,m,s,Hs,IC=0,hoe=0,T=10,P=101
     HP=celestialObject.HPAt(Y,M,D,h,m,s)
     PA=HP*cos(radians(Ha))
     SD=celestialObject.SDAt(Y,M,D,h,m,s)
-    Ho=Ha-R+PA-(limb*SD) #in case of measuring by lower limb of sun/moon it must be just "+SD". negative limb means lower limb, positive means upper limb;
+    LC=0
+    if limb!=0:
+        LC=-sign(limb)*SD
+    Ho=Ha-R+PA+LC #negative limb means lower limb, positive means upper limb;
     return Ho-Hs
 
 def FindToCoEE(phiAP,lambdaAP,Y,M,D,h,m,s,celestialObjectName,el): #consuming ONLY ALREADY CORRECTED elevation

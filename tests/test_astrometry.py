@@ -73,8 +73,8 @@ class test_astrometry(unittest.TestCase):
         self.assertAlmostEqual(Hc,Ho-Hs,3)
 
     def test_FindToCoEE(self):
-        phiAP=round(33.3562) #Palomar observatory
-        lambdaAP=round(-116.865)
+        phiAP=round(33.3562811) #Palomar observatory (precisely)
+        lambdaAP=round(-116.8651156)
         celestialObjectName1="Mars"
         Y1=2024
         M1=12

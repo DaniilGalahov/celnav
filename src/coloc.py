@@ -20,7 +20,7 @@ def RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s):
     mu_alpha=radians(mu_alpha)
     mu_delta=radians(mu_delta)
     deltaT=UTCtoUT1+UT1toTAI+TAItoTDB
-    JD=JulianDate(Y,M,D,h,m,s)-(deltaT/86400.0)
+    JD=JulianDate(Y,M,D,h,m,s)+(deltaT/86400.0)
     deltatyears=(JD-2448349.0625)/365.25
     alpha=alpha0+((mu_alpha/3600/1000)*cos(delta0)*deltatyears)
     delta=delta0+((mu_delta/3600/1000)*deltatyears)
@@ -81,7 +81,7 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
         if self.type=="Star":
             alpha0,delta0,mu_alpha,mu_delta=LoadDataFor(self.name)
             alpha,delta=RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s)
-            SHA=360.0-alpha
+            SHA=Normalize(360.0-alpha)
             return SHA
         else:
             return 0
