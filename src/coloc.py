@@ -33,7 +33,9 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
             if self.type=="Sun":
                 vector_r=VectorToSunAt(Y,M,D,h,m,s)
             if self.type=="Moon":
-                vector_r=VectorToMoonAt(Y,M,D,h,m,s)
+                vector_r0=VectorToMoonAt(Y,M,D,h,m,s)
+                SD=self.SDAt(Y,M,D,h,m,s)
+                vector_r=dot(ROT2(radians(2*SD))@ROT3(radians(-2*SD)),vector_r0)
             if self.type=="Planet":
                 vector_r=VectorToPlanetAt(self.name,Y,M,D,h,m,s)
             return vector_r               
