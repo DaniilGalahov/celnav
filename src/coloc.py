@@ -56,7 +56,13 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
             i=r*cos(delta)*cos(alpha)
             j=r*cos(delta)*sin(alpha)
             k=r*sin(delta)
-            return vector([i,j,k])
+            vector_r=vector([i,j,k])
+            k=0.000301134 #calculating rotation offset
+            JD0=2451305.110930736
+            JD=JulianDate(Y,M,D,h,m,s)
+            a=(JD-JD0)*k
+            vector_r=dot(ROT2(radians(a)),vector_r)
+            return vector_r
     
     def GHAAt(self,Y,M,D,h,m,s):
         if not self.type=="Star":
