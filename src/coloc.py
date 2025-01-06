@@ -26,6 +26,33 @@ def RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s):
     delta=delta0+((mu_delta/3600/1000)*deltatyears)
     return degrees(alpha),degrees(delta)
 
+def PrecessionAnglesFor(Y,M,D,h,m,s): #following Meeus; for J2000+ only
+    deltaT=UTCtoUT1+UT1toTAI+TAItoTDB
+    JD=JulianDate(Y,M,D,h,m,s)+(deltaT/86400.0)
+    T=(JD-2451545.0)/36525
+    zeta=Normalize(((2306.2181*pow(T,1))+(0.30188*pow(T,2))+(0.017998*pow(T,3)))/3600.0)
+    z=Normalize(((2306.2181*pow(T,1))+(1.09468*pow(T,2))+(0.018203*pow(T,3)))/3600.0)
+    theta=Normalize(((2004.3109*pow(T,1))+(-0.42665*pow(T,2))+(-0.041833*pow(T,3)))/3600.0)
+    return zeta,z,theta
+
+def PrecessionMatrixFor(zeta,z,theta):
+    return ROT3(radians(-z))@ROT2(radians(theta))@ROT3(radians(-zeta)) #Idea by ChatGPT
+
+def NutationAnglesFor(Y,M,D,h,m,s): #follow Meeus (ChatGPT tried to follow Meeus but did not understand details)
+    deltaT=UTCtoUT1+UT1toTAI+TAItoTDB
+    JD=JulianDate(Y,M,D,h,m,s)+(deltaT/86400.0)
+    T=(JD-2451545.0)/36525
+    Omega=radians(Normalize(125.04452+(-1934.136261*pow(T,1))+(0.0020708*pow(T,2))+(pow(T,3)/450000))) #GPT made a mistake here - mess zeros
+    LSun=radians(Normalize(280.4665+(36000.7698*T)))
+    LMoon=radians(Normalize(218.3165+(481267.8813*T))) ##GPT made a mistake here - totally wrong numbers
+    deltaPsi=Normalize(((-17.20*sin(Omega))+(-1.32*sin(2*LSun))+(-0.23*sin(2*LMoon))+(0.21*sin(2*Omega)))/3600.0) #GPT made a mistake here - replaced the numbers
+    deltaEpsilon=Normalize(((9.20*cos(Omega))+(0.57*cos(2*LSun))+(0.10*cos(2*LMoon))+(-0.09*cos(2*Omega)))/3600.0)
+    epsilon=Normalize(23.439291-(0.0130042*T)) #2 last terms omitted
+    return deltaPsi,deltaEpsilon,epsilon
+
+def NutationMatrixFor(deltaPsi,deltaEpsilon,epsilon):
+    return ROT1(radians(-epsilon))@ROT3(radians(deltaPsi))@ROT1(radians(epsilon+deltaEpsilon)) #Idea by ChatGPT
+
 class CelestialObjectFromLocalCatalog(CelestialObject):
     def VectorAt(self,Y,M,D,h,m,s):
         if not self.type=="Star":
@@ -35,7 +62,9 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
             if self.type=="Moon":
                 vector_r=VectorToMoonAt(Y,M,D,h,m,s)
                 SD=self.SDAt(Y,M,D,h,m,s)
-                vector_r=dot(ROT2(radians(2*SD))@ROT3(radians(-2*SD)),vector_r)
+                deltaPsi,deltaEpsilon,epsilon=NutationAnglesFor(Y,M,D,h,m,s)
+                N=NutationMatrixFor(deltaPsi,deltaEpsilon,epsilon)
+                vector_r=dot(N@ROT2(radians(2*SD))@ROT3(radians(-2*SD)),vector_r)
             if self.type=="Planet":
                 vector_r=VectorToPlanetAt(self.name,Y,M,D,h,m,s)
                 if self.name=="Mars":
@@ -57,11 +86,9 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
             j=r*cos(delta)*sin(alpha)
             k=r*sin(delta)
             vector_r=vector([i,j,k])
-            k=0.000301134 #calculating rotation offset
-            JD0=2451305.110930736
-            JD=JulianDate(Y,M,D,h,m,s)
-            a=(JD-JD0)*k
-            vector_r=dot(ROT2(radians(a)),vector_r)
+            zeta,z,theta=PrecessionAnglesFor(Y,M,D,h,m,s)
+            P=PrecessionMatrixFor(zeta,z,theta)
+            vector_r=dot(P,vector_r)
             return vector_r
     
     def GHAAt(self,Y,M,D,h,m,s):
