@@ -62,19 +62,23 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
             if self.type=="Moon":
                 vector_r=VectorToMoonAt(Y,M,D,h,m,s)
                 SD=self.SDAt(Y,M,D,h,m,s)
+                HP=self.HPAt(Y,M,D,h,m,s)
                 deltaPsi,deltaEpsilon,epsilon=NutationAnglesFor(Y,M,D,h,m,s)
                 N=NutationMatrixFor(deltaPsi,deltaEpsilon,epsilon)
-                vector_r=dot(N@ROT2(radians(2*SD))@ROT3(radians(-2*SD)),vector_r)
+                vector_r=dot(N@ROT2(radians(HP*2.0*SD))@ROT3(radians(-2.0*SD)),vector_r)
+                Dr=(magnitude(vector_r)+Rearth+celestialObjectDiameters[self.name])/magnitude(vector_r) #distance to the Moon measured with laser from Earth surface?
+                vector_r=vector_r*Dr
             if self.type=="Planet":
                 vector_r=VectorToPlanetAt(self.name,Y,M,D,h,m,s)
                 if self.name=="Mars":
                     c=SMAPhobos/(0.5*celestialObjectDiameters[self.name])
                     SD=self.SDAt(Y,M,D,h,m,s)
-                    vector_r=dot(ROT2(radians(2*c*SD))@ROT3(radians(-2*c*SD)),vector_r)
+                    vector_r=dot(ROT2(radians(2*c*SD))@ROT3(radians(-2*c*SD)),vector_r) #they threatening not the Mars itself, but system Mars-Phobos?
                 if self.name=="Saturn":
-                    c=SMADione/(0.5*celestialObjectDiameters[self.name])
+                    c3=SMADione/(0.5*celestialObjectDiameters[self.name])
+                    c2=0.5*c3                    
                     SD=self.SDAt(Y,M,D,h,m,s)
-                    vector_r=dot(ROT2(radians(2*c*SD))@ROT3(radians(-2*c*SD)),vector_r)
+                    vector_r=dot(ROT2(radians(2.0*c2*SD))@ROT3(radians(-2.0*c3*SD)),vector_r)
             return vector_r               
         else:
             alpha0,delta0,mu_alpha,mu_delta=LoadDataFor(self.name)
