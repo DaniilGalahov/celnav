@@ -218,7 +218,7 @@ h1=12
 m1=0
 s1=0
 Hs1=31.496362
-Hs1+=ElevationCorrection(celestialObjectName,Y1,M1,D1,h1,m1,s1,Hs1,limb=-1)
+Hs1+=ElevationCorrection(celestialObjectName,Y1,M1,D1,h1,m1,s1,Hs1)
 
 Y2=2024
 M2=12
@@ -227,7 +227,7 @@ h2=13
 m2=0
 s2=0
 Hs2=36.480069
-Hs2+=ElevationCorrection(celestialObjectName,Y2,M2,D2,h2,m2,s2,Hs2,limb=-1)
+Hs2+=ElevationCorrection(celestialObjectName,Y2,M2,D2,h2,m2,s2,Hs2)
 
 Y3=2024
 M3=12
@@ -236,7 +236,7 @@ h3=14
 m3=0
 s3=0
 Hs3=38.267456
-Hs3+=ElevationCorrection(celestialObjectName,Y3,M3,D3,h3,m3,s3,Hs3,limb=-1)
+Hs3+=ElevationCorrection(celestialObjectName,Y3,M3,D3,h3,m3,s3,Hs3)
 
 deltael1,beta1=FindToCoEE(phiAP,lambdaAP,Y1,M1,D1,h1,m1,s1,celestialObjectName,Hs1)
 deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,Hs2)
