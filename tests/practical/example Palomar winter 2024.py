@@ -8,15 +8,18 @@ from fix import TwoObjectFix, ThreeObjectFix
 
 from external.astro import *
 
+print("Palomar observatory (winter 2024) practical test.")
+
 almanac.source=1
 
 phi0=33.3562811 #Palomar observatory (precisely)
 lambda0=-116.8651156
+print("OP:",phi0,lambda0)
 
 phiAP=round(phi0)
 lambdaAP=round(lambda0)
 
-print("DR",phiAP,lambdaAP)
+print("DR:",phiAP,lambdaAP)
 
 #---------- Sun ----------
 celestialObjectName="Sun"
@@ -53,7 +56,7 @@ deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,H
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
 phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
 d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,phigc,lambda_,round(d,3))
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
 
 
 #---------- Moon ----------
@@ -91,7 +94,7 @@ deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,H
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
 phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
 d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,phigc,lambda_,round(d,3))
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
 
 
 #---------- Venus ----------
@@ -129,7 +132,7 @@ deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,H
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
 phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
 d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,phigc,lambda_,round(d,3))
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
 
 
 #---------- Mars ----------
@@ -167,7 +170,7 @@ deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,H
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
 phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
 d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,phigc,lambda_,round(d,3))
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
 
 
 #---------- Jupiter ----------
@@ -205,7 +208,7 @@ deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,H
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
 phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
 d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,phigc,lambda_,round(d,3))
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
 
 
 #---------- Saturn ----------
@@ -243,7 +246,7 @@ deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,H
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
 phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
 d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,phigc,lambda_,round(d,3))
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
 
 
 #---------- Betelgeuse ----------
@@ -284,9 +287,7 @@ deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,H
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
 phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
 d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,phigc,lambda_,round(d,3))
-
-#JD24=JulianDate(Y3,M3,D3,h3,m3,s3)
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
 
 
 #---------- Betelgeuse 2010 ----------
@@ -327,4 +328,4 @@ deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,H
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
 phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
 d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,phigc,lambda_,round(d,3))
+print(celestialObjectName,"y.2010",round(phigc,9),round(lambda_,9),round(d,3))
