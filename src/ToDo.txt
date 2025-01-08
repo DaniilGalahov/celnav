@@ -1,0 +1,6 @@
+TODO:
+1) implement precession and nutation corrections for RaDec
+2) rewrite precession and nutation systems for usage in astropy version (or apply there its own correction)
+3) implement star compass and correction of magnetic declination
+4) implement system to calculate great circle flights
+5) implement new precise ephemeris for Moon
