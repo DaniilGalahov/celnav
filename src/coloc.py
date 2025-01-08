@@ -61,20 +61,18 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
                 vector_r=VectorToSunAt(Y,M,D,h,m,s)
             if self.type=="Moon":
                 vector_r=VectorToMoonAt(Y,M,D,h,m,s)
-                r=magnitude(vector_r)
-                d=celestialObjectDiameters[self.name]
                 SD=self.SDAt(Y,M,D,h,m,s)
-                deltaPsi,deltaEpsilon,epsilon=NutationAnglesFor(Y,M,D,h,m,s)
-                N=NutationMatrixFor(deltaPsi,deltaEpsilon,epsilon)
-                Dr=(Rearth+r+(0.5*d))/r #distance to the Moon measured with laser from Earth surface?
-                vector_r=dot(N@ROT2(radians(2.0*SD))@ROT3(radians(-2.0*SD)),vector_r)*Dr
+                vector_r=dot(ROT2(radians(2.0*SD))@ROT3(radians(-2.0*SD)),vector_r)
             if self.type=="Planet":
                 vector_r=VectorToPlanetAt(self.name,Y,M,D,h,m,s)
+                if self.name=="Venus":
+                    SD=self.SDAt(Y,M,D,h,m,s)
+                    vector_r=dot(ROT2(radians(-SD))@ROT3(radians(SD)),vector_r) #they measuring vector not to center of Venus but to a corner of Venus image on telescope photo?
                 if self.name=="Mars":
                     d=celestialObjectDiameters[self.name]
                     c=SMAPhobos/(0.5*d) #they threatening not the Mars itself, but system Mars-Phobos?
                     SD=self.SDAt(Y,M,D,h,m,s)
-                    vector_r=dot(ROT2(radians(2*c*SD))@ROT3(radians(-2*c*SD)),vector_r) #they measuring vector not to center of mars but to a corner of Mars image on telescope photo?
+                    vector_r=dot(ROT2(radians(2*c*SD))@ROT3(radians(-2*c*SD)),vector_r) #they measuring vector not to center of Mars but to a corner of Mars image on telescope photo?
                 if self.name=="Jupiter":
                     SD=self.SDAt(Y,M,D,h,m,s)
                     vector_r=dot(ROT2(radians(SD))@ROT3(radians(-SD)),vector_r)
