@@ -27,9 +27,9 @@ class test_almanac(unittest.TestCase):
         self.assertAlmostEqual(vector_r[2],-97187375.47887833,0)
         Vega=almanac.GetCelestialObject("Vega")
         vector_r=Vega.VectorAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(vector_r[0],1403562344373.0208,2)
-        self.assertAlmostEqual(vector_r[1],-8632692421336.986,2)
-        self.assertAlmostEqual(vector_r[2],7027905144326.607,2)
+        self.assertAlmostEqual(vector_r[0],1433256483553.1458,2)
+        self.assertAlmostEqual(vector_r[1],-8625136168509.275,2)
+        self.assertAlmostEqual(vector_r[2],7031188970624.335,2)
         almanac.source=1
         Sun=almanac.GetCelestialObject("Sun")
         vector_r=Sun.VectorAt(Y,M,D,h,m,s)
@@ -173,7 +173,7 @@ class test_almanac(unittest.TestCase):
         almanac.source=0
         Sirius=almanac.GetCelestialObject("Sirius")
         apySiriusDec=Sirius.DecAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(apySiriusDec,angle.ToDecimal(navAlmanacDec),0)
+        self.assertAlmostEqual(apySiriusDec,angle.ToDecimal(navAlmanacDec),1) #increased precision of star positions with astropy
         almanac.source=1
         Sirius=almanac.GetCelestialObject("Sirius")
         locSiriusDec=Sirius.DecAt(Y,M,D,h,m,s)
@@ -183,7 +183,7 @@ class test_almanac(unittest.TestCase):
         almanac.source=0
         Vega=almanac.GetCelestialObject("Vega")
         apyVegaDec=Vega.DecAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(apyVegaDec,angle.ToDecimal(navAlmanacDec),0)
+        self.assertAlmostEqual(apyVegaDec,angle.ToDecimal(navAlmanacDec),1)
         almanac.source=1
         Vega=almanac.GetCelestialObject("Vega")
         locVegaDec=Vega.DecAt(Y,M,D,h,m,s)
