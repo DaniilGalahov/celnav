@@ -7,6 +7,7 @@ from catalog import navigationStarNames
 from ephemeris import UTCtoUT1,UT1toTAI,TAItoTDB,ThetaGMSTAt,VectorToSunAt,VectorToMoonAt,VectorToPlanetAt,SunRADecAt,MoonRADecAt,PlanetRADecAt
 from catalog import LoadDataFor
 import precession
+import nutation
 import angle
 
 def GHAOfAriesAt(Y,M,D,h,m,s): #time must be GMT
@@ -23,26 +24,13 @@ def RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s):
     deltaT=UTCtoUT1+UT1toTAI+TAItoTDB
     JD=JulianDate(Y,M,D,h,m,s)+(deltaT/86400.0)
     deltatyears=(JD-2448349.0625)/365.25
-    alpha=alpha0+((mu_alpha/3600/1000)*cos(delta0)*deltatyears)
-    delta=delta0+((mu_delta/3600/1000)*deltatyears)
-    return degrees(alpha),degrees(delta)
-
-'''
-def NutationAnglesFor(Y,M,D,h,m,s): #follow Meeus (ChatGPT tried to follow Meeus but did not understand details)
-    deltaT=UTCtoUT1+UT1toTAI+TAItoTDB
-    JD=JulianDate(Y,M,D,h,m,s)+(deltaT/86400.0)
-    T=(JD-2451545.0)/36525
-    Omega=radians(angle.Normalize(125.04452+(-1934.136261*pow(T,1))+(0.0020708*pow(T,2))+(pow(T,3)/450000))) #GPT made a mistake here - mess zeros
-    LSun=radians(angle.Normalize(280.4665+(36000.7698*T)))
-    LMoon=radians(angle.Normalize(218.3165+(481267.8813*T))) ##GPT made a mistake here - totally wrong numbers
-    deltaPsi=angle.Normalize(((-17.20*sin(Omega))+(-1.32*sin(2*LSun))+(-0.23*sin(2*LMoon))+(0.21*sin(2*Omega)))/3600.0) #GPT made a mistake here - replaced the numbers
-    deltaEpsilon=angle.Normalize(((9.20*cos(Omega))+(0.57*cos(2*LSun))+(0.10*cos(2*LMoon))+(-0.09*cos(2*Omega)))/3600.0)
-    epsilon=angle.Normalize(23.439291-(0.0130042*T)) #2 last terms omitted
-    return deltaPsi,deltaEpsilon,epsilon
-
-def NutationMatrixFor(deltaPsi,deltaEpsilon,epsilon):
-    return ROT1(radians(-epsilon))@ROT3(radians(deltaPsi))@ROT1(radians(epsilon+deltaEpsilon)) #Idea by ChatGPT
-'''
+    alpha=degrees(alpha0+((mu_alpha/3600/1000)*cos(delta0)*deltatyears))
+    delta=degrees(delta0+((mu_delta/3600/1000)*deltatyears))
+    zeta,z,theta=precession.AnglesFor(Y,M,D,h,m,s)
+    alpha,delta=precession.CorrectionFor(alpha,delta,zeta,z,theta)
+    deltaPsi,deltaEpsilon,epsilon=nutation.AnglesFor(Y,M,D,h,m,s)
+    alpha,delta=nutation.CorrectionFor(alpha,delta,deltaPsi,deltaEpsilon,epsilon)
+    return alpha,delta
 
 class CelestialObjectFromLocalCatalog(CelestialObject):
     def VectorAt(self,Y,M,D,h,m,s):
@@ -79,14 +67,11 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
             alpha,delta=RADecAt(alpha0,delta0,mu_alpha,mu_delta,Y,M,D,h,m,s)
             alpha=radians(alpha)
             delta=radians(delta)
-            r=75*1.495978707e+11 #75 AU, position outside the Kuiper belt. I.e., FAR
+            r=75*1.495978707e+11 #75 AU, position outside the Kuiper belt. I.e., far enough to say that it's outside Solar System
             i=r*cos(delta)*cos(alpha)
             j=r*cos(delta)*sin(alpha)
             k=r*sin(delta)
             vector_r=vector([i,j,k])
-            zeta,z,theta=precession.AnglesFor(Y,M,D,h,m,s)
-            P=precession.RotationMatrixFrom(zeta,z,theta)
-            vector_r=dot(P,vector_r)
             return vector_r
     
     def GHAAt(self,Y,M,D,h,m,s):

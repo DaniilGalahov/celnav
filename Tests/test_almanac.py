@@ -48,9 +48,9 @@ class test_almanac(unittest.TestCase):
         self.assertAlmostEqual(vector_r[2],-97869561.54685688,6)
         Vega=almanac.GetCelestialObject("Vega")
         vector_r=Vega.VectorAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(vector_r[0],1433337334480.1462,2)
-        self.assertAlmostEqual(vector_r[1],-8624886321412.597,2)
-        self.assertAlmostEqual(vector_r[2],7031478965473.659,2)
+        self.assertAlmostEqual(vector_r[0],1433125494782.9646,2)
+        self.assertAlmostEqual(vector_r[1],-8625195086140.118,2)
+        self.assertAlmostEqual(vector_r[2],7031143396050.94,2)
 
     #@unittest.skip("For debug pruposes")
     def test_GHAAriesAt(self):
@@ -177,7 +177,7 @@ class test_almanac(unittest.TestCase):
         almanac.source=1
         Sirius=almanac.GetCelestialObject("Sirius")
         locSiriusDec=Sirius.DecAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(locSiriusDec,angle.ToDecimal(navAlmanacDec),1) #my almanac isn't precise with stars. Can not understand the reason.
+        self.assertAlmostEqual(locSiriusDec,angle.ToDecimal(navAlmanacDec),2) #reached higher precession for stars for my almanac with counting precession and nutation
         Y,M,D,h,m,s=(2024,12,26,14,0,0)
         navAlmanacDec="38*48.4'"
         almanac.source=0
@@ -187,12 +187,12 @@ class test_almanac(unittest.TestCase):
         almanac.source=1
         Vega=almanac.GetCelestialObject("Vega")
         locVegaDec=Vega.DecAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(locVegaDec,angle.ToDecimal(navAlmanacDec),1)
+        self.assertAlmostEqual(locVegaDec,angle.ToDecimal(navAlmanacDec),2)
     
     #@unittest.skip("For debug pruposes")
     def test_CelestialObjectSHAAt(self):
         Y,M,D,h,m,s=(2023,10,27,14,0,0)
-        navAlmanacSHA="80*43.1'" #in N.A. 80*34.1'
+        navAlmanacSHA="80*34.1'" #in N.A. 80*34.1'
         almanac.source=0
         Vega=almanac.GetCelestialObject("Vega")
         apyVegaSHA=Vega.SHAAt(Y,M,D,h,m,s)
@@ -202,7 +202,7 @@ class test_almanac(unittest.TestCase):
         locVegaSHA=Vega.SHAAt(Y,M,D,h,m,s)
         self.assertAlmostEqual(locVegaSHA,angle.ToDecimal(navAlmanacSHA),1)  #my almanac isn't precise with stars. Can not understand the reason.
         Y,M,D,h,m,s=(2024,12,26,14,0,0)
-        navAlmanacSHA="80*43.7'" #in N.A. 80*33.7'
+        navAlmanacSHA="80*33.7'" #in N.A. 80*33.7'
         almanac.source=0
         Vega=almanac.GetCelestialObject("Vega")
         apyVegaSHA=Vega.SHAAt(Y,M,D,h,m,s)
