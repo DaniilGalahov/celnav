@@ -3,7 +3,7 @@ sys.path.append("..\src")
 
 import almanac
 from math import sin, cos, acos, tan, atan, degrees, radians, sqrt
-from astrometry import ElevationCorrection, FindToCoEE, ElevationFor
+from astrometry import ElevationCorrection, FindToCoEE
 from fix import TwoObjectFix, ThreeObjectFix
 
 from external.astro import *
