@@ -13,7 +13,7 @@ class test_precession(unittest.TestCase):
         m=0
         s=0
         zeta,z,theta=precession.AnglesFor(Y,M,D,h,m,s)
-        self.assertAlmostEqual(zeta,0.1849341,4)
+        self.assertAlmostEqual(zeta,0.1849341,4) #matching values from Meeus
         self.assertAlmostEqual(z,0.1849524,4)
         self.assertAlmostEqual(theta,0.1607080,4)
 
@@ -28,7 +28,7 @@ class test_precession(unittest.TestCase):
         alpha0=41.054063
         delta0=49.227750
         alpha,delta=precession.CorrectionFor(alpha0,delta0,zeta,z,theta)
-        self.assertAlmostEqual(alpha,41.547214,4)
+        self.assertAlmostEqual(alpha,41.547214,4)  #matching values from Meeus
         self.assertAlmostEqual(delta,49.348483,4)
 
     def test_RotationMatrixFrom(self):
@@ -40,7 +40,7 @@ class test_precession(unittest.TestCase):
         s=0
         zeta,z,theta=precession.AnglesFor(Y,M,D,h,m,s)
         R=precession.RotationMatrixFrom(zeta,z,theta)
-        self.assertAlmostEqual(R[0][0],9.99981446e-01,4)
+        self.assertAlmostEqual(R[0][0],9.99981446e-01,4) #provides correct precession
         self.assertAlmostEqual(R[0][1],-5.58704354e-03,4)
         self.assertAlmostEqual(R[0][2],-2.42750886e-03,4)
         self.assertAlmostEqual(R[1][0],5.58704354e-03,4)

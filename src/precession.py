@@ -2,15 +2,15 @@ from external.math import *
 from external.astro import *
 
 from ephemeris import UTCtoUT1,UT1toTAI,TAItoTDB
-from angle import Normalize
+import angle
 
 def AnglesFor(Y,M,D,h,m,s): #following Meeus; for J2000+ only
     deltaT=UTCtoUT1+UT1toTAI+TAItoTDB
     JD=JulianDate(Y,M,D,h,m,s)+(deltaT/86400.0)
     T=(JD-2451545.0)/36525
-    zeta=Normalize(((2306.2181*pow(T,1))+(0.30188*pow(T,2))+(0.017998*pow(T,3)))/3600.0)
-    z=Normalize(((2306.2181*pow(T,1))+(1.09468*pow(T,2))+(0.018203*pow(T,3)))/3600.0)
-    theta=Normalize(((2004.3109*pow(T,1))+(-0.42665*pow(T,2))+(-0.041833*pow(T,3)))/3600.0)
+    zeta=angle.Normalize(((2306.2181*pow(T,1))+(0.30188*pow(T,2))+(0.017998*pow(T,3)))/3600.0)
+    z=angle.Normalize(((2306.2181*pow(T,1))+(1.09468*pow(T,2))+(0.018203*pow(T,3)))/3600.0)
+    theta=angle.Normalize(((2004.3109*pow(T,1))+(-0.42665*pow(T,2))+(-0.041833*pow(T,3)))/3600.0)
     return zeta,z,theta
 
 def CorrectionFor(alpha0,delta0,zeta,z,theta): #following Meeus
