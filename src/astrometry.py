@@ -84,6 +84,20 @@ def FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe=0,T=10,P=1010.
             Zn=180.0+Z
     return angle.Normalize(a),angle.Normalize(Zn)
 
+def BetaElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s): #mostly for precision testing purposes
+    celestialObject = almanac.GetCelestialObject(celestialObjectName)
+    vector_rCO=celestialObject.VectorAt(Y,M,D,h,m,s)
+    thetaLST,thetaGMST=LSTime(JulianDate(Y,M,D,h,m,s)+(UTCtoUT1/86400.0),0,lambda_)
+    vector_rSite,vector_vSite=Site(phi,0,thetaLST)
+    vector_rCOfromSite=vector_rCO+vector_rSite
+    vector_dCOfromSite=vector_rCOfromSite/magnitude(vector_rCOfromSite)
+    vector_dCOfromSite_SEZ=IJK2SEZ(vector_dCOfromSite,phi,thetaLST)
+    vector_Z_SEZ=vector([0,0,1])
+    el=90.0-angleBetween(vector_Z_SEZ,vector_dCOfromSite_SEZ)
+    vector_N_SEZ=vector([-1,0,0])
+    beta=angle.Normalize(-signedAngleBetween(vector_N_SEZ,vector_dCOfromSite_SEZ,vector_Z_SEZ)) #because of some unknown reason we need "-" here to match azimuths from Horizons and NAOJ
+    return beta,el
+
 def ElevationCorrection(celestialObjectName,Y,M,D,h,m,s,Hs,IC=0,hoe=0,T=10,P=1010.0,limb=0):
     Dip=-0.0293*sqrt(hoe) #dip (observer altitude) correction, not same as in Bowditch , but it provides data in decimal degrees for meters
     Sum=IC+Dip
@@ -115,15 +129,3 @@ def FindToCoEE(phiAP,lambdaAP,Y,M,D,h,m,s,celestialObjectName,el): #consuming ON
     vector_N_SEZ=vector([-1,0,0])
     beta=signedAngleBetween(vector_N_SEZ,vector_dCOfromAP_SEZ,vector_Z_SEZ)
     return deltael,beta
-
-def ElevationFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s):
-    celestialObject = almanac.GetCelestialObject(celestialObjectName)
-    vector_rCO=celestialObject.VectorAt(Y,M,D,h,m,s)
-    thetaLST,thetaGMST=LSTime(JulianDate(Y,M,D,h,m,s)+(UTCtoUT1/86400.0),0,lambda_)
-    vector_rSite,vector_vSite=Site(phi,0,thetaLST)
-    vector_rCOfromSite=vector_rCO+vector_rSite
-    vector_dCOfromSite=vector_rCOfromSite/magnitude(vector_rCOfromSite)
-    vector_dCOfromSite_SEZ=IJK2SEZ(vector_dCOfromSite,phi,thetaLST)
-    vector_Z_SEZ=vector([0,0,1])
-    el=90.0-angleBetween(vector_Z_SEZ,vector_dCOfromSite_SEZ)
-    return el
