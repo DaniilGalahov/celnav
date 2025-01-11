@@ -27,3 +27,8 @@ def CorrectionFor(alpha,delta,deltaPsi,deltaEpsilon,epsilon): #following Meeus, 
     alpha1=alpha+deltaalpha1
     delta1=delta+deltadelta1
     return degrees(alpha1),degrees(delta1)
+
+'''
+def RotationMatrixFrom(deltaPsi,deltaEpsilon,epsilon):
+    return ROT1(radians(-epsilon))@ROT3(radians(deltaPsi))@ROT1(radians(epsilon+deltaEpsilon)) #Idea by ChatGPT
+'''

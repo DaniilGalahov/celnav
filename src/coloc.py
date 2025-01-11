@@ -40,27 +40,30 @@ class CelestialObjectFromLocalCatalog(CelestialObject):
                 vector_r=VectorToSunAt(Y,M,D,h,m,s)
             if self.type=="Moon":
                 vector_r=VectorToMoonAt(Y,M,D,h,m,s)
+                '''
                 SD=self.SDAt(Y,M,D,h,m,s)
-                vector_r=dot(ROT2(radians(2.0*SD))@ROT3(radians(-2.0*SD)),vector_r)
+                vector_r=dot(ROT2(radians(-SD))@ROT3(radians(SD)),vector_r)
+                '''
             if self.type=="Planet":
                 vector_r=VectorToPlanetAt(self.name,Y,M,D,h,m,s)
+                '''
                 if self.name=="Venus":
                     SD=self.SDAt(Y,M,D,h,m,s)
                     vector_r=dot(ROT2(radians(-SD))@ROT3(radians(SD)),vector_r) #they measuring vector not to center of Venus but to a corner of Venus image on telescope photo?
                 if self.name=="Mars":
-                    d=celestialObjectDiameters[self.name]
-                    c=SMAPhobos/(0.5*d) #they threatening not the Mars itself, but system Mars-Phobos?
+                    R=0.5*celestialObjectDiameters[self.name]
+                    c=SMAPhobos/R #they threatening not the Mars itself, but system Mars-Phobos?
                     SD=self.SDAt(Y,M,D,h,m,s)
-                    vector_r=dot(ROT2(radians(2*c*SD))@ROT3(radians(-2*c*SD)),vector_r) #they measuring vector not to center of Mars but to a corner of Mars image on telescope photo?
+                    vector_r=dot(ROT2(radians(0.5*pi*c*SD))@ROT3(radians(-pi*c*SD)),vector_r) #they measuring vector not to center of Mars but to a corner of Mars image on telescope photo?
                 if self.name=="Jupiter":
                     SD=self.SDAt(Y,M,D,h,m,s)
                     vector_r=dot(ROT2(radians(SD))@ROT3(radians(-SD)),vector_r)
                 if self.name=="Saturn":
-                    d=celestialObjectDiameters[self.name]
-                    c3=SMADione/(0.5*d) #same as with Mars
-                    c2=0.5*c3                    
+                    R=0.5*celestialObjectDiameters[self.name]
+                    c=SMADione/R #same as with Mars
                     SD=self.SDAt(Y,M,D,h,m,s)
-                    vector_r=dot(ROT2(radians(2.0*c2*SD))@ROT3(radians(-2.0*c3*SD)),vector_r) #same as with Mars
+                    vector_r=dot(ROT2(radians(0.5*pi*c*SD))@ROT3(radians(-pi*c*SD)),vector_r) #same as with Mars
+                '''
             return vector_r               
         else:
             alpha0,delta0,mu_alpha,mu_delta=LoadDataFor(self.name)
