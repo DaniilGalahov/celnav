@@ -22,9 +22,9 @@ def parse_string(input_str): #ChatGPT made
     h, m = map(int, time_str.split(':'))
     s = 0  # Seconds are not present in the input, default to 0
     # Extract azimuth and elevation angles
-    beta = float(components[3])
+    az = float(components[3])
     el = float(components[4])
-    return Y, M, D, h, m, s, beta, el
+    return Y, M, D, h, m, s, az, el
 
 def parse_file(file_name):  #ChatGPT made
     try:
@@ -42,11 +42,11 @@ def WriteStringsToFile(output_strings,file_name):
 def DeviationTestFor(celestialObjectName,phi,lambda_,inputStrings):
     outputStrings=[]
     for inputString in inputStrings:
-        Y,M,D,h,m,s,betaHrz,elHrz=parse_string(inputString)
-        betaLoc,elLoc=astrometry.BetaElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.
-        deltaBeta=betaHrz-betaLoc
+        Y,M,D,h,m,s,azHrz,elHrz=parse_string(inputString)
+        azLoc,elLoc=astrometry.AzElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.
+        deltaAz=azHrz-azLoc
         deltaEl=elHrz-elLoc
-        outputString=str(int(Y))+";"+str(int(M))+";"+str(round(betaHrz,6))+";"+str(round(elHrz,6))+";"+str(round(deltaBeta,6))+";"+str(round(deltaEl,6))+";\n"
+        outputString=str(int(Y))+";"+str(int(M))+";"+str(round(azHrz,6))+";"+str(round(elHrz,6))+";"+str(round(deltaAz,6))+";"+str(round(deltaEl,6))+";\n"
         outputStrings.append(outputString)
     return outputStrings
 
@@ -100,7 +100,7 @@ class test_astrometry(unittest.TestCase):
         self.assertAlmostEqual(a,angle.ToDecimal("-0*05.2'"),3)
         self.assertAlmostEqual(Zn,189.9,3)
 
-    def test_BetaElFor(self):
+    def test_AzElFor(self):
         '''
         30.12.2024
         # !!! I'm shocked. Vallado ephemerides provides vectors WITH LIGHT SPEED CORRECTION AND WITH ATMOSPHERIC REFRACTION CORRECTION...
@@ -139,17 +139,17 @@ class test_astrometry(unittest.TestCase):
         phi=33.3562811 #Palomar observatory (precisely)
         lambda_=-116.8651156
 
-        '''
+
         #basic tests
-        celestialObjectName="Betelgeuse" #by NAOJ, beta: 151.8944, el: 61.4543 w. refraction, 61.3328 w/o. refraction
+        celestialObjectName="Betelgeuse" #by NAOJ, az: 151.8944, el: 61.4543 w. refraction, 61.3328 w/o. refraction
         Y=2025
         M=1
         D=3
         h=5 #UTC
         m=58
         s=51
-        beta,el=astrometry.BetaElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.
-        self.assertAlmostEqual(beta,151.8944,1) #azimuth precision for stars is average
+        az,el=astrometry.AzElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.
+        self.assertAlmostEqual(az,151.8944,1) #azimuth precision for stars is average
         self.assertAlmostEqual(el,61.3328,2) #Matched.
 
         celestialObjectName="Sun" #By Horizons; using precise coordinates mentioned here (not those which are pre-defined in Horizons)
@@ -159,8 +159,8 @@ class test_astrometry(unittest.TestCase):
         h=17 #UTC
         m=0
         s=0
-        beta,el=astrometry.BetaElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.        
-        self.assertAlmostEqual(beta,137.775247,2) #Matched.
+        az,el=astrometry.AzElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.        
+        self.assertAlmostEqual(az,137.775247,2) #Matched.
         self.assertAlmostEqual(el,20.509091,1) #not matched at 2 decimals
 
         celestialObjectName="Venus"
@@ -170,8 +170,8 @@ class test_astrometry(unittest.TestCase):
         h=20 #UTC
         m=0
         s=0
-        beta,el=astrometry.BetaElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.        
-        self.assertAlmostEqual(beta,127.807802,2) #Matched!!!
+        az,el=astrometry.AzElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.        
+        self.assertAlmostEqual(az,127.807802,2) #Matched!!!
         self.assertAlmostEqual(el,26.439441,1) #not matched at 2 decimals
 
         celestialObjectName="Mars"
@@ -181,8 +181,8 @@ class test_astrometry(unittest.TestCase):
         h=6 #UTC
         m=0
         s=0
-        beta,el=astrometry.BetaElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.        
-        self.assertAlmostEqual(beta,89.925673,1) #not matched at 2 decimals
+        az,el=astrometry.AzElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.        
+        self.assertAlmostEqual(az,89.925673,1) #not matched at 2 decimals
         self.assertAlmostEqual(el,47.084832,1) #not matched at 2 decimals
 
         celestialObjectName="Jupiter"
@@ -192,8 +192,8 @@ class test_astrometry(unittest.TestCase):
         h=4 #UTC
         m=0
         s=0
-        beta,el=astrometry.BetaElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.        
-        self.assertAlmostEqual(beta,110.744685,1) #not matched at 2 decimals
+        az,el=astrometry.AzElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.        
+        self.assertAlmostEqual(az,110.744685,1) #not matched at 2 decimals
         self.assertAlmostEqual(el,64.717721,2) #Matched!!!
 
         celestialObjectName="Saturn"
@@ -203,50 +203,39 @@ class test_astrometry(unittest.TestCase):
         h=3 #UTC
         m=0
         s=0
-        beta,el=astrometry.BetaElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.        
-        self.assertAlmostEqual(beta,234.070866,1) #not matched at 2 decimals
+        az,el=astrometry.AzElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.        
+        self.assertAlmostEqual(az,234.070866,1) #not matched at 2 decimals
         self.assertAlmostEqual(el,31.028380,1) #not matched at 2 decimals
+        
         '''
-        '''
-        #corrections for Beta/El calculated from tests
-        betaElCorrections={"Star":    [-0.009515,0.0],
+        #corrections for Az/El calculated from tests
+        azElCorrections={"Star":    [-0.009515,0.0],
                            "Sun":     [0.0,-0.005825],
                            "Moon":    [0.0,0.0], #???
                            "Venus":   [0.0,-0.006748],
                            "Mars":    [-0.005935,-0.016992],
                            "Jupiter": [-0.011767,0.0],
                            "Saturn":  [-0.025106,0.046960]}
+        #of course, this is useless for practical calculations
         '''
-
-        # ----- Sun test -----
-        celestialObjectName="Sun"
-        inputStrings=parse_file("Hrz"+celestialObjectName+".txt")
-        outputStrings=DeviationTestFor(celestialObjectName,phi,lambda_,inputStrings)
-        WriteStringsToFile(outputStrings,"DevTest"+celestialObjectName+".txt")
-
-        # ----- Venus test -----
-        celestialObjectName="Venus"
-        inputStrings=parse_file("Hrz"+celestialObjectName+".txt")
-        outputStrings=DeviationTestFor(celestialObjectName,phi,lambda_,inputStrings)
-        WriteStringsToFile(outputStrings,"DevTest"+celestialObjectName+".txt")
-
+        
+        '''
+        #This tests using Horizon input for tests. Example in HrzMars.txt
         # ----- Mars test -----
         celestialObjectName="Mars"
         inputStrings=parse_file("Hrz"+celestialObjectName+".txt")
         outputStrings=DeviationTestFor(celestialObjectName,phi,lambda_,inputStrings)
         WriteStringsToFile(outputStrings,"DevTest"+celestialObjectName+".txt")
-
-        # ----- Jupiter test -----
-        celestialObjectName="Jupiter"
-        inputStrings=parse_file("Hrz"+celestialObjectName+".txt")
-        outputStrings=DeviationTestFor(celestialObjectName,phi,lambda_,inputStrings)
-        WriteStringsToFile(outputStrings,"DevTest"+celestialObjectName+".txt")
-
-        # ----- Saturn test -----
-        celestialObjectName="Saturn"
-        inputStrings=parse_file("Hrz"+celestialObjectName+".txt")
-        outputStrings=DeviationTestFor(celestialObjectName,phi,lambda_,inputStrings)
-        WriteStringsToFile(outputStrings,"DevTest"+celestialObjectName+".txt")
+        '''
+        
+        '''
+        So, basing on deep testing, I understood that Vallado's ephemerides providing position of a planet non-precisely.
+        They provide position WITHOUT refraction correction. Deviation of azimuth and elevation are systematic but very complex,
+        and I can not describe them mathematically.
+        I think that I should stop my tries of achieve high precision for now. I should finish all other parts of system, i.e., geodesy,
+        great circle navigation and star compass. After this, I should preform a complex test of precision for multiple positions on Earth,
+        to understand real precision of my algorithms.
+        '''
         
     #@unittest.skip("For debug purposes")
     def test_ElevationCorrection(self):

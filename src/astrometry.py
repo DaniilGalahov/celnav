@@ -84,7 +84,7 @@ def FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe=0,T=10,P=1010.
             Zn=180.0+Z
     return angle.Normalize(a),angle.Normalize(Zn)
 
-def BetaElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s): #mostly for precision testing purposes; TODO: develop new terms for beta here and in FindToCoEE to match logic of a process
+def AzElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s): #mostly for precision testing purposes;
     celestialObject = almanac.GetCelestialObject(celestialObjectName)
     vector_rCO=celestialObject.VectorAt(Y,M,D,h,m,s)
     thetaLST,thetaGMST=LSTime(JulianDate(Y,M,D,h,m,s)+(UTCtoUT1/86400.0),0,lambda_)
@@ -95,8 +95,8 @@ def BetaElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s): #mostly for precisio
     vector_Z_SEZ=vector([0,0,1])
     el=90.0-angleBetween(vector_Z_SEZ,vector_dCOfromSite_SEZ)
     vector_N_SEZ=vector([-1,0,0])
-    beta=angle.Normalize(-signedAngleBetween(vector_N_SEZ,vector_dCOfromSite_SEZ,vector_Z_SEZ)) #because of some unknown reason we need "-" here to match azimuths from Horizons and NAOJ
-    return beta,el
+    az=angle.Normalize(-signedAngleBetween(vector_N_SEZ,vector_dCOfromSite_SEZ,vector_Z_SEZ)) #we need return azimuth with "-", to match azimuths from Horizons and NAOJ
+    return az,el
 
 def ElevationCorrection(celestialObjectName,Y,M,D,h,m,s,Hs,IC=0,hoe=0,T=10,P=1010.0,limb=0):
     Dip=-0.0293*sqrt(hoe) #dip (observer altitude) correction, not same as in Bowditch , but it provides data in decimal degrees for meters
