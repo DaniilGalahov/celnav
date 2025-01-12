@@ -84,7 +84,7 @@ def FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe=0,T=10,P=1010.
             Zn=180.0+Z
     return angle.Normalize(a),angle.Normalize(Zn)
 
-def BetaElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s): #mostly for precision testing purposes
+def BetaElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s): #mostly for precision testing purposes; TODO: develop new terms for beta here and in FindToCoEE to match logic of a process
     celestialObject = almanac.GetCelestialObject(celestialObjectName)
     vector_rCO=celestialObject.VectorAt(Y,M,D,h,m,s)
     thetaLST,thetaGMST=LSTime(JulianDate(Y,M,D,h,m,s)+(UTCtoUT1/86400.0),0,lambda_)
