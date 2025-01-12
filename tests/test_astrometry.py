@@ -6,51 +6,6 @@ import angle
 import almanac
 import unittest
 
-
-def parse_string(input_str): #ChatGPT made
-    import calendar
-    # Split the input string into components
-    components = input_str.split()
-    # Extract and parse the date
-    date_str = components[0]
-    year, month_str, day = date_str.split('-')
-    Y = int(year)
-    M = list(calendar.month_abbr).index(month_str[:3])  # Convert month abbreviation to number
-    D = int(day)
-    # Extract and parse the time
-    time_str = components[1]
-    h, m = map(int, time_str.split(':'))
-    s = 0  # Seconds are not present in the input, default to 0
-    # Extract azimuth and elevation angles
-    az = float(components[3])
-    el = float(components[4])
-    return Y, M, D, h, m, s, az, el
-
-def parse_file(file_name):  #ChatGPT made
-    try:
-        with open(file_name, 'r') as file:
-            lines = file.readlines()
-            return [line.strip() for line in lines if line.strip()]
-    except FileNotFoundError:
-        print(f"Error: The file '{file_name}' was not found.")
-        return []
-
-def WriteStringsToFile(output_strings,file_name):
-    with open(file_name, 'w') as file:
-        file.writelines(output_strings)
-
-def DeviationTestFor(celestialObjectName,phi,lambda_,inputStrings):
-    outputStrings=[]
-    for inputString in inputStrings:
-        Y,M,D,h,m,s,azHrz,elHrz=parse_string(inputString)
-        azLoc,elLoc=astrometry.AzElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.
-        deltaAz=azHrz-azLoc
-        deltaEl=elHrz-elLoc
-        outputString=str(int(Y))+";"+str(int(M))+";"+str(round(azHrz,6))+";"+str(round(elHrz,6))+";"+str(round(deltaAz,6))+";"+str(round(deltaEl,6))+";\n"
-        outputStrings.append(outputString)
-    return outputStrings
-
-
 class test_astrometry(unittest.TestCase):
     @unittest.skip("Useless because almanac generates already pre-corrected output")
     def test_ApplyElevationCorrectionTo(self):
@@ -107,7 +62,7 @@ class test_astrometry(unittest.TestCase):
         # Again. Horizons system (https://ssd.jpl.nasa.gov/horizons/app.html#/) with atmospheric correction provides el=47.102741, WITHOUT CORRECTION el=47.087013
         # Almanac output is 47.10182375676978. Difference with Horizons corrected el d=0.000917, with uncorrected - 0.014811; i.e., 16.151581 TIMES!!!
         
-        #self.assertAlmostEqual(el1,47.102741,2) # After adding corrections inside almanac reached value 47.086728167206616, which is almost "without correction"
+        # After adding corrections inside almanac reached value 47.086728167206616, which is almost "without correction"
 
         01.01.2025 (?)
         I still can not understand the source of a problem. There is possibility that astronomers measured positions of celestial objects not by center of an object,
@@ -138,7 +93,6 @@ class test_astrometry(unittest.TestCase):
             
         phi=33.3562811 #Palomar observatory (precisely)
         lambda_=-116.8651156
-
 
         #basic tests
         celestialObjectName="Betelgeuse" #by NAOJ, az: 151.8944, el: 61.4543 w. refraction, 61.3328 w/o. refraction
@@ -218,16 +172,11 @@ class test_astrometry(unittest.TestCase):
                            "Saturn":  [-0.025106,0.046960]}
         #of course, this is useless for practical calculations
         '''
-        
+
         '''
-        #This tests using Horizon input for tests. Example in HrzMars.txt
-        # ----- Mars test -----
-        celestialObjectName="Mars"
-        inputStrings=parse_file("Hrz"+celestialObjectName+".txt")
-        outputStrings=DeviationTestFor(celestialObjectName,phi,lambda_,inputStrings)
-        WriteStringsToFile(outputStrings,"DevTest"+celestialObjectName+".txt")
+        After this, I made special deviation testing. Now it's moved from here to "astrometry/devtest.py"
         '''
-        
+
         '''
         So, basing on deep testing, I understood that Vallado's ephemerides providing position of a planet non-precisely.
         They provide position WITHOUT refraction correction. Deviation of azimuth and elevation are systematic but very complex,
