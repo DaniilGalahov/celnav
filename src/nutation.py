@@ -13,7 +13,7 @@ def AnglesFor(Y,M,D,h,m,s): #follow Meeus (ChatGPT tried to follow Meeus but did
     LMoon=radians(angle.Normalize(218.3165+(481267.8813*T))) ##GPT made a mistake here - totally wrong numbers
     deltaPsi=angle.ToSigned180(((-17.20*sin(Omega))+(-1.32*sin(2*LSun))+(-0.23*sin(2*LMoon))+(0.21*sin(2*Omega)))/3600.0) #GPT made a mistake here - replaced the numbers
     deltaEpsilon=angle.ToSigned180(((9.20*cos(Omega))+(0.57*cos(2*LSun))+(0.10*cos(2*LMoon))+(-0.09*cos(2*Omega)))/3600.0)
-    epsilon=angle.ToSigned180(23.439291-(0.0130042*T)) #2 last terms omitted
+    epsilon=angle.ToSigned180(23.439291+(-0.0130042*pow(T,1))+(-0.0000001639*pow(T,2))+(0.0000005036*pow(T,3)))
     return deltaPsi,deltaEpsilon,epsilon
 
 def CorrectionFor(alpha,delta,deltaPsi,deltaEpsilon,epsilon): #following Meeus, p.151
