@@ -18,11 +18,14 @@ class CelestialObjectFromAstroPy(CelestialObject):
         time=Time(YMDhmsToAPyTime(Y,M,D,h,m,s))
         if not self.type=="Star":            
             with solar_system_ephemeris.set(ephemeris):
-                body=get_body(self.name, time)
-                body.representation_type='cartesian'
-            return vector([body.x.to(u.km).value,body.y.to(u.km).value,body.z.to(u.km).value])
+                body=get_body(self.name,time)
+                bodyTEME = body.transform_to(TEME)
+                bodyTEME.representation_type='cartesian'
+            return vector([bodyTEME.cartesian.x.to(u.km).value,
+                           bodyTEME.cartesian.y.to(u.km).value,
+                           bodyTEME.cartesian.z.to(u.km).value])
         else:
-            bodyCoordinates=SkyCoord.from_name(self.name,frame=FK5(equinox='J2000.0'))
+            bodyCoordinates=SkyCoord.from_name(self.name)
             bodyCoordinatesFK5=bodyCoordinates.transform_to(FK5(equinox=time))
             bodyCoordinatesFK5.representation_type='cartesian'            
             vector_r=vector([bodyCoordinatesFK5.x.value,bodyCoordinatesFK5.y.value,bodyCoordinatesFK5.z.value])
@@ -48,14 +51,14 @@ class CelestialObjectFromAstroPy(CelestialObject):
                 body=get_body(self.name, time, location)
             return body.dec.value+self.SDAt(Y,M,D,h,m,s)+self.HPAt(Y,M,D,h,m,s)  #astropy getting in count SD and HP of celestial body, so here we adding this to get right value
         else:
-            bodyCoordinates=SkyCoord.from_name(self.name,frame=FK5(equinox='J2000.0'))
+            bodyCoordinates=SkyCoord.from_name(self.name)
             bodyCoordinatesFK5=bodyCoordinates.transform_to(FK5(equinox=time))
             return bodyCoordinatesFK5.dec.value
 
     def SHAAt(self,Y,M,D,h,m,s):
         time=Time(YMDhmsToAPyTime(Y,M,D,h,m,s))
         if self.type=="Star":
-            bodyCoordinates=SkyCoord.from_name(self.name,frame='icrs')
+            bodyCoordinates=SkyCoord.from_name(self.name)
             SHA=360.0-bodyCoordinates.ra.value
             return SHA
         else:
