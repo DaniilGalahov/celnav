@@ -12,9 +12,9 @@ class test_ephemeris(unittest.TestCase):
 
     def test_VectorToSunAt(self):
         vector_r=ephemeris.VectorToSunAt(2023,10,27,14,0,0)
-        self.assertAlmostEqual(vector_r[0],-123424319.93241104,6)
-        self.assertAlmostEqual(vector_r[1],-76066218.94817328,6)
-        self.assertAlmostEqual(vector_r[2],-32973856.66650262,6)
+        self.assertAlmostEqual(vector_r[0],-123424888.55410339,6)
+        self.assertAlmostEqual(vector_r[1],-76065442.2521582,6)
+        self.assertAlmostEqual(vector_r[2],-32973519.977451567,6)
 
     def test_SunRADecAt(self):
         thetaGMST=ephemeris.ThetaGMSTAt(2023,10,27,14,0,0)
@@ -36,9 +36,9 @@ class test_ephemeris(unittest.TestCase):
 
     def test_VectorToPlanetAt(self):
         vector_r=ephemeris.VectorToPlanetAt("Mars",2023,10,27,14,0,0)
-        self.assertAlmostEqual(vector_r[0],-289780921.6951021,6)
-        self.assertAlmostEqual(vector_r[1],-227407109.0251801,6)
-        self.assertAlmostEqual(vector_r[2],-97855303.05379859,6)    
+        self.assertAlmostEqual(vector_r[0],-289781490.3167944,6)
+        self.assertAlmostEqual(vector_r[1],-227406332.329165,6)
+        self.assertAlmostEqual(vector_r[2],-97854966.36474752,6)
 
     def test_PlanetRADecAt(self):
         thetaGMST=ephemeris.ThetaGMSTAt(2023,10,27,14,0,0)

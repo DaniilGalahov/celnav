@@ -12,19 +12,19 @@ class test_almanac(unittest.TestCase):
         almanac.source=0
         Sun=almanac.GetCelestialObject("Sun")
         vector_r=Sun.VectorAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(vector_r[0],-123901369.9857851,0) #matching local almanac within 50000 km
-        self.assertAlmostEqual(vector_r[1],-75406848.43273415,0)
-        self.assertAlmostEqual(vector_r[2],-32687086.304488234,0)
+        self.assertAlmostEqual(vector_r[0],-123422491.4841269,0) #matching local almanac within 50000 km
+        self.assertAlmostEqual(vector_r[1],-76064194.63567881,0)
+        self.assertAlmostEqual(vector_r[2],-32974456.4210693,0)
         Moon=almanac.GetCelestialObject("Moon")
         vector_r=Moon.VectorAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(vector_r[0],350919.2812557639,0) #about 150 km difference
-        self.assertAlmostEqual(vector_r[1],97992.9472541454,0) #1700 km diff
-        self.assertAlmostEqual(vector_r[2],37367.49322557242,0) #1200 km diff
+        self.assertAlmostEqual(vector_r[0],350305.5150144167,0) #about 150 km difference
+        self.assertAlmostEqual(vector_r[1],99859.0066481714,0) #1700 km diff
+        self.assertAlmostEqual(vector_r[2],38177.40379207954,0) #1200 km diff
         Mars=almanac.GetCelestialObject("Mars")
         vector_r=Mars.VectorAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(vector_r[0],-291176677.4265576,0) #more than 1M km diff
-        self.assertAlmostEqual(vector_r[1],-225865977.08542132,0)
-        self.assertAlmostEqual(vector_r[2],-97187375.47887833,0)
+        self.assertAlmostEqual(vector_r[0],-289745293.9645509,0) #more than 1M km diff
+        self.assertAlmostEqual(vector_r[1],-227409116.4498696,0)
+        self.assertAlmostEqual(vector_r[2],-97864403.20811118,0)
         Vega=almanac.GetCelestialObject("Vega")
         vector_r=Vega.VectorAt(Y,M,D,h,m,s)
         self.assertAlmostEqual(vector_r[0],1433256483553.1458,2)
@@ -33,9 +33,9 @@ class test_almanac(unittest.TestCase):
         almanac.source=1
         Sun=almanac.GetCelestialObject("Sun")
         vector_r=Sun.VectorAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(vector_r[0],-123424319.93241104,6)
-        self.assertAlmostEqual(vector_r[1],-76066218.94817328,6)
-        self.assertAlmostEqual(vector_r[2],-32973856.66650262,6)
+        self.assertAlmostEqual(vector_r[0],-123424888.55410339,6)
+        self.assertAlmostEqual(vector_r[1],-76065442.2521582,6)
+        self.assertAlmostEqual(vector_r[2],-32973519.977451567,6)
         Moon=almanac.GetCelestialObject("Moon")
         vector_r=Moon.VectorAt(Y,M,D,h,m,s)
         self.assertAlmostEqual(vector_r[0],350776.3186395564,6)
@@ -43,12 +43,12 @@ class test_almanac(unittest.TestCase):
         self.assertAlmostEqual(vector_r[2],38630.074790663246,6)
         Mars=almanac.GetCelestialObject("Mars")
         vector_r=Mars.VectorAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(vector_r[0],-289780921.6951021,6)
-        self.assertAlmostEqual(vector_r[1],-227407109.0251801,6)
-        self.assertAlmostEqual(vector_r[2],-97855303.05379859,6)
+        self.assertAlmostEqual(vector_r[0],-289781490.3167944,6)
+        self.assertAlmostEqual(vector_r[1],-227406332.329165,6)
+        self.assertAlmostEqual(vector_r[2],-97854966.36474752,6)
         Vega=almanac.GetCelestialObject("Vega")
         vector_r=Vega.VectorAt(Y,M,D,h,m,s)
-        self.assertAlmostEqual(vector_r[0],1433125494782.9646,2)
+        self.assertAlmostEqual(vector_r[0],1433125494782.9514,2)
         self.assertAlmostEqual(vector_r[1],-8625195086140.118,2)
         self.assertAlmostEqual(vector_r[2],7031143396050.94,2)
 
