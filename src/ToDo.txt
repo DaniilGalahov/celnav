@@ -2,6 +2,28 @@ TODO:
 + 1) implement precession (+) and nutation (+) corrections for RaDec (+)
 + 1.5) Understand what's the source of shit with precision (i.e., does the ephemerides getting in count refraction or no)? (+)
 +2) rewrite precession and nutation systems for usage in astropy version (or apply there its own correction)
-3) implement star compass and correction of magnetic declination
-+ 4) implement system to calculate great circle flights
+
+Logic of package.
+We need to provide math support for basic navigational tasks. I.e., following common logic:
+1. Determine our current position using available data sources, esp.:
+1.1. From 3 known positions and 3 azimuths to them (P3Z3)
+1.2. From 3 known positions, 2 azimuths and 1 range (P3Z2R1)
+1.3. From 3 known positions, 1 azimuth and 2 ranges (P3Z1R2)
+1.4. From 3 known positions, and 3 ranges to them (P3R3)
+1.5. Using celestial navigation methods (2 object fix or 3 object fix)
+(all other types of position determination require detection of direction to north, which in any case requires detection of position - to calculate azimuth to star or to determine magnetic compass correction through polynominal)
+
+2. Determine required heading, esp.:
+2.1. Plot a orthodromy from determined position to required position.
+2.2. Determine required heading at our current position of orthodromy.
+
+3. Determine current true heading, esp.:
+3.1. Detect current heading from compass
+3.2. Determine correction of compass through:
+3.1.1. calculating true North through calculation true azimuth from current position to a star and comparing it with actual azimuth
+3.1.2. calculating true North through calculation magnetic declination for current position using polynominal like in IGRF.
+
+4. Determine DR, esp.:
+4.1. Determine DR through speed, direction, drift speed, drift direction and time.
+
 5) implement new precise ephemeris for Moon
