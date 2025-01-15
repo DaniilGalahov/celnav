@@ -4,12 +4,12 @@ sys.path.append("..\src")
 import almanac
 from math import sin, cos, acos, tan, atan, degrees, radians, sqrt
 from astrometry import ElevationCorrection, FindToCoEE
-from fix import TwoObjectFix, ThreeObjectFix
+from position import FromToCoEEo3CO
+import orthodromy
 
 from external.astro import *
 
 print("Palomar observatory (winter 2024) practical test.")
-
 almanac.source=1
 
 phi0=33.3562811 #Palomar observatory (precisely)
@@ -54,9 +54,9 @@ Hs3+=ElevationCorrection(celestialObjectName,Y3,M3,D3,h3,m3,s3,Hs3,limb=0)
 deltael1,beta1=FindToCoEE(phiAP,lambdaAP,Y1,M1,D1,h1,m1,s1,celestialObjectName,Hs1)
 deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,Hs2)
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
-phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
-d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
+phigc,lambda_=FromToCoEEo3CO(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
+alpha1,alpha2,delta12,s12=orthodromy.Between2Pos(phigc,lambda_,phi0,lambda0)
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(alpha1,1),round(s12,3))
 
 
 #---------- Moon ----------
@@ -92,9 +92,9 @@ Hs3+=ElevationCorrection(celestialObjectName,Y3,M3,D3,h3,m3,s3,Hs3,limb=0)
 deltael1,beta1=FindToCoEE(phiAP,lambdaAP,Y1,M1,D1,h1,m1,s1,celestialObjectName,Hs1)
 deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,Hs2)
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
-phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
-d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
+phigc,lambda_=FromToCoEEo3CO(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
+alpha1,alpha2,delta12,s12=orthodromy.Between2Pos(phigc,lambda_,phi0,lambda0)
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(alpha1,1),round(s12,3))
 
 
 #---------- Venus ----------
@@ -130,9 +130,9 @@ Hs3+=ElevationCorrection(celestialObjectName,Y3,M3,D3,h3,m3,s3,Hs3)
 deltael1,beta1=FindToCoEE(phiAP,lambdaAP,Y1,M1,D1,h1,m1,s1,celestialObjectName,Hs1)
 deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,Hs2)
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
-phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
-d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
+phigc,lambda_=FromToCoEEo3CO(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
+alpha1,alpha2,delta12,s12=orthodromy.Between2Pos(phigc,lambda_,phi0,lambda0)
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(alpha1,1),round(s12,3))
 
 
 #---------- Mars ----------
@@ -168,9 +168,9 @@ Hs3+=ElevationCorrection(celestialObjectName,Y3,M3,D3,h3,m3,s3,Hs3)
 deltael1,beta1=FindToCoEE(phiAP,lambdaAP,Y1,M1,D1,h1,m1,s1,celestialObjectName,Hs1)
 deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,Hs2)
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
-phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
-d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
+phigc,lambda_=FromToCoEEo3CO(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
+alpha1,alpha2,delta12,s12=orthodromy.Between2Pos(phigc,lambda_,phi0,lambda0)
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(alpha1,1),round(s12,3))
 
 
 #---------- Jupiter ----------
@@ -206,9 +206,9 @@ Hs3+=ElevationCorrection(celestialObjectName,Y3,M3,D3,h3,m3,s3,Hs3)
 deltael1,beta1=FindToCoEE(phiAP,lambdaAP,Y1,M1,D1,h1,m1,s1,celestialObjectName,Hs1)
 deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,Hs2)
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
-phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
-d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
+phigc,lambda_=FromToCoEEo3CO(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
+alpha1,alpha2,delta12,s12=orthodromy.Between2Pos(phigc,lambda_,phi0,lambda0)
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(alpha1,1),round(s12,3))
 
 
 #---------- Saturn ----------
@@ -244,9 +244,9 @@ Hs3+=ElevationCorrection(celestialObjectName,Y3,M3,D3,h3,m3,s3,Hs3)
 deltael1,beta1=FindToCoEE(phiAP,lambdaAP,Y1,M1,D1,h1,m1,s1,celestialObjectName,Hs1)
 deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,Hs2)
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
-phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
-d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
+phigc,lambda_=FromToCoEEo3CO(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
+alpha1,alpha2,delta12,s12=orthodromy.Between2Pos(phigc,lambda_,phi0,lambda0)
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(alpha1,1),round(s12,3))
 
 
 #---------- Betelgeuse ----------
@@ -285,9 +285,9 @@ Hs3+=ElevationCorrection(celestialObjectName,Y3,M3,D3,h3,m3,s3,Hs3)
 deltael1,beta1=FindToCoEE(phiAP,lambdaAP,Y1,M1,D1,h1,m1,s1,celestialObjectName,Hs1)
 deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,Hs2)
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
-phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
-d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,round(phigc,9),round(lambda_,9),round(d,3))
+phigc,lambda_=FromToCoEEo3CO(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
+alpha1,alpha2,delta12,s12=orthodromy.Between2Pos(phigc,lambda_,phi0,lambda0)
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(alpha1,1),round(s12,3))
 
 
 #---------- Betelgeuse 2010 ----------
@@ -326,6 +326,6 @@ Hs3+=ElevationCorrection(celestialObjectName,Y3,M3,D3,h3,m3,s3,Hs3)
 deltael1,beta1=FindToCoEE(phiAP,lambdaAP,Y1,M1,D1,h1,m1,s1,celestialObjectName,Hs1)
 deltael2,beta2=FindToCoEE(phiAP,lambdaAP,Y2,M2,D2,h2,m2,s2,celestialObjectName,Hs2)
 deltael3,beta3=FindToCoEE(phiAP,lambdaAP,Y3,M3,D3,h3,m3,s3,celestialObjectName,Hs3)
-phigc,lambda_=ThreeObjectFix(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
-d=(sqrt(pow(phigc-phi0,2)+pow(lambda_-lambda0,2)))*60*1.852*cos(radians(phigc))
-print(celestialObjectName,"y.2010",round(phigc,9),round(lambda_,9),round(d,3))
+phigc,lambda_=FromToCoEEo3CO(phiAP,lambdaAP,deltael1,beta1,deltael2,beta2,deltael3,beta3)
+alpha1,alpha2,delta12,s12=orthodromy.Between2Pos(phigc,lambda_,phi0,lambda0)
+print(celestialObjectName,round(phigc,9),round(lambda_,9),round(alpha1,1),round(s12,3))

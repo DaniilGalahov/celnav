@@ -3,7 +3,7 @@ sys.path.append("..\src")
 
 from math import sin, cos, acos, tan, atan, degrees, radians
 from astrometry import FindToCoEE, ElevationCorrection
-from fix import TwoObjectFix
+from position import FromToCoEEo2CO
 from timeprocessor import TimeZone, LTtoGMT
 
 phigc0=13.0
@@ -57,5 +57,5 @@ Hs2+=ElevationCorrection(celestialObjectName,Y2,M2,D2,h2,m2,s2,Hs2)#,hoe=aoe,T=T
 
 p1,z1=FindToCoEE(phigce,lambdae,Y1,M1,D1,h1,m1,s1,celestialObjectName,Hs1)
 p2,z2=FindToCoEE(phigce,lambdae,Y2,M2,D2,h2,m2,s2,celestialObjectName,Hs2)
-phigc,lambda_=TwoObjectFix(phigce,lambdae,p1,z1,p2,z2)
+phigc,lambda_=FromToCoEEo2CO(phigce,lambdae,p1,z1,p2,z2)
 print(phigc,lambda_)
