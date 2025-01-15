@@ -82,7 +82,7 @@ def FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe=0,T=10,P=1010.
             Zn=180.0-Z
         else:
             Zn=180.0+Z
-    return angle.Normalize(a),angle.Normalize(Zn)
+    return a,angle.Normalize(Zn)
 
 def AzElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s): #mostly for precision testing purposes;
     celestialObject = almanac.GetCelestialObject(celestialObjectName)

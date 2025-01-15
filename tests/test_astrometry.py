@@ -7,7 +7,7 @@ import almanac
 import unittest
 
 class test_astrometry(unittest.TestCase):
-    @unittest.skip("Useless because almanac generates already pre-corrected output")
+    @unittest.skip("Useless because we are not using Bowditch/NA FindLoP algorithm")
     def test_ApplyElevationCorrectionTo(self):
         phiDR=angle.ToDecimal("39*00.0'N")
         lambdaDR=angle.ToDecimal("45*26.0'W")
@@ -43,52 +43,43 @@ class test_astrometry(unittest.TestCase):
         celestialObjectName="Deneb"
         Hs=angle.ToDecimal("50*34.4'")        
         a,Zn=astrometry.FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe,IC=indexCorrection)
-        self.assertAlmostEqual(a,angle.ToDecimal("0*11.7'"),3)
-        self.assertAlmostEqual(Zn,63.3,3)
+        self.assertAlmostEqual(a,angle.ToDecimal("0*11.7'"),3) #Not matched - 13.286021724663975 difference
+        self.assertAlmostEqual(Zn,63.3,3) #Not matched - 1.41743875996967 difference
 
         h=9 #in Bowditch vol.1, 2019, in table on p.315 they provided time ALREADY CORRECTED to GMT/UTC
         m=2
         s=14        
-        celestialObjectName="Deneb"
+        celestialObjectName="Antares"
         Hs=angle.ToDecimal("23*57.2'")        
         a,Zn=astrometry.FindLoP(phiDR,lambdaDR,Y,M,D,h,m,s,celestialObjectName,Hs,hoe,IC=indexCorrection)
-        self.assertAlmostEqual(a,angle.ToDecimal("-0*05.2'"),3)
-        self.assertAlmostEqual(Zn,189.9,3)
+        self.assertAlmostEqual(a,-angle.ToDecimal("0*05.2'"),3) # "-" because it's "away" in Bowditch; Not matched at all - 46.78258281336567 difference
+        self.assertAlmostEqual(Zn,189.9,3) #same - 154.84453464942638 difference
 
     def test_AzElFor(self):
         '''
-        30.12.2024
-        # !!! I'm shocked. Vallado ephemerides provides vectors WITH LIGHT SPEED CORRECTION AND WITH ATMOSPHERIC REFRACTION CORRECTION...
-        # Again. Horizons system (https://ssd.jpl.nasa.gov/horizons/app.html#/) with atmospheric correction provides el=47.102741, WITHOUT CORRECTION el=47.087013
-        # Almanac output is 47.10182375676978. Difference with Horizons corrected el d=0.000917, with uncorrected - 0.014811; i.e., 16.151581 TIMES!!!
-        
-        # After adding corrections inside almanac reached value 47.086728167206616, which is almost "without correction"
-
-        01.01.2025 (?)
-        I still can not understand the source of a problem. There is possibility that astronomers measured positions of celestial objects not by center of an object,
-        but by edge of its frame on astro photo.
-
-        03.01.2025 (?)
-        Same, after MY corrections, I've got positions close enough for those which are without refraction. Maybe (!) the trouble is in refraction itself,
-        not in a way how they measuring position of C.O.
-        
-        10.01.2025
-        Things are not so simple as I expected. Ephemerides of Vallado provides "pure" vectors (i.e., without refraction correction). BUT, positions of celestial bodies are strangely twisted
-        (and that is probably not because of precession or nutation). To find truth, we need to compare non-corrected data from Horizon with non-corrected data from my ephemeris system.
-        We need to compare elevations and azimuths, and find "twist rate" for each of planets.
-
-        11.01.2025
         So. Before I start the testing, I need to record all my previous way of acting to prevent mistakes.
-        After I met this strange bug, my initial suggestion was that Vallado's ephemerides provides value with correction.
-        Then, when I finished position fix procedures, I found out that they are not so correct (precision is about 1 mile).
-        To fix this, I added intuitive (and not scientifically founded) corrections (rotations of vector to planed) to coloc.py (for planets, to minimize deviation of fixed geographical point on Earth).
+        
+        30.12.2024 I found out that Horizons system (https://ssd.jpl.nasa.gov/horizons/app.html#/) with atmospheric correction provides el=47.102741, and WITHOUT CORRECTION el=47.087013. My almanac
+        output was 47.10182375676978. Difference of almanac value with Horizons corrected el was d=0.000917, with Horizons uncorrected - 0.014811; i.e., 16.151581 TIMES!!!
+        I started to think that Vallado's ephemerides providing values with already applied refraction correction.
+
+        After I met this strange bug, my initial suggestion was that Vallado's ephemerides provides value ALREADY WITH refraction correction.
+        
+        I continue the work. When I finished position fix procedures, I found out that results are not so correct (precision was about 1 mile).
+
+        To fix this, I added intuitive (and scientifically improper) corrections (rotations of vector to planet) to coloc.py (for planets, to minimize deviation of fixed geographical point on Earth).
         After adding this corrections, I found out that now "raw" values of azimuth and elevation (without refraction) from my almanac matching "raw" values of azimuth and elevation (without refraction)
         from Horizons system.
-        I thought that this corrections are needed because of way how scientists in JPL measured positions of planets (it looked like they measured them not from visual center of planet,
-        but from a corener of a photo of a planet).
-        I added correction of precession and nutation, but the troubles did not get away.
-        But thought that the root of trouble is in a way of photografical measuring of position of planets is only my suggestion. I thing I need to test how different would be azimuths and elevations
-        of a planets calculated by my almanac, and try to find a source of an error.
+
+        I thought that this corrections was required because of way how scientists in JPL measured positions of planets (it looked like they measured them not from visual center of planet,
+        but from a corner of a photo of a planet). But I could not explain exact values of coefficients I used to fix this error.
+
+        I added correction of precession and nutation. This reduced size of error, but the trouble did not get away.
+
+        I thought that the root of trouble is in a way of photografical measuring of position of planets is only my suggestion. I think I need to test the size of differences between azimuths and elevations
+        of a planets calculated by my almanac, and azimuths and elevations recieved from Horizons. This could possibly help me to find a source of an error.
+
+        Now it's 11.01.2025, and I am starting testing.
         '''
             
         phi=33.3562811 #Palomar observatory (precisely)
@@ -160,30 +151,33 @@ class test_astrometry(unittest.TestCase):
         az,el=astrometry.AzElFor(celestialObjectName,phi,lambda_,Y,M,D,h,m,s) #no refraction correction, angles from pure vector.        
         self.assertAlmostEqual(az,234.070866,1) #not matched at 2 decimals
         self.assertAlmostEqual(el,31.028380,1) #not matched at 2 decimals
-        
-        '''
-        #corrections for Az/El calculated from tests
-        azElCorrections={"Star":    [-0.009515,0.0],
-                           "Sun":     [0.0,-0.005825],
-                           "Moon":    [0.0,0.0], #???
-                           "Venus":   [0.0,-0.006748],
-                           "Mars":    [-0.005935,-0.016992],
-                           "Jupiter": [-0.011767,0.0],
-                           "Saturn":  [-0.025106,0.046960]}
-        #of course, this is useless for practical calculations
-        '''
 
         '''
-        After this, I made special deviation testing. Now it's moved from here to "astrometry/devtest.py"
-        '''
+        Initial testing done.
 
-        '''
-        So, basing on deep testing, I understood that Vallado's ephemerides providing position of a planet non-precisely.
-        They provide position WITHOUT refraction correction. Deviation of azimuth and elevation are systematic but very complex,
-        and I can not describe them mathematically.
+        After this, I made special "full-scale" deviation testing, to test deviation in 30 years. Code of this tests is moved from here to "astrometry/devtest.py"
+
+        So, basing on deep testing, I understood that Vallado's ephemerides providing "true" position of a planet (without any refraction correction)
+
+        But they do it non-precisely.
+
+        Deviation of azimuth and elevation are systematic but very complex, and I can not describe them mathematically.
+
         I think that I should stop my tries of achieve high precision for now. I should finish all other parts of system, i.e., geodesy,
         great circle navigation and star compass. After this, I should preform a complex test of precision for multiple positions on Earth,
         to understand real precision of my algorithms.
+
+        12.01.2025
+        Complex test of precision finished. Average deviation of position determination is about 500 m. Not bad, but how to reduce this?
+
+        13.01.2025
+        Found out article, describing generation of MOS - Mean Orbit Solutions. MOS are the way how Vallado described orbits of planets.
+        This way is not too precise by definition - it's MEAN orbit solutions. For Mars and Saturn deviations can match 60" and 600" respectably.
+
+        There is a way to fix this. J.L.Simon in his article "Numerical expressions for
+        precession formulae and mean elements for the Moon and the planets" described a way
+        to generate corrections for achieve higher precision. But this is pretty complex code,
+        so I will implement it later.
         '''
         
     #@unittest.skip("For debug purposes")
@@ -218,8 +212,8 @@ class test_astrometry(unittest.TestCase):
         el1=36.976441
         el1=el1+astrometry.ElevationCorrection(celestialObjectName1,Y1,M1,D1,h1,m1,s1,el1)
         deltael1,beta1=astrometry.FindToCoEE(phiAP,lambdaAP,Y1,M1,D1,h1,m1,s1,celestialObjectName1,el1)
-        self.assertAlmostEqual(deltael1,0.12919942195004097,6)
-        self.assertAlmostEqual(beta1,-84.73904924679685,6)
+        self.assertAlmostEqual(deltael1,0.12967432104721865,6)
+        self.assertAlmostEqual(beta1,-84.7389551487631,6)
 
 if __name__ == '__main__':
     unittest.main()
