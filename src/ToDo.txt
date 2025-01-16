@@ -6,10 +6,9 @@ TODO:
 Logic of package.
 We need to provide math support for basic navigational tasks. I.e., following common logic:
 1. Determine our current position using available data sources, esp.:
-1.1. From 3 known positions and 3 azimuths to them (P3Z3)
-1.2. From 3 known positions, 2 azimuths and 1 range (P3Z2R1)
-1.3. From 3 known positions, 1 azimuth and 2 ranges (P3Z1R2)
-1.4. From 3 known positions, and 3 ranges to them (P3R3)
++1.1. From 3 known positions and 3 azimuths to them (P3Z3)
+!!! 1.2-1.3 It's impossible to determine position with P3Z2R or P3R2Z
++1.4. From 3 known positions, and 3 ranges to them (P3R3)
 +1.5. Using celestial navigation methods (2 object fix or 3 object fix)
 (all other types of position determination require detection of direction to north, which in any case requires detection of position - to calculate azimuth to star or to determine magnetic compass correction through polynominal)
 

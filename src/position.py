@@ -30,4 +30,23 @@ def FromP3Z3(Na,Ea,Nb,Eb,Nc,Ec,a,b,c): #phigc1,lambda1,phigc2,lambda2,phigc3,lam
     Np=((n1*Na)+(n2*Nb)+(n3*Nc))/(n1+n2+n3)
     Ep=((n1*Ea)+(n2*Eb)+(n3*Ec))/(n1+n2+n3)
     return Np,Ep
-    
+
+def Km2GD(x):
+    return (x/1.852)/60.0
+
+def NMi2GD(x):
+    return x/60.0
+
+def FromP3R3(y1,x1,y2,x2,y3,x3,d1,d2,d3): #phigc1,lambda1,phigc2,lambda2,phigc3,lambda3,range1,range2,range3; RANGES MUST BE IN GEOGRAFICAL DEGREES; Realization of trilateration method from "Robust Trilateration Based Algorithm for Indoor Positioning Systems"
+    A=pow(x1,2)+pow(y1,2)-pow(d1,2)
+    B=pow(x2,2)+pow(y2,2)-pow(d2,2)
+    C=pow(x3,2)+pow(y3,2)-pow(d3,2)
+    X32=x3-x2
+    X13=x1-x3
+    X21=x2-x1
+    Y32=y3-y2
+    Y13=y1-y3
+    Y21=y2-y1
+    x=((A*Y32)+(B*Y13)+(C*Y21))/(2*((x1*Y32)+(x2*Y13)+(x3*Y21)))
+    y=((A*X32)+(B*X13)+(C*X21))/(2*((y1*X32)+(y2*X13)+(y3*X21)))
+    return y,x
