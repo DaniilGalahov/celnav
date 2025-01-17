@@ -72,36 +72,36 @@ class test_position(unittest.TestCase):
         self.assertAlmostEqual(lambda_,lambda0,1)
 
     def test_FromP3Z3(self):
-        phi0=51.1287076 #Baiterek, Astana
-        lambda0=71.4189127
-        phi1=51.1287076 #AkOrda (Presidental palace)
-        lambda1=71.4189127
-        phi2=51.1341925 #Rixoz Hotel Astana
-        lambda2=71.4205884
-        phi3=51.1222644 #Abu Dhabi Plaza
-        lambda3=71.4267657
-        a=116.7
-        b=91.7
-        c=151.6
+        phi0=51.1282921 #Baiterek, Astana
+        lambda0=71.4305781
+        phi1=51.0731459 #Grand Mosque
+        lambda1=71.410925
+        phi2=51.1256397 #Harzat Sultan Mosque
+        lambda2=71.4724698
+        phi3=51.1090188 #Barys Arena
+        lambda3=71.3953671
+        a=144+83.4
+        b=36
+        c=96.6
         phi,lambda_=position.FromP3Z3(phi1,lambda1,phi2,lambda2,phi3,lambda3,a,b,c)
         self.assertAlmostEqual(phi,phi0,1)
-        self.assertAlmostEqual(lambda_,lambda0,1)
+        self.assertAlmostEqual(lambda_,lambda0,1) #726 m deviation, almost same as FromP3R3
 
     def test_FromP3R3(self):
-        phi0=51.1287076 #Baiterek, Astana
-        lambda0=71.4189127
-        phi1=51.1287076 #AkOrda (Presidental palace)
-        lambda1=71.4189127
-        phi2=51.1341925 #Rixoz Hotel Astana
-        lambda2=71.4205884
-        phi3=51.1222644 #Abu Dhabi Plaza
-        lambda3=71.4267657
-        d1=position.Km2GD(1.14)
-        d2=position.Km2GD(0.89)
-        d3=position.Km2GD(0.685)
+        phi0=51.1282921 #Baiterek, Astana
+        lambda0=71.4305781
+        phi1=51.0731459 #Grand Mosque
+        lambda1=71.410925
+        phi2=51.1256397 #Harzat Sultan Mosque
+        lambda2=71.4724698
+        phi3=51.1090188 #Barys Arena
+        lambda3=71.3953671
+        d1=position.Km2GD(6.31)
+        d2=position.Km2GD(2.97)
+        d3=position.Km2GD(3.25)
         phi,lambda_=position.FromP3R3(phi1,lambda1,phi2,lambda2,phi3,lambda3,d1,d2,d3)
         self.assertAlmostEqual(phi,phi0,1)
-        self.assertAlmostEqual(lambda_,lambda0,1)
+        self.assertAlmostEqual(lambda_,lambda0,1) #865 m deviation, almost same as FromP3Z3
 
 if __name__ == '__main__':
     unittest.main()
