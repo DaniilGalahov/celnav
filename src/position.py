@@ -1,3 +1,4 @@
+#Position determination algorithms
 from external.math import *
 from external.astro import *
 
@@ -17,7 +18,7 @@ def FromToCoEEo3CO(phiAP,lambdaAP,p1,gamma1,p2,gamma2,p3,gamma3):
     lambda_=(lambda1+lambda2+lambda3)/3.0
     return phigc,lambda_
 
-def FromP3Z3(phi1,lambda1,phi2,lambda2,phi3,lambda3,alpha12,alpha23,alpha31): #phigc1,lambda1,phigc2,lambda2,phigc3,lambda3, angle between pt 1 and 2, angle between pt 2 and 3, angle between pt 3 and 1; Realization of Tienstra method
+def FromP3A3(phi1,lambda1,phi2,lambda2,phi3,lambda3,alpha12,alpha23,alpha31): #phigc1,lambda1,phigc2,lambda2,phigc3,lambda3, angle between pt 1 and 2, angle between pt 2 and 3, angle between pt 3 and 1; Realization of Tienstra method
     Na=phi1
     Ea=lambda1
     Nb=phi2

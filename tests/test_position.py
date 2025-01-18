@@ -71,7 +71,7 @@ class test_position(unittest.TestCase):
         self.assertAlmostEqual(phi,phi0,2)
         self.assertAlmostEqual(lambda_,lambda0,1)
 
-    def test_FromP3Z3(self):
+    def test_FromP3A3(self):
         phi0=51.1282921 #Baiterek, Astana
         lambda0=71.4305781
         phi1=51.0731459 #Grand Mosque
@@ -83,7 +83,7 @@ class test_position(unittest.TestCase):
         alpha12=96.6
         alpha23=144+83.4
         alpha31=36
-        phi,lambda_=position.FromP3Z3(phi1,lambda1,phi2,lambda2,phi3,lambda3,alpha12,alpha23,alpha31)
+        phi,lambda_=position.FromP3A3(phi1,lambda1,phi2,lambda2,phi3,lambda3,alpha12,alpha23,alpha31)
         self.assertAlmostEqual(phi,phi0,1)
         self.assertAlmostEqual(lambda_,lambda0,1) #726 m deviation, almost same as FromP3R3
 
