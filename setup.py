@@ -37,7 +37,7 @@ setup(
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see
     # https://packaging.python.org/guides/single-sourcing-package-version/
-    version="0.0.0",  # Required
+    version="0.9.5",  # Required
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
@@ -88,7 +88,7 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         # Indicate who your project is intended for
         "Intended Audience :: Developers",
         "Topic :: Celestial navigation :: Geodesy",
@@ -122,14 +122,7 @@ setup(
     #   py_modules=["my_module"],
     #
     ##packages=find_packages(where="src"),  # Required
-    #Whole list of modules: ["almanac","angle","astrometry","catalog","celestialobject","coapy","coloc","ephemeris","equationsolver","gcnm","geodesy","hipparcos","simbad","timeprocessor","trigonometry"]
-    py_modules=[
-        "almanac",
-        "angle",
-        "astrometry",
-        "timeprocessor",
-        "equationsolver",
-        ],
+    py_modules=[ "celnav" ],
 
     # Specify which Python versions you support. In contrast to the
     # 'Programming Language' classifiers above, 'pip install' will check this
@@ -145,10 +138,10 @@ setup(
     # https://packaging.python.org/discussions/install-requires-vs-requirements/
     install_requires=[
         "astrodynamics==0.0.0",
-        "astropy==5.3",
-        "numpy==1.24.3",
-        "Requests==2.31.0",
-        "setuptools==65.5.0",
+        "astropy>=5.0",
+        "numpy>=1.2",
+        "requests>=2.0",
+        "setuptools>=65.5.0",
         ],  # Optional
 
     # List additional groups of dependencies here (e.g. development
