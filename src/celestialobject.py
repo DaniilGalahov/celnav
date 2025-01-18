@@ -1,3 +1,4 @@
+#Base class describing celestial object properties
 from catalog import navigationStarNames
 
 navigationPlanetNames=["Venus",

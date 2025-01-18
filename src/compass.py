@@ -1,3 +1,4 @@
+#Functions to calculate true heading and correction of magnetic compass
 from external.math import *
 from external.astro import *
 

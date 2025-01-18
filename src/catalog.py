@@ -1,3 +1,4 @@
+#Star catalog interface
 from external.modules import *
 
 import simbad

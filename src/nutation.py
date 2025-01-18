@@ -1,3 +1,4 @@
+#Functions to calculate nutation of the Earth
 from external.math import *
 from external.astro import *
 

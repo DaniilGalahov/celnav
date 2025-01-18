@@ -1,3 +1,4 @@
+#Collection of function calculating ephemerides
 from external.math import *
 from external.astro import *
 

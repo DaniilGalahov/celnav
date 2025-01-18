@@ -1,3 +1,4 @@
+#Interface of SIMBAD online astronomical catalog
 from external.modules import *
 
 databaseSearchUri="https://simbad.cds.unistra.fr/simbad/sim-id?output.format=ASCII&coodisp1=d&frame1=ICRS&Ident="

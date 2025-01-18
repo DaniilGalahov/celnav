@@ -1,3 +1,4 @@
+#Astrometry functions for navigation purposes
 from external.math import *
 from external.astro import *
 

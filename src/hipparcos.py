@@ -1,3 +1,4 @@
+#Interface of Hipparchos online astronomical catalog
 from external.modules import *
 
 databaseSearchUri="https://hipparcos-tools.cosmos.esa.int/cgi-bin/HIPcatalogueSearch.pl?hipId="

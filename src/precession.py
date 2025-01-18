@@ -1,3 +1,4 @@
+#Functions to calculate precession of the Earth
 from external.math import *
 from external.astro import *
 

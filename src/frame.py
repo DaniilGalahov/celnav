@@ -1,3 +1,4 @@
+#Functions to convert from one CS to other
 from external.math import *
 from external.astro import *
 
