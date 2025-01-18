@@ -21,4 +21,4 @@ We need to provide math support for basic navigational tasks. I.e., following co
 +3.2.  required magnetic heading through calculation true (geometric) azimuth from current position to known position, and comparing it with actual azimuth
 
 4. Determine DR, esp.:
-4.1. Determine DR through speed, direction, drift speed, drift direction and time.
++4.1. Determine DR through speed, direction, drift speed, drift direction and time.

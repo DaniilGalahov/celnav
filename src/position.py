@@ -40,28 +40,18 @@ def FromP3Z3(phi1,lambda1,phi2,lambda2,phi3,lambda3,alpha12,alpha23,alpha31): #p
     Ep=((n1*Ea)+(n2*Eb)+(n3*Ec))/(n1+n2+n3)
     return Np,Ep
 
-def FromP3R3(phi1,lambda1,phi2,lambda2,phi3,lambda3,r1,r2,r3,unit="km"): #phigc1,lambda1,phigc2,lambda2,phigc3,lambda3,range,range2,range3; RANGES MUST BE IN GEOGRAFICAL DEGREES; Realization of trilateration method from "Robust Trilateration Based Algorithm for Indoor Positioning Systems"
-    def GD2GD(x):
-        return x
-    def NMi2GD(x):
-        return x/60.0
-    def Km2GD(x):
-        return (x/1.852)/60.0
+def FromP3R3(phi1,lambda1,phi2,lambda2,phi3,lambda3,r1,r2,r3): #phigc1,lambda1,phigc2,lambda2,phigc3,lambda3,range,range2,range3; RANGES MUST BE IN KILOMETERS!; Realization of trilateration method from "Robust Trilateration Based Algorithm for Indoor Positioning Systems"
+    def KmToGD(x):
+        return x/1.852/60.0
     y1=phi1
     x1=lambda1
     y2=phi2
     x2=lambda2
     y3=phi3
     x3=lambda3
-    if unit=="km":
-        ToGD=Km2GD
-    elif unit=="nmi":
-        ToGD=NMi2GD
-    else:
-        ToGD=GD2GD
-    d1=ToGD(r1)
-    d2=ToGD(r2)
-    d3=ToGD(r3)
+    d1=KmToGD(r1)
+    d2=KmToGD(r2)
+    d3=KmToGD(r3)
     A=pow(x1,2)+pow(y1,2)-pow(d1,2)
     B=pow(x2,2)+pow(y2,2)-pow(d2,2)
     C=pow(x3,2)+pow(y3,2)-pow(d3,2)
