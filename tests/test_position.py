@@ -80,10 +80,10 @@ class test_position(unittest.TestCase):
         lambda2=71.4724698
         phi3=51.1090188 #Barys Arena
         lambda3=71.3953671
-        a=144+83.4
-        b=36
-        c=96.6
-        phi,lambda_=position.FromP3Z3(phi1,lambda1,phi2,lambda2,phi3,lambda3,a,b,c)
+        alpha12=96.6
+        alpha23=144+83.4
+        alpha31=36
+        phi,lambda_=position.FromP3Z3(phi1,lambda1,phi2,lambda2,phi3,lambda3,alpha12,alpha23,alpha31)
         self.assertAlmostEqual(phi,phi0,1)
         self.assertAlmostEqual(lambda_,lambda0,1) #726 m deviation, almost same as FromP3R3
 
@@ -96,10 +96,10 @@ class test_position(unittest.TestCase):
         lambda2=71.4724698
         phi3=51.1090188 #Barys Arena
         lambda3=71.3953671
-        d1=position.Km2GD(6.31)
-        d2=position.Km2GD(2.97)
-        d3=position.Km2GD(3.25)
-        phi,lambda_=position.FromP3R3(phi1,lambda1,phi2,lambda2,phi3,lambda3,d1,d2,d3)
+        r1=6.31 #km
+        r2=2.97
+        r3=3.25
+        phi,lambda_=position.FromP3R3(phi1,lambda1,phi2,lambda2,phi3,lambda3,r1,r2,r3)
         self.assertAlmostEqual(phi,phi0,1)
         self.assertAlmostEqual(lambda_,lambda0,1) #865 m deviation, almost same as FromP3Z3
 
