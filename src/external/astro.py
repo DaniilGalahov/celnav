@@ -5,6 +5,5 @@ from astropy import units as u
 from astropy.coordinates.builtin_frames import FK5,TEME
 
 #astrodynamics by Vallado
-from Vallado import JulianDate, LSTime, Sun, Moon, PlanetRV, IAU2000CIO, IAU76FK5, HMSToTime, GeocentricRadec, JDtoGregorianDate
-from utility import Site, IJKtoLATLON
-from extnumpy import unit_vector,ROT1,ROT2,ROT3,angle as angleBetween,signedAngle as signedAngleBetween
+from external.astrodynamics.algorithms import JulianDate, LSTime, Sun, Moon, PlanetRV, HMSToTime, GeocentricRadec, JDtoGregorianDate, Site, IJKtoLATLON
+from external.astrodynamics.math import ROT1,ROT2,ROT3,angle as angleBetween,signedAngle as signedAngleBetween

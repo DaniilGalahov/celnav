@@ -137,11 +137,10 @@ setup(
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/discussions/install-requires-vs-requirements/
     install_requires=[
-        "astrodynamics==0.0.0",
         "astropy>=5.0",
         "numpy>=1.2",
         "requests>=2.0",
-        "setuptools>=65.5.0",
+        "setuptools>=65.0",
         ],  # Optional
 
     # List additional groups of dependencies here (e.g. development
