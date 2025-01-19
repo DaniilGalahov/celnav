@@ -5,6 +5,7 @@ from position import FromToCoEEo2CO, FromToCoEEo3CO, FromP3A3, FromP3R3
 from orthodromy import Between2Pos, PointHdg
 from compass import COZCorrection, POZCorrection
 from route import DR
+from angle import ToDecimal
 
 #1) Detecting GMT
 def LTToGMT(Y,M,D,h,m,s,lambdaAP):
@@ -44,3 +45,7 @@ def CompassCorrectionPOZ(magHdg,phiPos,lambdaPos,phiObj,lambdaObj,azObj):
 #5) Calculate passed route
 def DeadReckoning(phi0,lambda0,V,Vdir,D,Ddir,dt):
     return DR(phi0,lambda0,V,Vdir,D,Ddir,dt)
+
+#6) Auxilliary functions
+def AngleToDecimal(string):
+    return ToDecimal(string)
