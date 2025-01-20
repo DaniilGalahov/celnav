@@ -12,7 +12,7 @@ import pathlib
 here = pathlib.Path(__file__).parent.resolve()
 
 # Get the long description from the README file
-long_description = (here / "readme.txt").read_text(encoding="utf-8")
+long_description = (here / "readme.md").read_text(encoding="utf-8")
 
 # Arguments marked as "Required" below must be included for upload to PyPI.
 # Fields marked as "Optional" may be commented out.
@@ -37,12 +37,12 @@ setup(
     # For a discussion on single-sourcing the version across setup.py and the
     # project code, see
     # https://packaging.python.org/guides/single-sourcing-package-version/
-    version="0.9.5",  # Required
+    version="1.0.0",  # Required
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#summary
-    description="Collection of scripts solving celestial navigation problems",  # Optional
+    description="Celestial navigation algorithms library",  # Optional
 
     # This is an optional longer description of your project that represents
     # the body of text which users will see when they visit PyPI.
@@ -70,7 +70,7 @@ setup(
     #
     # This field corresponds to the "Home-Page" metadata field:
     # https://packaging.python.org/specifications/core-metadata/#home-page-optional
-    url="",  # Optional
+    url="https://github.com/DaniilGalahov/celnav",  # Optional
 
     # This should be your name or the name of the organization which owns the
     # project.
@@ -88,7 +88,7 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         # Indicate who your project is intended for
         "Intended Audience :: Developers",
         "Topic :: Celestial navigation :: Geodesy",
@@ -178,9 +178,9 @@ setup(
     # maintainers, and where to support the project financially. The key is
     # what's used to render the link text on PyPI.
     project_urls={  # Optional
-        "Bug Reports": "",
+        "Bug Reports": "daniil.galahow@yandex.ru",
         "Funding": "",
         "Say Thanks!": "",
-        "Source": "",
+        "Source": "https://github.com/DaniilGalahov/celnav",
     },
 )
