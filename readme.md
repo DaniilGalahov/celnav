@@ -17,6 +17,7 @@
  - **simplicity** - code kept as simple as possible on purpose. No advanced programming techniques - just plain functions and math.
  - **universal** - all essential functions included
  - **lightweight** - 228 Kb of code.
+ - **solid** - over 95% of code covered with unit tests
 
 ## Detailed description
 
