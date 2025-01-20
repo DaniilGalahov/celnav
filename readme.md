@@ -43,7 +43,7 @@
 - [AstroPy](https://www.astropy.org/)
 - local and standalone "astronomical engine", utilizing algorithms from "[*Fundamentals of Astrodynamics and Applications, Fourth Edition*](http://celestrak.org/software/vallado-sw.php)" by **David Vallado** and "_Astronomical Algorithms_ (1998), 2nd ed." by [Jean Meeus](https://en.wikipedia.org/wiki/Jean_Meeus).
 
-You can choose "engine", switching it in [config.ini](src\config.ini). See [below](#Choosing-astronomical-data-source) (or follow comments in this file) for additional info.
+You can choose "engine", switching it in [config.ini](src/config.ini). See [below](#Choosing-astronomical-data-source) (or follow comments in this file) for additional info.
 
 AstroPy provides more precise sight reduction, but will require downloading of ephemeris, which can be inconvenient in case if you have no internet connection.
 
@@ -148,13 +148,13 @@ python -m pip install -e .
 3. Done.
 
 ### Updating astronomical catalog
-Up-to-date astronomical catalog provided with this repo in [src\data\catalog.dat](src\data\catalog.dat). Normally, **you should not touch it**. If you need to refresh it, you can run [src\catalog.py](src\catalog.py) in your repo. Follow instructions of the app - system will connect to online astronomical catalog and download all required data.
+Up-to-date astronomical catalog provided with this repo in [src/data/catalog.dat](src/data/catalog.dat). Normally, **you should not touch it**. If you need to refresh it, you can run [src/catalog.py](src/catalog.py) in your repo. Follow instructions of the app - system will connect to online astronomical catalog and download all required data.
 
 ***IMPORTANT!*** *You need internet connection for this operation.*
 
 ### Choosing astronomical data source
 As I mentioned earlier system can use as data source AstroPy or local "astronomical almanac". AstroPy require internet but provide better precision, local almanac is offline, but less precise. You may switch data source whenever you want.
-To switch data source, open [src\config.ini](src\config.ini) and change value of parameter *AlmanacEngine* to
+To switch data source, open [src/config.ini](src/config.ini) and change value of parameter *AlmanacEngine* to
 - ```AlmanacEngine=0``` (for AstroPy)
 - ```AlmanacEngine=1``` (for local almanac, default value)
 
