@@ -1,9 +1,14 @@
 #interface to astronomical almanach systems - based on AstroPy or local catalog and ephemerides
+from external.modules import *
+
 from celestialobject import CelestialObject
 from coapy import CelestialObjectFromAstroPy
 from coloc import CelestialObjectFromLocalCatalog
 
-source=1 #0 - AstroPy, 1 - local catalog and ephemeris based on hipparchos, simbad and Vallado code
+config=configparser.ConfigParser()
+configFilePath=os.path.join(os.path.dirname(__file__),'config.ini')
+config.read(configFilePath)
+source=int(config['MAIN']["AlmanacEngine"])
 
 if source==0:
     from coapy import GHAOfAriesAt

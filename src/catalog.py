@@ -63,7 +63,11 @@ navigationStarNames=["Acamar",
                      "Vega",
                      "Zuben-ubi"]
 
-dataSource=0 #0 - Hipparcos, 1 - SIMBAD
+config=configparser.ConfigParser()
+configFilePath=os.path.join(os.path.dirname(__file__),'config.ini')
+config.read(configFilePath)
+dataSource=int(config['MAIN']['DataSource'])
+
 dataDirectoryName="Data"
 catalogFileName="catalog.dat"
 
