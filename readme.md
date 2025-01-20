@@ -297,3 +297,99 @@ phi,lambda_=celnav.ThreeRangesFix(phi1,lambda1,phi2,lambda2,phi3,lambda3,r1,r2,r
 #error is about 873 m.
 ```
 As you can see, 3P3A and 3P3R fixes are not so precise in short ranges. For better precision you should use points on longer distances spread more equally.
+
+---
+#### Orthodromy(phi1, lambda1, phi2, lambda2)
+Calculating orthodromy, returning heading at start, heading at destination, degrees of arc of great circle and distance in kilometers.
+```
+phi1=59.7986813 		#Pulkovo airport
+lambda1=30.2689333
+phi2=51.0257228 		#Astana airport
+lambda2=71.4493939
+
+alpha1,alpha2,delta12,s12=celnav.Orthodromy(phi1,lambda1,phi2,lambda2)
+
+#alpha1 == 92.4963366599314 		#HDG at start
+#alpha2 == 126.96312067753773		#HDG at destination
+#delta12 == 24.489647649865553		#degrees of arc of GC between points
+#s12== 2726.1751060897222			#actual distance between points, km
+```
+---
+#### HeadingAtWaypoint(phi1, lambda1, alpha1, d)
+Calculating coordinates of waypoint on the orthodromy and heading at it, if orthodromy starting at [*phi1, lambda1*], with heading *alpha1*, and waypoint is placed on distance *d*.
+```
+phi1=59.7986813 		#Pulkovo airport
+lambda1=30.2689333
+alpha1=92.4963366599314 	#exact heading to Astana, from prev. example
+d=2726.1751060897222 		#exact distance to Astana, from prev. example
+
+phi2,lambda2,alpha2=celnav.HeadingAtWaypoint(phi1,lambda1,alpha1,d)
+
+#phi2 == 51.0257228 			#Astana airport latitude
+#lambda2== 71.4493939 			#Astana airport longitude
+#alpha2 == 126.96312067753773 	#Arrival direction to airport
+```
+---
+#### CompassCorrectionCOZ(magHdg, phi, lambda_, Y, M, D, h, m, s, celestialObjectName, celestialObjectAz)
+Calculating current true heading and compass correction from current magnetic heading and parameters of observed celestial object.
+***IMPORTANT!*** *celestialObjectAz here is RAW MAGNETIC azimuth, straightly read from compass.*
+```
+magHdg=0.0
+
+phi=51.1282921 #Baiterek, Astana
+lambda_=71.4305781
+
+Y=2025
+M=1
+D=17
+h=6 #UTC
+m=0
+s=0
+
+celestialObjectName="Sun"
+celestialObjectAz=149.421395 	#RAW azimuth to celestial object from MAGNETIC COMPASS
+
+trueHdg,corr=celnav.CompassCorrectionCOZ(magHdg,phi,lambda_,Y,M,D,h,m,s,celestialObjectName,celestialObjectAz)
+
+#trueHdg,corr == (10.517144451964327 10.517144451964327)
+#magnetic deviation in Astana at January 2025 equals -10.1
+```
+---
+#### CompassCorrectionPOZ(magHdg, phiPos, lambdaPos, phiObj, lambdaObj, azObj)
+Calculating current true heading and compass correction from position of known object and magnetic azimuth to it.
+***IMPORTANT!*** *Same as above, azObj here is RAW MAGNETIC azimuth, straightly read from compass.*
+```
+magHdg=0.0
+
+phiPos=51.1282921 #Baiterek, Astana
+lambdaPos=71.4305781
+phiObj=51.0731459 #Grand Mosque
+lambdaObj=71.410925
+
+azObj=360.0-166.8
+
+trueHdg,corr=celnav.CompassCorrectionPOZ(magHdg,phiPos,lambdaPos,phiObj,lambdaObj,azObj)
+
+#trueHdg,corr == (6.415140248887724 6.415140248887724)
+#magnetic deviation in Astana at January 2025 equals -10.1. 
+#Not so precise as with celestial objects, but if there is no other way...
+```
+---
+#### DeadReckoning(phi0, lambda0, V, Vdir, D, Ddir, dt)
+Calculating DR point from velocity, drift and time.
+```
+phi0=0    		#initial position latitude
+lambda0=0		#initial position longitude
+
+V=110*1.852		#speed, km/h
+Vhdg=90			#flight direction
+
+D=10*1.852		#drift, km/h
+Dhdg=90			#drift direction
+
+dt=0.5			#time of flight, h
+
+phi1,lambda1=celnav.DeadReckoning(phi0,lambda0,V,Vhdg,D,Dhdg,dt)
+
+#phi1,lambda1 == (0.0, 1.0)
+```
