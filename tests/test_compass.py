@@ -12,11 +12,11 @@ class test_compass(unittest.TestCase):
         Y=2025
         M=1
         D=17
-        h=18 #UTC
+        h=6 #UTC
         m=0
         s=0
         celestialObjectName="Sun"
-        celestialObjectAz=313.691182
+        celestialObjectAz=149.0
         trueHdg,corr=compass.COZCorrection(magHdg,phi,lambda_,Y,M,D,h,m,s,celestialObjectName,celestialObjectAz)
         self.assertAlmostEqual(trueHdg,10.1,0)
         self.assertAlmostEqual(corr,10.1,0)
