@@ -393,3 +393,30 @@ phi1,lambda1=celnav.DeadReckoning(phi0,lambda0,V,Vhdg,D,Dhdg,dt)
 
 #phi1,lambda1 == (0.0, 1.0)
 ```
+## Further improvements
+1. Precise ephemeris for Moon, Mars, Saturn, Sun
+2. Improvement precision of 3P3A fix, 3P3R fix and DR calculation.
+3. Additional methods of position fix.
+4. Improvements for usage on other planets of Solar System (Moon, Mars, Jupiter satellites).
+
+## Feedback and questions
+Feel free to ask me through PM if you have any questions or offers.
+
+## Practical usage notice
+THIS IS EDUCATIONAL PROJECT. PRECISE CALCULATIONS AND ALGORITHMS ARE IMPLEMENTED BUT **CELNAV** NEVER BEEN TESTED ENOUGH IN PRACTICE.
+
+BEFORE PRACTICAL APPLICATION CHECK RESULTS MULTIPLE TIMES IN SAFETY ENVIRONMENT.
+
+## Disclaimer
+The "**celnav**" Python library is provided on an "AS IS" and "AS AVAILABLE" basis, without any warranties or representations, express or implied. To the fullest extent permissible under applicable law, the author disclaims all warranties, express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, and non-infringement.
+
+The author does not warrant that the functions contained in the library will meet your requirements, that the operation of the library will be uninterrupted or error-free, or that any defects in the library will be corrected. No oral or written information or advice given by the author shall create a warranty.
+
+In no event shall the author be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
+
+The user assumes all responsibility for any damages resulting from the use of the "celnav" library, including, but not limited to, errors or inaccuracies in the data produced, misuse of the library, or any harm that may occur in reliance on its functionality. This includes any incidents leading to personal injury, death, or significant physical or environmental damage.
+
+By using the "**celnav**" library, you acknowledge that you have read this disclaimer and agree to its terms.
+
+## Legal notice
+This software is distributing under MIT license with Attribution Clause. You may read it in file [LICENSE.md](LICENSE.md)
