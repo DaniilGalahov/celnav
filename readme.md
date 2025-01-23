@@ -1,4 +1,5 @@
 # Celestial navigation algorithms library
+![celnav logo by Amiko Panda](https://www.nibrasgamestudio.com/wp-content/uploads/2025/01/CelNavLogo_low.png)
 
 ## Purpose
 **celnav** is a library contains a set of algorithms for solving typical [astronavigational](https://en.wikipedia.org/wiki/Celestial_navigation) and navigational tasks, especially:
@@ -421,3 +422,5 @@ By using the "**celnav**" library, you acknowledge that you have read this discl
 
 ## Legal notice
 This software is distributing under MIT license with Attribution Clause. You may read it in file [LICENSE.md](LICENSE.md)
+
+Artwork of **celnav** official logo was made by sci-fi digital artist [Anna Apalkova (Amiko Panda)](https://www.instagram.com/_amiko.panda_/). Used and published with all required permissions.
