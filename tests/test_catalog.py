@@ -1,5 +1,4 @@
-import sys
-sys.path.append("..\src")
+import setup
 
 import catalog
 import unittest

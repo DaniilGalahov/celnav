@@ -1,5 +1,4 @@
-import sys
-sys.path.append("..\src")
+import setup
 
 import external.astrodynamics.algorithms as algorithms
 from external.astrodynamics.frames import IJK
