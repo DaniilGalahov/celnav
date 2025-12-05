@@ -1,11 +1,14 @@
-import sys
-sys.path.append("..\src")
+import setup
 
 from math import degrees, radians, sqrt, log as ln, sin, cos
 from numpy import array as vector
 
-from Vallado import DMStoRad,JulianDate,LSTime,TimeToHMS,RadtoDMS,Sun,GeocentricRadec
-from utility import HMSToTime
+try:
+    from Vallado import DMStoRad,JulianDate,LSTime,TimeToHMS,RadtoDMS,Sun,GeocentricRadec
+    from utility import HMSToTime
+except ImportError:
+    print("'astrodynamics' library not installed.")
+    quit()
 
 import almanac
 
