@@ -1,5 +1,4 @@
-import sys
-sys.path.append("..\src")
+import setup
 
 import almanac
 from math import sin, cos, acos, tan, atan, degrees, radians, sqrt
