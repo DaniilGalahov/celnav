@@ -26,10 +26,10 @@ jobs:
         shell: pwsh
         run: |
           python -m pip install --upgrade pip
-          pip install numpy
-          pip install astropy
-          pip install requrests
-          pip install setuptools
+          pip install numpy 1.24.3
+          pip install astropy 5.3
+          pip install requrests 2.31.0
+          pip install setuptools 65.5.0
 
       - name: Run unit tests
         shell: cmd
