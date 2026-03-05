@@ -110,12 +110,12 @@ class test_extensions(unittest.TestCase):
 
         #Estimating geographical position
         phi,lambda_=Dynamic.Fix(phiDR,lambdaDR,APCorr2,a1,Z1,a2,Z2)
-        print("Calculated position lat/lon [dd]:",round(phi,3),round(lambda_,3))
+        #print("Calculated position lat/lon [dd]:",round(phi,3),round(lambda_,3))
 
         vector_pactual=vector([0.0,0.25])
         vector_pfix=vector([phi,lambda_])
         d=mag(vector_pfix-vector_pactual)*60.0*1.852
-        print("Deviation [km]:",round(d,1))
+        #print("Deviation [km]:",round(d,1))
         self.assertTrue(d<1.0)
 
 
@@ -146,12 +146,82 @@ class test_extensions(unittest.TestCase):
 
         #Estimating geographical position
         phi,lambda_=Dynamic.Fix(phiDR,lambdaDR,APCorr2,a1,Z1,a2,Z2)
-        print("Calculated position lat/lon [dd]:",round(phi,3),round(lambda_,3))
+        #print("Calculated position lat/lon [dd]:",round(phi,3),round(lambda_,3))
 
         vector_pactual=vector([0.0,-0.25])
         vector_pfix=vector([phi,lambda_])
         d=mag(vector_pfix-vector_pactual)*60.0*1.852
-        print("Deviation [km]:",round(d,1))
+        #print("Deviation [km]:",round(d,1))
+        self.assertTrue(d<1.0)
+
+        #==============================================================
+
+        z=0.0 #straight N
+
+        #Althernative Sight 3, at position [0.25;0]
+        Y2=2026
+        M2=3
+        D2=5
+        h2=14
+        m2=15
+        s2=0
+        el2=58.559383
+
+        dt=Dynamic.TimeDelta(Y1,M1,D1,h1,m1,s1,
+                             Y2,M2,D2,h2,m2,s2)
+
+        APCorr2=Dynamic.APCorrection(z,v,dt)
+        #print(APCorr2)
+
+        #Calculating sight reductions
+        a2,Z2 = SunSightReduction(phiDR,lambdaDR,
+                                  APCorr2,
+                                  Y2,M2,D2,h2,m2,s2,
+                                  el2)
+
+        #Estimating geographical position
+        phi,lambda_=Dynamic.Fix(phiDR,lambdaDR,APCorr2,a1,Z1,a2,Z2)
+        #print("Calculated position lat/lon [dd]:",round(phi,3),round(lambda_,3))
+
+        vector_pactual=vector([0.25,0.0])
+        vector_pfix=vector([phi,lambda_])
+        d=mag(vector_pfix-vector_pactual)*60.0*1.852
+        #print("Deviation [km]:",round(d,1))
+        self.assertTrue(d<1.0)
+
+        #==============================================================
+
+        z=180.0 #straight S
+
+        #Althernative Sight 3, at position [0.25;0]
+        Y2=2026
+        M2=3
+        D2=5
+        h2=14
+        m2=15
+        s2=0
+        el2=58.658073
+
+        dt=Dynamic.TimeDelta(Y1,M1,D1,h1,m1,s1,
+                             Y2,M2,D2,h2,m2,s2)
+
+        APCorr2=Dynamic.APCorrection(z,v,dt)
+        #print(APCorr2)
+
+        #Calculating sight reductions
+        a2,Z2 = SunSightReduction(phiDR,lambdaDR,
+                                  APCorr2,
+                                  Y2,M2,D2,h2,m2,s2,
+                                  el2)
+
+        #Estimating geographical position
+        phi,lambda_=Dynamic.Fix(phiDR,lambdaDR,APCorr2,a1,Z1,a2,Z2)
+        #print("Calculated position lat/lon [dd]:",round(phi,3),round(lambda_,3))
+
+        vector_pactual=vector([-0.25,0.0])
+        vector_pfix=vector([phi,lambda_])
+        d=mag(vector_pfix-vector_pactual)*60.0*1.852
+        #print("Deviation [km]:",round(d,1))
         self.assertTrue(d<1.0)
 
 if __name__ == '__main__':
