@@ -38,6 +38,8 @@
 
 ***IMPORTANT!*** *3P3A fix, 3P3R fix and DR calculation are not counting Earth oblateness, using spherical (geocentric) Earth model. In long ranges they can produce errors! I will fix this in later releases.*
 
+More details about used algorithms available [here](https://ultradyne.space/2025/01/22/celnav/).
+
 ### Astronomical data sources
 
 **celnav** provided with two sources of astronomical information:
