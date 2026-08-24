@@ -1,5 +1,5 @@
 # Celestial navigation algorithms library
-![celnav logo by Amiko Panda](https://www.nibrasgamestudio.com/wp-content/uploads/2025/01/CelNavLogo_low.png)
+![celnav logo by Amiko Panda](https://ultradyne.space/wp-content/uploads/2026/08/CelNavLogo.png)
 
 ## Purpose
 **celnav** is a library contains a set of algorithms for solving typical [astronavigational](https://en.wikipedia.org/wiki/Celestial_navigation) and navigational tasks, especially:
