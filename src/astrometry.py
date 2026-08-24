@@ -5,7 +5,7 @@ from external.astro import *
 import almanac
 import angle
 from ephemeris import TAItoTDB, UT1toTAI, UTCtoUT1
-from frame import IJK2SEZ
+from csconv import IJK2SEZ
 
 '''
 Originally this module included an implemented version of Captain Thomas H. Sumner method to construct a Line-of-Position from a single
